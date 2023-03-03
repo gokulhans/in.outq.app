@@ -143,13 +143,13 @@ class _CreateStorePageState extends State<CreateStorePage> {
   //   });
   // }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   shop.start = "9:00 AM";
-  //   shop.end = "5:00 PM";
-  //   _handleLocationPermission();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    shop.start = "9:00 AM";
+    shop.end = "5:00 PM";
+    // _handleLocationPermission();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -188,38 +188,38 @@ class _CreateStorePageState extends State<CreateStorePage> {
                   ],
                 ),
               ),
-              isButtonVisible
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Text('LAT: ${_currentPosition?.latitude ?? ""}'),
-                          // Text('LNG: ${_currentPosition?.longitude ?? ""}'),
-                          // Text('ADDRESS: ${_currentAddress ?? ""}'),
-                          const SizedBox(height: 32),
-                          ElevatedButton(
-                            // onPressed: _getCurrentPosition,
-                            onPressed: (){},
-                            child: const Text(
-                                "Fetch Your Current Location to Continue"),
-                          )
-                        ],
-                      ),
-                    )
-                  : Container(),
-              isVisible
-                  // ? CreateStoreForm(location: _currentAddress)
-                  ? CreateStoreForm()
-                  : Column(
-                      children: [
-                        addVerticalSpace(100),
-                        const Center(
-                            child: SpinKitCircle(
-                          color: Colors.blue,
-                          size: 50.0,
-                        )),
-                      ],
-                    ),
+              CreateStoreForm()
+              // isButtonVisible
+              //     ? Center(
+              //         child: Column(
+              //           mainAxisAlignment: MainAxisAlignment.center,
+              //           children: [
+              //             // Text('LAT: ${_currentPosition?.latitude ?? ""}'),
+              //             // Text('LNG: ${_currentPosition?.longitude ?? ""}'),
+              //             // Text('ADDRESS: ${_currentAddress ?? ""}'),
+              //             const SizedBox(height: 32),
+              //             ElevatedButton(
+              //               // onPressed: _getCurrentPosition,
+              //               onPressed: (){},
+              //               child: const Text(
+              //                   "Fetch Your Current Location to Continue"),
+              //             )
+              //           ],
+              //         ),
+              //       )
+              // : Container(),
+              // isVisible
+              // ? CreateStoreForm(location: _currentAddress)
+              // : Column(
+              //     children: [
+              //       addVerticalSpace(100),
+              //       const Center(
+              //           child: SpinKitCircle(
+              //         color: Colors.blue,
+              //         size: 50.0,
+              //       )),
+              //     ],
+              //   ),
             ],
           ),
         ),
