@@ -1,6 +1,6 @@
 class OwnerSignUpModel {
-  String name, email, pswd;
-  OwnerSignUpModel(this.name, this.email, this.pswd);
+  String name, email, pswd,deviceid;
+  OwnerSignUpModel(this.name, this.email, this.pswd,this.deviceid);
 }
 
 class OwnerLoginModel {

@@ -31,9 +31,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  print(" dfdtttt");
   await Firebase.initializeApp();
-  print(" dfd");
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   NotificationSettings settings = await messaging.requestPermission(
     alert: true,
@@ -44,7 +42,6 @@ Future<void> main() async {
     provisional: false,
     sound: true,
   );
-  print('Device test');
   messaging.getToken().then((token) {
     print('Device token 2 : $token');
   });

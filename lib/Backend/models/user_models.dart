@@ -4,9 +4,9 @@ class Users {
 }
 
 class UserSignUpModel {
-  String name, email, pswd, phone, location, pincode;
+  String name, email, pswd, phone, location, pincode, deviceid;
   UserSignUpModel(this.name, this.email, this.pswd, this.phone, this.location,
-      this.pincode);
+      this.pincode, this.deviceid);
 }
 
 class UserLoginModel {
@@ -71,6 +71,6 @@ class GetBookingModel {
 }
 
 class TimeSlots {
-  String start, end,date;
-  TimeSlots(this.start, this.end,this.date);
+  String start, end, date;
+  TimeSlots(this.start, this.end, this.date);
 }

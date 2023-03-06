@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 // import 'package:geocoding/geocoding.dart';
@@ -26,6 +27,12 @@ bool isVisible = true;
 Future updateuser(BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String userid = prefs.getString("userid") ?? "null";
+  String deviceid = "";
+
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  messaging.getToken().then((token) {
+    deviceid = token!;
+  });
 
   http.post(
       Uri.parse(
@@ -39,6 +46,7 @@ Future updateuser(BuildContext context) async {
         'pincode': userpincode ?? "689645",
         'longitude': userlongitude ?? "76.7873",
         'latitude': userlatitude ?? "9.2640",
+        'deviceid': deviceid
       });
 
   // if (response.statusCode == 201) {
@@ -292,90 +300,79 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     //     ),
                     //   ),
                     // ),
-                    // SizedBox(
-                    //   height: 200,
-                    //   child: Expanded(
-                    //     // flex: 2,
-                    //     child: Container(
-                    //       // margin: const EdgeInsets.symmetric(vertical: 12.0),
-                    //       child: ListView(
-                    //         children: [
-                    //           CarouselSlider(
-                    //             items: [
-                    //               //1st Image of Slider
-                    //               InkWell(
-                    //                 onTap: () {
-                    //                   Get.to(() => const UserViewStorePage(),
-                    //                       arguments: [
-                    //                         "data[index]['type']",
-                    //                         "data[index]['type']",
-                    //                         "data[index]['type']",
-                    //                         "data[index]['type']",
-                    //                         // data[index]['name'],
-                    //                         // data[index]['start'],
-                    //                         // data[index]['end']
-                    //                       ]);
-                    //                 },
-                    //                 child: Container(
-                    //                   height: 180,
-                    //                   decoration: BoxDecoration(
-                    //                     borderRadius:
-                    //                         BorderRadius.circular(8.0),
-                    //                     image: const DecorationImage(
-                    //                       image: AssetImage(
-                    //                           "assets/images/ad.jpg"),
-                    //                       fit: BoxFit.cover,
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //               InkWell(
-                    //                 onTap: () {
-                    //                   Get.to(() => const UserViewStorePage(),
-                    //                       arguments: [
-                    //                         "data[index]['type']",
-                    //                         "data[index]['type']",
-                    //                         "data[index]['type']",
-                    //                         "data[index]['type']",
-                    //                         // data[index]['name'],
-                    //                         // data[index]['start'],
-                    //                         // data[index]['end']
-                    //                       ]);
-                    //                 },
-                    //                 child: Container(
-                    //                   height: 180,
-                    //                   decoration: BoxDecoration(
-                    //                     borderRadius:
-                    //                         BorderRadius.circular(8.0),
-                    //                     image: const DecorationImage(
-                    //                       image: AssetImage(
-                    //                           "assets/images/ad.jpg"),
-                    //                       fit: BoxFit.cover,
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
+                    SizedBox(
+                      height: 200,
+                      child: ListView(
+                        children: [
+                          CarouselSlider(
+                            items: [
+                              //1st Image of Slider
+                              InkWell(
+                                onTap: () {
+                                  Get.to(() => const UserViewStorePage(),
+                                      arguments: [
+                                        "data[index]['type']",
+                                        "data[index]['type']",
+                                        "data[index]['type']",
+                                        "data[index]['type']",
+                                        // data[index]['name'],
+                                        // data[index]['start'],
+                                        // data[index]['end']
+                                      ]);
+                                },
+                                child: Container(
+                                  height: 180,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    image: const DecorationImage(
+                                      image: AssetImage("assets/images/ad.jpg"),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Get.to(() => const UserViewStorePage(),
+                                      arguments: [
+                                        "data[index]['type']",
+                                        "data[index]['type']",
+                                        "data[index]['type']",
+                                        "data[index]['type']",
+                                        // data[index]['name'],
+                                        // data[index]['start'],
+                                        // data[index]['end']
+                                      ]);
+                                },
+                                child: Container(
+                                  height: 180,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    image: const DecorationImage(
+                                      image: AssetImage("assets/images/ad.jpg"),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
 
-                    //             ],
-
-                    //             //Slider Container properties
-                    //             options: CarouselOptions(
-                    //               height: 180.0,
-                    //               enlargeCenterPage: true,
-                    //               autoPlay: true,
-                    //               aspectRatio: 16 / 9,
-                    //               autoPlayCurve: Curves.fastOutSlowIn,
-                    //               enableInfiniteScroll: true,
-                    //               autoPlayAnimationDuration:
-                    //                   const Duration(milliseconds: 800),
-                    //               viewportFraction: 0.8,
-                    //             ),
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
+                            //Slider Container properties
+                            options: CarouselOptions(
+                              height: 180.0,
+                              enlargeCenterPage: true,
+                              autoPlay: true,
+                              aspectRatio: 16 / 9,
+                              autoPlayCurve: Curves.fastOutSlowIn,
+                              enableInfiniteScroll: true,
+                              autoPlayAnimationDuration:
+                                  const Duration(milliseconds: 800),
+                              viewportFraction: 0.8,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     addVerticalSpace(20),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -616,7 +613,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                 ),
                                                 addVerticalSpace(5),
                                                 Text(
-                                                  "5 star",
+                                                  data[index]['location'],
                                                   // data[index]['location'],
                                                   style: TextStyle(
                                                       fontSize: 10,

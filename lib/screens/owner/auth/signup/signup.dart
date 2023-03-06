@@ -25,7 +25,7 @@ TextEditingController nameController = TextEditingController(text: '');
 TextEditingController emailController = TextEditingController(text: '');
 TextEditingController pswdController = TextEditingController(text: '');
 
-OwnerSignUpModel owners = OwnerSignUpModel('', '', '');
+OwnerSignUpModel owners = OwnerSignUpModel('', '', '', '');
 
 class _OwnerSignUpPageState extends State<OwnerSignUpPage> {
   Future save() async {
@@ -41,6 +41,7 @@ class _OwnerSignUpPageState extends State<OwnerSignUpPage> {
           'name': owners.name,
           'email': owners.email,
           'pswd': owners.pswd,
+          'deviceid': owners.deviceid
         });
 
     Color? msgclr;

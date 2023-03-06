@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:outq/Backend/models/user_models.dart';
@@ -25,7 +26,7 @@ class UserSignUpPage extends StatefulWidget {
 // TextEditingController emailController = TextEditingController(text: '');
 // TextEditingController pswdController = TextEditingController(text: '');
 
-UserSignUpModel users = UserSignUpModel('', '', '', '', '', '');
+UserSignUpModel users = UserSignUpModel('', '', '', '', '', '', '');
 
 class _UserSignUpPageState extends State<UserSignUpPage> {
   Future signup_save(BuildContext context) async {
@@ -44,6 +45,7 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
           'phone': users.phone,
           'location': "",
           'pincode': "",
+          'deviceid': users.deviceid
         });
 
     Color? msgclr;
@@ -154,6 +156,17 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
   // }
 
   bool isLoading = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    messaging.getToken().then((token) {
+      users.deviceid = token!;
+      print('Device token 2 : $token');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
