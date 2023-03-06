@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 // import 'package:geocoding/geocoding.dart';
@@ -280,17 +281,101 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       ),
                     ),
                     addVerticalSpace(20),
-                    Container(
-                      height: 180,
-                      margin: const EdgeInsets.all(6.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                        image: const DecorationImage(
-                          image: AssetImage("assets/images/ad.jpg"),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
+                    // Container(
+                    //   height: 180,
+                    //   margin: const EdgeInsets.all(6.0),
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(8.0),
+                    //     image: const DecorationImage(
+                    //       image: AssetImage("assets/images/ad.jpg"),
+                    //       fit: BoxFit.cover,
+                    //     ),
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   height: 200,
+                    //   child: Expanded(
+                    //     // flex: 2,
+                    //     child: Container(
+                    //       // margin: const EdgeInsets.symmetric(vertical: 12.0),
+                    //       child: ListView(
+                    //         children: [
+                    //           CarouselSlider(
+                    //             items: [
+                    //               //1st Image of Slider
+                    //               InkWell(
+                    //                 onTap: () {
+                    //                   Get.to(() => const UserViewStorePage(),
+                    //                       arguments: [
+                    //                         "data[index]['type']",
+                    //                         "data[index]['type']",
+                    //                         "data[index]['type']",
+                    //                         "data[index]['type']",
+                    //                         // data[index]['name'],
+                    //                         // data[index]['start'],
+                    //                         // data[index]['end']
+                    //                       ]);
+                    //                 },
+                    //                 child: Container(
+                    //                   height: 180,
+                    //                   decoration: BoxDecoration(
+                    //                     borderRadius:
+                    //                         BorderRadius.circular(8.0),
+                    //                     image: const DecorationImage(
+                    //                       image: AssetImage(
+                    //                           "assets/images/ad.jpg"),
+                    //                       fit: BoxFit.cover,
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //               InkWell(
+                    //                 onTap: () {
+                    //                   Get.to(() => const UserViewStorePage(),
+                    //                       arguments: [
+                    //                         "data[index]['type']",
+                    //                         "data[index]['type']",
+                    //                         "data[index]['type']",
+                    //                         "data[index]['type']",
+                    //                         // data[index]['name'],
+                    //                         // data[index]['start'],
+                    //                         // data[index]['end']
+                    //                       ]);
+                    //                 },
+                    //                 child: Container(
+                    //                   height: 180,
+                    //                   decoration: BoxDecoration(
+                    //                     borderRadius:
+                    //                         BorderRadius.circular(8.0),
+                    //                     image: const DecorationImage(
+                    //                       image: AssetImage(
+                    //                           "assets/images/ad.jpg"),
+                    //                       fit: BoxFit.cover,
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ),
+
+                    //             ],
+
+                    //             //Slider Container properties
+                    //             options: CarouselOptions(
+                    //               height: 180.0,
+                    //               enlargeCenterPage: true,
+                    //               autoPlay: true,
+                    //               aspectRatio: 16 / 9,
+                    //               autoPlayCurve: Curves.fastOutSlowIn,
+                    //               enableInfiniteScroll: true,
+                    //               autoPlayAnimationDuration:
+                    //                   const Duration(milliseconds: 800),
+                    //               viewportFraction: 0.8,
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     addVerticalSpace(20),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10),

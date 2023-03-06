@@ -17,7 +17,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   );
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     print('Got a message whilst in the foreground!');
     print('Message data: ${message.data}');
@@ -32,7 +31,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  print(" dfdtttt");
   await Firebase.initializeApp();
+  print(" dfd");
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   NotificationSettings settings = await messaging.requestPermission(
     alert: true,
@@ -43,15 +44,15 @@ Future<void> main() async {
     provisional: false,
     sound: true,
   );
-  // print('Device test');
-  // messaging.getToken().then((token) {
-  //   print('Device token 2 : $token');
-  // });
+  print('Device test');
+  messaging.getToken().then((token) {
+    print('Device token 2 : $token');
+  });
 
-  // messaging.onTokenRefresh.listen((token) {
-  //   print('Device token refreshed: $token');
-  //   // Update the device token in your server
-  // });
+  messaging.onTokenRefresh.listen((token) {
+    print('Device token refreshed: $token');
+    // Update the device token in your server
+  });
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 

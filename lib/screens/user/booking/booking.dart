@@ -18,6 +18,7 @@ import 'package:outq/utils/widget_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 bool isLoadingBB = false;
 
@@ -191,6 +192,33 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
   @override
   Widget build(BuildContext context) {
     dynamic argumentData = Get.arguments;
+
+    List<Widget> timeSlots = [];
+
+    final DateTime startTime = DateTime(2023, 3, 6, 9, 0); // 9:00 AM
+    final DateTime endTime = DateTime(2023, 3, 6, 17, 0); // 5:00 PM
+    final int timeIntervalInMinutes = 10;
+
+    // Loop through each 10-minute interval between start and end time
+    for (DateTime time = startTime;
+        time.isBefore(endTime);
+        time = time.add(Duration(minutes: timeIntervalInMinutes))) {
+      DateTime endTimeForSlot =
+          time.add(Duration(minutes: timeIntervalInMinutes));
+
+      // Format the start and end time for display
+      String startTimeString = DateFormat.jm().format(time);
+      String endTimeString = DateFormat.jm().format(endTimeForSlot);
+
+      // Create a list item for the time interval
+      timeSlots.add(ListTile(
+        title: Text('$startTimeString - $endTimeString'),
+        onTap: () {
+          // Handle booking logic when a time slot is tapped
+        },
+      ));
+    }
+
     // int start = 12 - int.parse(argumentData[6]);
     // int end = int.parse(argumentData[7]);
     // int hours = start + end + 1;
@@ -395,58 +423,61 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                           ],
                         ),
                       ),
-                      // SizedBox(
-                      //   height: 200,
-                      //   child: Center(
-                      //     child: GridView.builder(
-                      //         physics:
-                      //             const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
-                      //         shrinkWrap: true,
-                      //         gridDelegate:
-                      //             const SliverGridDelegateWithFixedCrossAxisCount(
-                      //                 crossAxisCount: 4, childAspectRatio: 1.6),
-                      //         itemCount: 10,
-                      //         itemBuilder: (BuildContext context, int index) {
-                      //           return InkWell(
-                      //             splashColor: Colors.transparent,
-                      //             onTap: () {
-                      //               booking.start =
-                      //                   "${index + 9}:00 ${index + 9 > 11 ? "PM" : "AM"}";
-                      //               // print(booking.start);
-                      //               setState(() {
-                      //                 _currentIndex = index;
-                      //                 _timeSelected = true;
-                      //               });
-                      //             },
-                      //             child: Container(
-                      //               margin: const EdgeInsets.all(5),
-                      //               decoration: BoxDecoration(
-                      //                 border: Border.all(
-                      //                   color: _currentIndex == index
-                      //                       ? Colors.white
-                      //                       : Colors.black,
-                      //                 ),
-                      //                 borderRadius: BorderRadius.circular(15),
-                      //                 color: _currentIndex == index
-                      //                     ? Colors.blue
-                      //                     : null,
-                      //               ),
-                      //               alignment: Alignment.center,
-                      //               child: Text(
-                      //                 '${index + 9}:00 ${index + 9 > 11 ? "PM" : "AM"}',
-                      //                 style: TextStyle(
-                      //                   fontSize: 12,
-                      //                   fontWeight: FontWeight.bold,
-                      //                   color: _currentIndex == index
-                      //                       ? Colors.white
-                      //                       : null,
-                      //                 ),
-                      //               ),
-                      //             ),
-                      //           );
-                      //         }),
-                      //   ),
-                      // ),
+                      SizedBox(
+                        height: 200,
+                        // child: Center(
+                        //   child: GridView.builder(
+                        //       physics:
+                        //           const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
+                        //       shrinkWrap: true,
+                        //       gridDelegate:
+                        //           const SliverGridDelegateWithFixedCrossAxisCount(
+                        //               crossAxisCount: 4, childAspectRatio: 1.6),
+                        //       itemCount: 10,
+                        //       itemBuilder: (BuildContext context, int index) {
+                        //         return InkWell(
+                        //           splashColor: Colors.transparent,
+                        //           onTap: () {
+                        //             booking.start =
+                        //                 "${index + 9}:00 ${index + 9 > 11 ? "PM" : "AM"}";
+                        //             // print(booking.start);
+                        //             setState(() {
+                        //               _currentIndex = index;
+                        //               // _timeSelected = true;
+                        //             });
+                        //           },
+                        //           child: Container(
+                        //             margin: const EdgeInsets.all(5),
+                        //             decoration: BoxDecoration(
+                        //               border: Border.all(
+                        //                 color: _currentIndex == index
+                        //                     ? Colors.white
+                        //                     : Colors.black,
+                        //               ),
+                        //               borderRadius: BorderRadius.circular(15),
+                        //               color: _currentIndex == index
+                        //                   ? Colors.blue
+                        //                   : null,
+                        //             ),
+                        //             alignment: Alignment.center,
+                        //             child: Text(
+                        //               '${index + 9}:00 ${index + 9 > 11 ? "PM" : "AM"}',
+                        //               style: TextStyle(
+                        //                 fontSize: 12,
+                        //                 fontWeight: FontWeight.bold,
+                        //                 color: _currentIndex == index
+                        //                     ? Colors.white
+                        //                     : null,
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         );
+                        //       }),
+                        // ),
+                        child: ListView(
+                          children: timeSlots,
+                        ),
+                      ),
                       addVerticalSpace(30),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),

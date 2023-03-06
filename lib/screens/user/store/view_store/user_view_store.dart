@@ -79,49 +79,50 @@ class _UserViewStorePageState extends State<UserViewStorePage> {
                                     ),
                                   ),
                                 ),
-                                addVerticalSpace(20),
+                                addVerticalSpace(10),
                                 Text(
                                   snapshot.data[i].name,
                                   style: Theme.of(context).textTheme.headline4,
                                 ),
-                                addVerticalSpace(10),
                                 Text(
                                   snapshot.data[i].location,
                                   style: Theme.of(context).textTheme.subtitle2,
                                 ),
-                                // Column(
-                                //   children: [
-                                //     Text("1 followers"),
-                                //     addVerticalSpace(10),
-                                //     ClipRRect(
-                                //       borderRadius: BorderRadius.circular(12),
-                                //       child: Container(
-                                //           width: 100,
-                                //           height: 40,
-                                //           color: isFollowed
-                                //               ? Colors.grey
-                                //               : Colors.blue,
-                                //           child: TextButton(
-                                //               onPressed: () {
-                                //                 setState(() {
-                                //                   isFollowed = !isFollowed;
-                                //                 });
-                                //               },
-                                //               child: isFollowed
-                                //                   ? const Text(
-                                //                       "UnFollow",
-                                //                       style: TextStyle(
-                                //                           color: Colors.white),
-                                //                     )
-                                //                   : const Text(
-                                //                       "Follow",
-                                //                       style: TextStyle(
-                                //                           color: Colors.white),
-                                //                     ))),
-                                //     ),
-                                //   ],
-                                // )
-                                // addVerticalSpace(30),
+                                Column(
+                                  children: [
+                                    isFollowed
+                                        ? const Text("1 followers")
+                                        : const Text("0 followers"),
+                                    addVerticalSpace(10),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Container(
+                                          width: 100,
+                                          height: 40,
+                                          color: isFollowed
+                                              ? Colors.grey
+                                              : Colors.blue,
+                                          child: TextButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  isFollowed = !isFollowed;
+                                                });
+                                              },
+                                              child: isFollowed
+                                                  ? const Text(
+                                                      "Unfollow",
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    )
+                                                  : const Text(
+                                                      "Follow",
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ))),
+                                    ),
+                                  ],
+                                ),
+                                addVerticalSpace(20),
                               ],
                             );
                           },
