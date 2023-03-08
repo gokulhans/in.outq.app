@@ -10,14 +10,30 @@ import 'package:http/http.dart' as http;
 Future cancelBooking(BuildContext context) async {
   dynamic argumentData = Get.arguments;
   // print(argumentData[3]);
-  var response = await http.get(
+  // var response = await
+  Get.snackbar(
+    "Booking Cancelled",
+    "Booking Cancelled Succesfully",
+    icon: const Icon(Icons.person, color: Colors.white),
+    snackPosition: SnackPosition.BOTTOM,
+    backgroundColor: Colors.red,
+    borderRadius: 12,
+    margin: const EdgeInsets.all(15),
+    colorText: Colors.white,
+    duration: const Duration(seconds: 3),
+    isDismissible: true,
+    dismissDirection: DismissDirection.horizontal,
+    forwardAnimationCurve: Curves.bounceIn,
+  );
+
+  http.get(
     Uri.parse('${apidomain}booking/cancel/${argumentData[3]}'),
   );
-  Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(
-          builder: (BuildContext context) => const UserHomePage()),
-      (Route<dynamic> route) => false);
-  // Get.to(() => const UserHomePage());
+  // Navigator.of(context).pushAndRemoveUntil(
+  //     MaterialPageRoute(
+  //         builder: (BuildContext context) => const UserHomePage()),
+  //     (Route<dynamic> route) => false);
+  Get.to(() => const UserHomePage());
 }
 
 class UserSingleAppoinmentInfoPage extends StatefulWidget {

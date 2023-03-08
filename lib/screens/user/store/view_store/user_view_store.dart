@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -6,8 +9,12 @@ import 'package:outq/Backend/api/owner_api.dart';
 import 'package:outq/Backend/api/user_api.dart';
 import 'package:outq/screens/user/booking/booking.dart';
 import 'package:outq/screens/user/components/appbar/user_appbar.dart';
+import 'package:outq/screens/user/search/user_search.dart';
+import 'package:outq/utils/constants.dart';
 import 'package:outq/utils/sizes.dart';
 import 'package:outq/utils/widget_functions.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserViewStorePage extends StatefulWidget {
   const UserViewStorePage({super.key});
@@ -21,6 +28,25 @@ class _UserViewStorePageState extends State<UserViewStorePage> {
   bool isChecked = false;
   bool isFollowed = false;
   // bool cmbscritta = false;
+  var userid;
+  var followcount;
+  void onload() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    userid = pref.getString("userid");
+    var response = await http
+        .get(Uri.parse('${apidomain}follow/check/${argumentData[0]}/$userid'));
+    var jsonData = await jsonDecode(response.body);
+    print(jsonData["followed"]);
+    setState(() {
+      isFollowed = jsonData["followed"];
+    });
+  }
+
+  @override
+  void initState() {
+    onload();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,99 +62,111 @@ class _UserViewStorePageState extends State<UserViewStorePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              FutureBuilder(
-                future: getSingleStore(argumentData[0]),
-                builder: (context, AsyncSnapshot snapshot) {
-                  if (snapshot.data == null) {
-                    return Container();
-                    // return const Center(
-                    //     child: SpinKitCircle(
-                    //   color: Colors.blue,
-                    //   size: 50.0,
-                    // ));
-                  } else {
-                    if (snapshot.data.length == 0) {
-                      return const Center(
-                          child: Text(
-                        'No Content is available right now.',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ));
-                    } else {
-                      return Expanded(
-                        flex: 3,
-                        child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (context, i) {
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width: double.infinity,
-                                  height: 180,
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(4)),
-                                    child: Image(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(snapshot.data[i].img),
-                                    ),
+              FutureBuilder<http.Response>(
+                future: http.get(Uri.parse(
+                    '${apidomain}store/store/get/${argumentData[0]}')),
+                builder: (BuildContext context,
+                    AsyncSnapshot<http.Response> snapshot) {
+                  if (snapshot.hasData) {
+                    var data = jsonDecode(snapshot.data!.body);
+                    print(data);
+                    // return Expanded(
+                    //   child: ListView.builder(
+                    //     itemCount: data.length,
+                    //     itemBuilder: (BuildContext context, int index) {
+                    //       return ListTile(
+                    //         title: Text(data[index]['name']),
+                    //       );
+                    //     },
+                    //   ),
+                    // );
+                    // return Text(data["t"].toString());
+                    return Expanded(
+                      flex: 3,
+                      child: ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: data.length,
+                        itemBuilder: (context, i) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: double.infinity,
+                                height: 180,
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(4)),
+                                  child: Image(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(data[i]["img"]),
                                   ),
                                 ),
-                                addVerticalSpace(10),
-                                Text(
-                                  snapshot.data[i].name,
-                                  style: Theme.of(context).textTheme.headline4,
-                                ),
-                                Text(
-                                  snapshot.data[i].location,
-                                  style: Theme.of(context).textTheme.subtitle2,
-                                ),
-                                Column(
-                                  children: [
-                                    isFollowed
-                                        ? const Text("1 followers")
-                                        : const Text("0 followers"),
-                                    addVerticalSpace(10),
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(12),
-                                      child: Container(
-                                          width: 100,
-                                          height: 40,
-                                          color: isFollowed
-                                              ? Colors.grey
-                                              : Colors.blue,
-                                          child: TextButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  isFollowed = !isFollowed;
-                                                });
-                                              },
-                                              child: isFollowed
-                                                  ? const Text(
-                                                      "Unfollow",
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    )
-                                                  : const Text(
-                                                      "Follow",
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ))),
+                              ),
+                              addVerticalSpace(10),
+                              Text(
+                                data[i]["name"],
+                                style: Theme.of(context).textTheme.headline4,
+                              ),
+                              Text(
+                                data[i]["location"],
+                                style: Theme.of(context).textTheme.subtitle2,
+                              ),
+                              Column(
+                                children: [
+                                  // isFollowed
+                                  //     ?
+                                  // Text(followcount),
+                                  // :
+                                  Text(
+                                      "${data[i]["followerslist"].length} Followers"),
+                                  addVerticalSpace(10),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Container(
+                                      width: 100,
+                                      height: 40,
+                                      color: isFollowed
+                                          ? Colors.grey
+                                          : Colors.blue,
+                                      child: TextButton(
+                                        onPressed: () async {
+                                          setState(() {
+                                            isFollowed = !isFollowed;
+                                          });
+                                          await http.get(Uri.parse(
+                                              '${apidomain}follow/follow/${data[i]["_id"]}/$userid'));
+                                        },
+                                        child: isFollowed
+                                            ? const Text(
+                                                "Unfollow",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              )
+                                            : const Text(
+                                                "Follow",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                      ),
                                     ),
-                                  ],
-                                ),
-                                addVerticalSpace(20),
-                              ],
-                            );
-                          },
-                        ),
-                      );
-                    }
+                                  ),
+                                ],
+                              ),
+                              addVerticalSpace(20),
+                            ],
+                          );
+                        },
+                      ),
+                    );
+                  } else if (snapshot.hasData) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return const SizedBox(
+                        height: 200,
+                        width: 200,
+                        child: Center(child: CircularProgressIndicator()));
                   }
                 },
               ),
@@ -201,13 +239,13 @@ class _UserViewStorePageState extends State<UserViewStorePage> {
                                                 .textTheme
                                                 .subtitle1,
                                           ),
-                                          // Text(
-                                          //   snapshot.data[i].price,
-                                          //   textAlign: TextAlign.left,
-                                          //   style: Theme.of(context)
-                                          //       .textTheme
-                                          //       .subtitle2,
-                                          // ),
+                                          Text(
+                                            "${snapshot.data[i].duration} minutes",
+                                            textAlign: TextAlign.left,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle2,
+                                          ),
                                           Row(
                                             children: [
                                               Text(
@@ -256,6 +294,7 @@ class _UserViewStorePageState extends State<UserViewStorePage> {
                                                   argumentData[2],
                                                   argumentData[3],
                                                   snapshot.data[i].img,
+                                                  snapshot.data[i].duration,
                                                 ]);
                                           },
                                           child: Text(

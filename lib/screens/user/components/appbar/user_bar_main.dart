@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:outq/screens/user/notifications/user_notifications.dart';
 import 'package:outq/screens/user/profile/myprofile.dart';
 import 'package:outq/utils/color_constants.dart';
 import 'package:outq/utils/widget_functions.dart';
@@ -65,14 +66,14 @@ class UserAppBar extends StatelessWidget {
       foregroundColor: Colors.black,
       // centerTitle: true,
       actions: [
-        // IconButton(
-        //     icon: const Icon(
-        //       Icons.notifications_active,
-        //       size: 30,
-        //     ),
-        //     onPressed: () {
-        //       Get.to(() => const UserNotifications());
-        //     }),
+        IconButton(
+            icon: const Icon(
+              Icons.notifications_active,
+              size: 30,
+            ),
+            onPressed: () {
+              Get.to(() => const UserNotifications());
+            }),
         IconButton(
             icon: const Icon(
               Icons.account_circle_outlined,

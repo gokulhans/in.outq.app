@@ -11,6 +11,7 @@ import 'package:outq/Backend/models/user_models.dart';
 import 'package:outq/screens/shared/exit_pop/exit_pop_up.dart';
 import 'package:outq/screens/user/booking/success_booked.dart';
 import 'package:outq/screens/user/components/appbar/user_appbar.dart';
+import 'package:outq/screens/user/store/view_store/user_view_store.dart';
 import 'package:outq/utils/color_constants.dart';
 import 'package:outq/utils/constants.dart';
 import 'package:outq/utils/sizes.dart';
@@ -31,7 +32,8 @@ Future save(BuildContext context) async {
   }
 
   getTimeSlots(argumentData[2], booking.date);
-  // print({booking.start});
+
+  print({booking.date, booking.start, argumentData[2]});
   final response = await http.post(
       Uri.parse(
         "${apidomain}booking/book",
@@ -52,6 +54,7 @@ Future save(BuildContext context) async {
         'img': argumentData[8],
         'username': userid,
       });
+  isLoadingBB = false;
   // print(response);
   var jsonData = jsonDecode(response.body);
   // print(jsonData["success"]);
@@ -64,8 +67,22 @@ Future save(BuildContext context) async {
         (Route<dynamic> route) => false);
     isLoadingBB = false;
   } else {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Slot Already Booked')));
+    Get.snackbar(
+      "Booking Failed",
+      "Slot Can not book",
+      icon: const Icon(Icons.person, color: Colors.white),
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.red,
+      borderRadius: 12,
+      margin: const EdgeInsets.all(15),
+      colorText: Colors.white,
+      duration: const Duration(seconds: 4),
+      isDismissible: true,
+      dismissDirection: DismissDirection.horizontal,
+      forwardAnimationCurve: Curves.bounceIn,
+    );
+    // ScaffoldMessenger.of(context)
+    //     .showSnackBar(const SnackBar(content: Text('Slot Could Not Booked')));
     isLoadingBB = false;
   }
 }
@@ -161,12 +178,18 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
   //   super.initState();
   // }
 
-  late Future<dynamic> _future;
+  late Future<http.Response> _future;
+
   @override
   void initState() {
     super.initState();
     booking.start = "10:00 AM";
-    _future = getTimeSlots(argumentData[2], DateTime.now());
+    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    booking.date = formattedDate;
+    print({booking.date, booking.start});
+    _future = http.get(Uri.parse(
+        '${apidomain}booking/timeslots/${argumentData[2]}/${booking.date}'));
+    // print(_future);
     // print(DateTime.now());
   }
 
@@ -266,17 +289,22 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                         showMonth: true,
                         onDateSelected: (date) {
                           // // print(argumentData);
+                          print(date);
                           booking.date = date.toString();
                           // print(booking.date);
-                          Get.to(() => const ShopBookingPage());
                           setState(() {
-                            _future =
-                                getTimeSlots(booking.storeid, booking.date);
+                            _future = http.get(Uri.parse(
+                                '${apidomain}booking/timeslots/${argumentData[2]}/${booking.date}'));
+                            print({
+                              booking.date,
+                              booking.storeid,
+                              argumentData[2]
+                            });
                           });
+                          Get.to(() => const ShopBookingPage());
                         },
                       ),
                       addVerticalSpace(50),
-
                       // addVerticalSpace(30),
                       // Padding(
                       //   padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -287,197 +315,292 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                       //     child: const Text('Choose Time'),
                       //   ),
                       // ),
-
-                      addVerticalSpace(20),
                       const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: Text(
-                          'Already Booked Time',
+                          'Chose Your Time',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
                         ),
                       ),
-                      addVerticalSpace(10),
-                      FutureBuilder(
+                      addVerticalSpace(20),
+                      FutureBuilder<http.Response>(
                         future: _future,
-                        builder: (context, AsyncSnapshot snapshot) {
-                          if (snapshot.data == null) {
-                            return const Center(
-                                child: SpinKitCircle(
-                              color: Colors.blue,
-                              size: 50.0,
-                            ));
-                          } else {
-                            if (snapshot.data.length == 0) {
-                              return const Padding(
-                                padding: EdgeInsets.all(24.0),
-                                child: Center(
-                                    child: Text(
-                                  'No Appoinment Found Today',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w800,
-                                    color: Colors.red,
-                                  ),
-                                )),
-                              );
-                            } else {
-                              return SizedBox(
-                                height: 150,
-                                child: Center(
-                                  child: GridView.builder(
-                                      // physics:
-                                      //     const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
-                                      shrinkWrap: true,
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 3,
-                                              childAspectRatio: 2.8),
-                                      itemCount: snapshot.data.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return InkWell(
-                                          splashColor: Colors.transparent,
-                                          onTap: () {
-                                            // setState(() {
-                                            //   // print(
-                                            //       "${index + 9}:${30} ${index + 9 > 11 ? "PM" : "AM"}");
-                                            //   _currentIndex = index;
-                                            //   _timeSelected = true;
-                                            // });
-                                          },
-                                          child: Container(
-                                            height: 50,
-                                            margin: const EdgeInsets.all(5),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: _currentIndex == index
-                                                    ? Colors.white
+                        builder: (BuildContext context,
+                            AsyncSnapshot<http.Response> snapshot) {
+                          if (snapshot.hasData) {
+                            var data = jsonDecode(snapshot.data!.body);
+                            // return Expanded(
+                            //   child: ListView.builder(
+                            //     itemCount: data.length,
+                            //     itemBuilder: (BuildContext context, int index) {
+                            //       return ListTile(
+                            //         title: Text(data[index]['name']),
+                            //       );
+                            //     },
+                            //   ),
+                            // );
+                            return GridView.builder(
+                                // physics:
+                                //     const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
+                                shrinkWrap: true,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 4, childAspectRatio: 2),
+                                itemCount: data.length,
+                                physics: BouncingScrollPhysics(),
+                                itemBuilder: (BuildContext context, int index) {
+                                  final rowNumber = (index / 3).floor() + 1;
+
+                                  if (rowNumber % 2 == 0 && index % 6 == 0) {
+                                    // Add a SizedBox after each 6th widget in even rows
+                                    return Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 20.0,
+                                        ),
+                                        // _buildGridItem(index),
+                                      ],
+                                    );
+                                  } else {
+                                    return InkWell(
+                                      splashColor: Colors.transparent,
+                                      onTap: () {
+                                        print(data[index]["time"]);
+                                        setState(() {
+                                          _currentIndex = index;
+                                          booking.start = data[index]["time"];
+                                        });
+                                      },
+                                      child: Container(
+                                        height: 50,
+                                        margin: const EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: _currentIndex == index
+                                                ? Colors.white
+                                                : (data[index]["status"] == "n")
+                                                    ? Colors.black
                                                     : Colors.white,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              color: Colors.red,
-                                            ),
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              snapshot.data[index].start +
-                                                  " to " +
-                                                  snapshot.data[index].end,
-                                              style: TextStyle(
-                                                  fontSize: 8,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: _currentIndex == index
-                                                      ? Colors.white
-                                                      : Colors.white),
-                                            ),
                                           ),
-                                        );
-                                      }),
-                                ),
-                              );
-                            }
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          color: _currentIndex == index
+                                              ? Colors.blue
+                                              : (data[index]["status"] == "n")
+                                                  ? Colors.white
+                                                  : Colors.red,
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          data[index]['time'],
+                                          style: TextStyle(
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.bold,
+                                              color: _currentIndex == index
+                                                  ? Colors.white
+                                                  : (data[index]["status"] ==
+                                                          "n")
+                                                      ? Colors.black
+                                                      : Colors.white),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                });
+                          } else if (snapshot.hasData) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            return const SizedBox(
+                                height: 200,
+                                width: 200,
+                                child:
+                                    Center(child: CircularProgressIndicator()));
                           }
                         },
                       ),
+                      // FutureBuilder(
+                      //   future: _future,
+                      //   // future: getTimeSlots(argumentData[2], booking.date),
+                      //   builder: (context, AsyncSnapshot snapshot) {
+                      //     if (snapshot.data == null) {
+                      //       return const Center(
+                      //           child: SpinKitCircle(
+                      //         color: Colors.blue,
+                      //         size: 50.0,
+                      //       ));
+                      //     } else {
+                      //       if (snapshot.data.length == 0) {
+                      //         return const Padding(
+                      //           padding: EdgeInsets.all(24.0),
+                      //           child: Center(
+                      //               child: Text(
+                      //             'No Appoinment Found Today',
+                      //             style: TextStyle(
+                      //               fontWeight: FontWeight.w800,
+                      //               color: Colors.red,
+                      //             ),
+                      //           )),
+                      //         );
+                      //       } else {
+                      //         return SizedBox(
+                      //           height: 150,
+                      //           child: Center(
+                      //             child: GridView.builder(
+                      //                 // physics:
+                      //                 //     const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
+                      //                 shrinkWrap: true,
+                      //                 gridDelegate:
+                      //                     const SliverGridDelegateWithFixedCrossAxisCount(
+                      //                         crossAxisCount: 3,
+                      //                         childAspectRatio: 2.8),
+                      //                 itemCount: snapshot.data.length,
+                      //                 itemBuilder:
+                      //                     (BuildContext context, int index) {
+                      //                   return InkWell(
+                      //                     splashColor: Colors.transparent,
+                      //                     onTap: () {
+                      //                       // setState(() {
+                      //                       //   // print(
+                      //                       //       "${index + 9}:${30} ${index + 9 > 11 ? "PM" : "AM"}");
+                      //                       //   _currentIndex = index;
+                      //                       //   _timeSelected = true;
+                      //                       // });
+                      //                     },
+                      //                     child: Container(
+                      //                       height: 50,
+                      //                       margin: const EdgeInsets.all(5),
+                      //                       decoration: BoxDecoration(
+                      //                         border: Border.all(
+                      //                           color: _currentIndex == index
+                      //                               ? Colors.white
+                      //                               : Colors.white,
+                      //                         ),
+                      //                         borderRadius:
+                      //                             BorderRadius.circular(15),
+                      //                         color: Colors.red,
+                      //                       ),
+                      //                       alignment: Alignment.center,
+                      //                       child: Text(
+                      //                         snapshot.data[index].start +
+                      //                             " to " +
+                      //                             snapshot.data[index].end,
+                      //                         style: TextStyle(
+                      //                             fontSize: 8,
+                      //                             fontWeight: FontWeight.bold,
+                      //                             color: _currentIndex == index
+                      //                                 ? Colors.white
+                      //                                 : Colors.white),
+                      //                       ),
+                      //                     ),
+                      //                   );
+                      //                 }),
+                      //           ),
+                      //         );
+                      //       }
+                      //     }
+                      //   },
+                      // ),
                       addVerticalSpace(30),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
-                          'Select Your Time',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 80,
-                        // padding: const EdgeInsets.symmetric(vertical: 12.0),
-                        clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(22),
-                        ),
-                        child: Row(
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                _selectBookingTime(context);
-                              },
-                              child: Container(
-                                color: Colors.blue,
-                                child: const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text(
-                                    'Chose Booking Time',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Text(
-                              booking.start,
-                              style: Theme.of(context).textTheme.subtitle1,
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 200,
-                        // child: Center(
-                        //   child: GridView.builder(
-                        //       physics:
-                        //           const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
-                        //       shrinkWrap: true,
-                        //       gridDelegate:
-                        //           const SliverGridDelegateWithFixedCrossAxisCount(
-                        //               crossAxisCount: 4, childAspectRatio: 1.6),
-                        //       itemCount: 10,
-                        //       itemBuilder: (BuildContext context, int index) {
-                        //         return InkWell(
-                        //           splashColor: Colors.transparent,
-                        //           onTap: () {
-                        //             booking.start =
-                        //                 "${index + 9}:00 ${index + 9 > 11 ? "PM" : "AM"}";
-                        //             // print(booking.start);
-                        //             setState(() {
-                        //               _currentIndex = index;
-                        //               // _timeSelected = true;
-                        //             });
-                        //           },
-                        //           child: Container(
-                        //             margin: const EdgeInsets.all(5),
-                        //             decoration: BoxDecoration(
-                        //               border: Border.all(
-                        //                 color: _currentIndex == index
-                        //                     ? Colors.white
-                        //                     : Colors.black,
-                        //               ),
-                        //               borderRadius: BorderRadius.circular(15),
-                        //               color: _currentIndex == index
-                        //                   ? Colors.blue
-                        //                   : null,
-                        //             ),
-                        //             alignment: Alignment.center,
-                        //             child: Text(
-                        //               '${index + 9}:00 ${index + 9 > 11 ? "PM" : "AM"}',
-                        //               style: TextStyle(
-                        //                 fontSize: 12,
-                        //                 fontWeight: FontWeight.bold,
-                        //                 color: _currentIndex == index
-                        //                     ? Colors.white
-                        //                     : null,
-                        //               ),
-                        //             ),
-                        //           ),
-                        //         );
-                        //       }),
-                        // ),
-                        child: ListView(
-                          children: timeSlots,
-                        ),
-                      ),
+                      // const Padding(
+                      //   padding: EdgeInsets.symmetric(horizontal: 10),
+                      //   child: Text(
+                      //     'Select Your Time',
+                      //     style: TextStyle(
+                      //       fontWeight: FontWeight.bold,
+                      //       fontSize: 20,
+                      //     ),
+                      //   ),
+                      // ),
+                      // Container(
+                      //   height: 80,
+                      //   // padding: const EdgeInsets.symmetric(vertical: 12.0),
+                      //   clipBehavior: Clip.antiAlias,
+                      //   decoration: BoxDecoration(
+                      //     borderRadius: BorderRadius.circular(22),
+                      //   ),
+                      //   child: Row(
+                      //     children: [
+                      //       TextButton(
+                      //         onPressed: () {
+                      //           _selectBookingTime(context);
+                      //         },
+                      //         child: Container(
+                      //           color: Colors.blue,
+                      //           child: const Padding(
+                      //             padding: EdgeInsets.all(8.0),
+                      //             child: Text(
+                      //               'Chose Booking Time',
+                      //               style: TextStyle(color: Colors.white),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //       Text(
+                      //         booking.start,
+                      //         style: Theme.of(context).textTheme.subtitle1,
+                      //       )
+                      //     ],
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   height: 200,
+                      //   // child: Center(
+                      //   //   child: GridView.builder(
+                      //   //       physics:
+                      //   //           const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
+                      //   //       shrinkWrap: true,
+                      //   //       gridDelegate:
+                      //   //           const SliverGridDelegateWithFixedCrossAxisCount(
+                      //   //               crossAxisCount: 4, childAspectRatio: 1.6),
+                      //   //       itemCount: 10,
+                      //   //       itemBuilder: (BuildContext context, int index) {
+                      //   //         return InkWell(
+                      //   //           splashColor: Colors.transparent,
+                      //   //           onTap: () {
+                      //   //             booking.start =
+                      //   //                 "${index + 9}:00 ${index + 9 > 11 ? "PM" : "AM"}";
+                      //   //             // print(booking.start);
+                      //   //             setState(() {
+                      //   //               _currentIndex = index;
+                      //   //               // _timeSelected = true;
+                      //   //             });
+                      //   //           },
+                      //   //           child: Container(
+                      //   //             margin: const EdgeInsets.all(5),
+                      //   //             decoration: BoxDecoration(
+                      //   //               border: Border.all(
+                      //   //                 color: _currentIndex == index
+                      //   //                     ? Colors.white
+                      //   //                     : Colors.black,
+                      //   //               ),
+                      //   //               borderRadius: BorderRadius.circular(15),
+                      //   //               color: _currentIndex == index
+                      //   //                   ? Colors.blue
+                      //   //                   : null,
+                      //   //             ),
+                      //   //             alignment: Alignment.center,
+                      //   //             child: Text(
+                      //   //               '${index + 9}:00 ${index + 9 > 11 ? "PM" : "AM"}',
+                      //   //               style: TextStyle(
+                      //   //                 fontSize: 12,
+                      //   //                 fontWeight: FontWeight.bold,
+                      //   //                 color: _currentIndex == index
+                      //   //                     ? Colors.white
+                      //   //                     : null,
+                      //   //               ),
+                      //   //             ),
+                      //   //           ),
+                      //   //         );
+                      //   //       }),
+                      //   // ),
+                      //   child: ListView(
+                      //     children: timeSlots,
+                      //   ),
+                      // ),
                       addVerticalSpace(30),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -605,6 +728,49 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                           ],
                         ),
                       ),
+                      // addVerticalSpace(10),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 4,
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: const [
+                                    Text(
+                                      "Duration",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ]),
+                            ),
+                            Container(
+                              // width: 100,
+                              // height: 25,
+                              // color: Colors.blue[700],
+                              child: Center(
+                                  child: TextButton(
+                                onPressed: () {},
+                                child: Text(
+                                  argumentData[9],
+                                  textAlign: TextAlign.right,
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.blue,
+                                    fontSize: 15,
+                                    letterSpacing: 0.5,
+                                    fontWeight: FontWeight.w700,
+                                    height: 1,
+                                  ),
+                                ),
+                              )),
+                            ),
+                          ],
+                        ),
+                      ),
                       addVerticalSpace(20),
                       Center(
                         child: Container(
@@ -674,44 +840,4 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
       ),
     );
   }
-
-//   //table calendar
-//   Widget _tableCalendar() {
-//     return TableCalendar(
-//       focusedDay: _focusDay,
-//       firstDay: DateTime.now(),
-//       lastDay: DateTime(2023, 12, 31),
-//       calendarFormat: _format,
-//       currentDay: _currentDay,
-//       rowHeight: 48,
-//       calendarStyle: const CalendarStyle(
-//         todayDecoration:
-//             BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
-//       ),
-//       availableCalendarFormats: const {
-//         CalendarFormat.month: 'Month',
-//       },
-//       onFormatChanged: (format) {
-//         setState(() {
-//           _format = format;
-//         });
-//       },
-//       onDaySelected: ((selectedDay, focusedDay) {
-//         setState(() {
-//           _currentDay = selectedDay;
-//           _focusDay = focusedDay;
-//           _dateSelected = true;
-
-//           //check if weekend is selected
-//           if (selectedDay.weekday == 6 || selectedDay.weekday == 7) {
-//             _isWeekend = true;
-//             _timeSelected = false;
-//             _currentIndex = null;
-//           } else {
-//             _isWeekend = false;
-//           }
-//         });
-//       }),
-//     );
-//   }
 }

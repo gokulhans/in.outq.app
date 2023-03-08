@@ -11,7 +11,6 @@ import 'package:outq/screens/shared/splash/splash_screen.dart';
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -20,12 +19,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     print('Got a message whilst in the foreground!');
     print('Message data: ${message.data}');
-
     if (message.notification != null) {
       print('Message also contained a notification: ${message.notification}');
     }
   });
-
   print("Handling a background message: ${message.messageId}");
 }
 
@@ -78,7 +75,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      title: 'Outq',
       theme: ThemeData(
           primarySwatch: Colors.blue,
           textTheme: TextTheme(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:outq/screens/shared/drawer_pages/feedback_screen.dart';
 import 'package:outq/screens/shared/drawer_pages/help_screen.dart';
@@ -31,14 +32,20 @@ class OwnerDrawer extends StatelessWidget {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.input),
+              leading: const FaIcon(
+                FontAwesomeIcons.house,
+                size: 20,
+              ),
               title: const Text('Home'),
               onTap: () {
                 Navigator.of(context).pop();
               },
             ),
             ListTile(
-              leading: const Icon(Icons.support_agent_rounded),
+              leading: const FaIcon(
+                FontAwesomeIcons.headset,
+                size: 20,
+              ),
               title: const Text('Help'),
               onTap: () => {Get.to(() => const HelpScreen())},
             ),
@@ -48,7 +55,10 @@ class OwnerDrawer extends StatelessWidget {
               onTap: () => {Get.to(() => const FeedbackScreen())},
             ),
             ListTile(
-              leading: const Icon(Icons.people),
+              leading: const FaIcon(
+                FontAwesomeIcons.userGroup,
+                size: 20,
+              ),
               title: const Text('Invite Friend'),
               onTap: () => {Get.to(() => const InviteFriend())},
             ),
@@ -63,7 +73,10 @@ class OwnerDrawer extends StatelessWidget {
             //   // onTap: () => {Get.to(()=> InviteFriend())},
             // ),
             ListTile(
-              leading: const Icon(Icons.info),
+              leading: const FaIcon(
+                FontAwesomeIcons.rightFromBracket,
+                size: 20,
+              ),
               title: const Text('Logout'),
               onTap: () async {
                 SharedPreferences pref = await SharedPreferences.getInstance();

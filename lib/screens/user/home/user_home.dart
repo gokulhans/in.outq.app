@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:geocoding/geocoding.dart';
 // import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -171,13 +172,13 @@ class _UserHomePageState extends State<UserHomePage> {
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: currentIndex,
           onTap: (index) => setState(() => currentIndex = index),
-          unselectedLabelStyle: TextStyle(
+          unselectedLabelStyle:  GoogleFonts.poppins(
             color: Colors.blueGrey[50],
           ),
           selectedIconTheme: IconThemeData(
             color: ColorConstants.blue,
           ),
-          selectedLabelStyle: TextStyle(
+          selectedLabelStyle: GoogleFonts.poppins(
             color: ColorConstants.blue,
           ),
           unselectedIconTheme: IconThemeData(
@@ -190,7 +191,8 @@ class _UserHomePageState extends State<UserHomePage> {
           type: BottomNavigationBarType.fixed,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_rounded),
+              // icon: Icon(Icons.home_rounded),
+              icon: FaIcon(FontAwesomeIcons.house),
               label: 'Home',
             ),
             // BottomNavigationBarItem(
@@ -199,7 +201,7 @@ class _UserHomePageState extends State<UserHomePage> {
             // ),
             BottomNavigationBarItem(
               icon: Icon(Icons.watch),
-              label: 'My Appoinments',
+              label: 'Appoinments',
             ),
             // BottomNavigationBarItem(
             //   icon: Icon(Icons.person),
@@ -308,48 +310,48 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                             items: [
                               //1st Image of Slider
                               InkWell(
-                                onTap: () {
-                                  Get.to(() => const UserViewStorePage(),
-                                      arguments: [
-                                        "data[index]['type']",
-                                        "data[index]['type']",
-                                        "data[index]['type']",
-                                        "data[index]['type']",
-                                        // data[index]['name'],
-                                        // data[index]['start'],
-                                        // data[index]['end']
-                                      ]);
-                                },
+                                // onTap: () {
+                                //   Get.to(() => const UserViewStorePage(),
+                                //       arguments: [
+                                //         "data[index]['type']",
+                                //         "data[index]['type']",
+                                //         "data[index]['type']",
+                                //         "data[index]['type']",
+                                //         // data[index]['name'],
+                                //         // data[index]['start'],
+                                //         // data[index]['end']
+                                //       ]);
+                                // },
                                 child: Container(
                                   height: 180,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8.0),
                                     image: const DecorationImage(
-                                      image: AssetImage("assets/images/ad.jpg"),
+                                      image: NetworkImage("https://outq.vercel.app/image1.jpg"),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),
                               ),
                               InkWell(
-                                onTap: () {
-                                  Get.to(() => const UserViewStorePage(),
-                                      arguments: [
-                                        "data[index]['type']",
-                                        "data[index]['type']",
-                                        "data[index]['type']",
-                                        "data[index]['type']",
-                                        // data[index]['name'],
-                                        // data[index]['start'],
-                                        // data[index]['end']
-                                      ]);
-                                },
+                                // onTap: () {
+                                //   Get.to(() => const UserViewStorePage(),
+                                //       arguments: [
+                                //         "data[index]['type']",
+                                //         "data[index]['type']",
+                                //         "data[index]['type']",
+                                //         "data[index]['type']",
+                                //         // data[index]['name'],
+                                //         // data[index]['start'],
+                                //         // data[index]['end']
+                                //       ]);
+                                // },
                                 child: Container(
                                   height: 180,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8.0),
                                     image: const DecorationImage(
-                                      image: AssetImage("assets/images/ad.jpg"),
+                                      image: NetworkImage("https://outq.vercel.app/image2.jpg"),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -432,6 +434,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                               data[index]['start'],
                                               data[index]['end'],
                                               data[index]['img'],
+                                              data[index]['duration']
                                             ])
                                       }),
                                   child: SizedBox(
@@ -454,11 +457,11 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                     top: Radius.circular(16)),
                                             child: Image.network(
                                               data[index]['img'],
-                                              height: 100,
+                                              height: 90,
                                               fit: BoxFit.cover,
                                             ),
                                           ),
-                                          addVerticalSpace(10),
+                                          addVerticalSpace(5),
                                           Padding(
                                             padding: const EdgeInsets.all(4),
                                             child: Column(
@@ -501,6 +504,15 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                     ),
                                                   ],
                                                 ),
+                                                addVerticalSpace(3),
+                                                Text(
+                                                  "${data[index]['duration']} minutes",
+                                                  style: const TextStyle(
+                                                      fontSize: 11,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                // addVerticalSpace(5),
                                               ],
                                             ),
                                           ),

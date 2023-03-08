@@ -12,6 +12,20 @@ Future cancelBooking() async {
   // print(argumentData[6]);
   var response =
       await http.get(Uri.parse('${apidomain}order/done/${argumentData[6]}'));
+  Get.snackbar(
+    "Booking Completed",
+    "Booking Done Succesfully",
+    icon: const Icon(Icons.person, color: Colors.white),
+    snackPosition: SnackPosition.BOTTOM,
+    backgroundColor: Colors.green,
+    borderRadius: 12,
+    margin: const EdgeInsets.all(15),
+    colorText: Colors.white,
+    duration: const Duration(seconds: 3),
+    isDismissible: true,
+    dismissDirection: DismissDirection.horizontal,
+    forwardAnimationCurve: Curves.bounceIn,
+  );
   Get.to(() => OwnerHomePage(
         currentIndex: 0,
       ));
@@ -277,7 +291,7 @@ class _OwnerAppoinmentInfoPageState extends State<OwnerAppoinmentInfoPage> {
                       borderRadius: BorderRadius.circular(12),
                       child: Container(
                         width: 300,
-                        color: Colors.red,
+                        color: Colors.green,
                         child: TextButton(
                           onPressed: () {
                             cancelBooking();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:outq/screens/shared/exit_pop/exit_pop_up.dart';
 import 'package:outq/screens/user/components/appbar/user_appbar.dart';
@@ -75,14 +76,20 @@ class _UserMyProfilePageState extends State<UserMyProfilePage> {
                 padding: EdgeInsets.zero,
                 children: <Widget>[
                   ListTile(
-                    leading: const Icon(Icons.home_rounded),
+                    leading: const FaIcon(
+                      FontAwesomeIcons.house,
+                      size: 18,
+                    ),
                     title: const Text('Home'),
                     onTap: () {
                       Navigator.of(context).pop();
                     },
                   ),
                   ListTile(
-                    leading: const Icon(Icons.logout),
+                    leading: FaIcon(
+                      FontAwesomeIcons.rightFromBracket,
+                      size: 20,
+                    ),
                     title: const Text('Logout'),
                     onTap: () async {
                       SharedPreferences pref =

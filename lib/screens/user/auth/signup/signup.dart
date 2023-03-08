@@ -164,7 +164,8 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     messaging.getToken().then((token) {
       users.deviceid = token!;
-      print('Device token 2 : $token');
+      print('Device token 1 : $token');
+      print('Device token 2 : ${users.deviceid}');
     });
   }
 

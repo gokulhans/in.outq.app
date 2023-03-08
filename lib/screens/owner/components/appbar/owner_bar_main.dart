@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:outq/screens/owner/notifications/owner_notifications.dart';
 import 'package:outq/utils/color_constants.dart';
 
 class OwnerAppBar extends StatelessWidget {
@@ -20,15 +22,15 @@ class OwnerAppBar extends StatelessWidget {
       backgroundColor: ColorConstants.white,
       foregroundColor: Colors.black,
       centerTitle: true,
-      // actions: [
-      //   IconButton(
-      //       icon: const Icon(
-      //         Icons.notifications,
-      //       ),
-      //       onPressed: () {
-      //         Get.to(() => const OwnerNotifications());
-      //       })
-      // ],
+      actions: [
+        IconButton(
+            icon: const Icon(
+              Icons.notifications,
+            ),
+            onPressed: () {
+              Get.to(() => const OwnerNotifications());
+            })
+      ],
     );
   }
 }

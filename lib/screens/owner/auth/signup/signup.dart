@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:outq/Backend/models/owner_models.dart';
@@ -90,6 +91,18 @@ class _OwnerSignUpPageState extends State<OwnerSignUpPage> {
   }
 
   bool isLoading = false;
+
+    @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    messaging.getToken().then((token) {
+      owners.deviceid = token!;
+      print('Device token 1 : $token');
+      print('Device token 2 : ${owners.deviceid}');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

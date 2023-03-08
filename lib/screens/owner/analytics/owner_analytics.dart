@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:outq/utils/constants.dart';
 import 'package:outq/utils/widget_functions.dart';
 // import 'package:syncfusion_flutter_charts/charts.dart';
 // import 'package:syncfusion_flutter_charts/sparkcharts.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OwnerStoreAnalyticsPage extends StatelessWidget {
   const OwnerStoreAnalyticsPage({super.key});
@@ -32,6 +37,30 @@ class ChartDashBoardState extends State<ChartDashBoard> {
     _SalesData('Apr', 32),
     _SalesData('May', 40)
   ];
+
+  late Future<http.Response> _future;
+  var storeid;
+  void onload() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    storeid = pref.getString("storeid");
+    String date = DateTime.now().toString().split(' ')[0];
+    String ydate = DateTime.now()
+        .subtract(const Duration(days: 1))
+        .toString()
+        .split(' ')[0];
+    setState(() {
+      _future = http.get(
+          Uri.parse('${apidomain}dashboard/analytics/$storeid/$date/$ydate'));
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    onload();
+    // print(_future);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -40,80 +69,124 @@ class ChartDashBoardState extends State<ChartDashBoard> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Today Appoinments',
-                  style: GoogleFonts.poppins(
-                    color: Colors.blue,
-                    fontSize: 14,
-                    // height: 1.5,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                addVerticalSpace(10),
-                Text(
-                  '13',
-                  style: GoogleFonts.poppins(
-                    color: const Color(0xFF09041B),
-                    fontSize: 32,
-                    // height: 1.5,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
+            FutureBuilder<http.Response>(
+              future: _future,
+              builder: (BuildContext context,
+                  AsyncSnapshot<http.Response> snapshot) {
+                if (snapshot.hasData) {
+                  var data = jsonDecode(snapshot.data!.body);
+                  print(data);
+                  // return Expanded(
+                  //   child: ListView.builder(
+                  //     itemCount: data.length,
+                  //     itemBuilder: (BuildContext context, int index) {
+                  //       return ListTile(
+                  //         title: Text(data[index]['name']),
+                  //       );
+                  //     },
+                  //   ),
+                  // );
+                  // return Text(data["t"].toString());
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Today Appoinments',
+                            style: GoogleFonts.poppins(
+                              color: Colors.blue,
+                              fontSize: 14,
+                              // height: 1.5,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          addVerticalSpace(10),
+                          Text(
+                            data["t"].toString(),
+                            style: GoogleFonts.poppins(
+                              color: const Color(0xFF09041B),
+                              fontSize: 32,
+                              // height: 1.5,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      addVerticalSpace(10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'YesterDay Appoinments',
+                            style: GoogleFonts.poppins(
+                              color: Colors.blue,
+                              fontSize: 14,
+                              // height: 1.5,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          addVerticalSpace(10),
+                          Text(
+                            data["y"].toString(),
+                            style: GoogleFonts.poppins(
+                              color: const Color(0xFF09041B),
+                              fontSize: 32,
+                              // height: 1.5,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      addVerticalSpace(10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Growth Rate",
+                            style: GoogleFonts.poppins(
+                              color: Colors.blue,
+                              fontSize: 14,
+                              // height: 1.5,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          addVerticalSpace(10),
+                          (double.parse(data["growth"]) > 0)
+                              ? Text(
+                                  "+${data["growth"].toString()} %",
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.green,
+                                    fontSize: 25,
+                                    // height: 1.5,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                )
+                              : Text(
+                                  "${data["growth"].toString()} %",
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.red,
+                                    fontSize: 25,
+                                    // height: 1.5,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                        ],
+                      ),
+                    ],
+                  );
+                } else if (snapshot.hasData) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  return const SizedBox(
+                      height: 200,
+                      width: 200,
+                      child: Center(child: CircularProgressIndicator()));
+                }
+              },
             ),
-            addVerticalSpace(10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'YesterDay Appoinments',
-                  style: GoogleFonts.poppins(
-                    color: Colors.blue,
-                    fontSize: 14,
-                    // height: 1.5,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                addVerticalSpace(10),
-                Text(
-                  '10',
-                  style: GoogleFonts.poppins(
-                    color: const Color(0xFF09041B),
-                    fontSize: 32,
-                    // height: 1.5,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-            addVerticalSpace(10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Growth',
-                  style: GoogleFonts.poppins(
-                    color: Colors.blue,
-                    fontSize: 14,
-                    // height: 1.5,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                addVerticalSpace(10),
-                Text(
-                  '30 % +',
-                  style: GoogleFonts.poppins(
-                    color: Colors.green,
-                    fontSize: 32,
-                    // height: 1.5,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
+
             //Initialize the chart widget
             // Expanded(
             //   flex: 3,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:outq/utils/color_constants.dart';
 
 class UserAppBarWithBack extends StatelessWidget {
@@ -21,8 +22,9 @@ class UserAppBarWithBack extends StatelessWidget {
       foregroundColor: Colors.black,
       // centerTitle: true,
       leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
+          icon: const FaIcon(
+            FontAwesomeIcons.chevronLeft,
+            size: 16,
           ),
           onPressed: () {
             Navigator.of(context).pop();

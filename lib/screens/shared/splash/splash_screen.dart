@@ -53,8 +53,8 @@ class _SplashScreenState extends State<SplashScreen> {
           gradient: LinearGradient(
             begin: Alignment.bottomCenter,
             end: Alignment.topCenter,
-            colors: [hexToColor("#0F3EE9"), hexToColor("#000000")],
-            transform: const GradientRotation(9 * pi / 180),
+            colors: [hexToColor("#2B65EC"), hexToColor("#00BFFF")],
+            transform: const GradientRotation(9 * pi / 135),
           ),
         ),
         child: Center(

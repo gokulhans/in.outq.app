@@ -8,7 +8,6 @@ import 'package:outq/utils/sizes.dart';
 
 class UserViewBookingsPage extends StatefulWidget {
   const UserViewBookingsPage({super.key});
-
   @override
   State<UserViewBookingsPage> createState() => _UserViewBookingsPageState();
 }
@@ -118,6 +117,13 @@ class _UserViewBookingsPageState extends State<UserViewBookingsPage> {
                                         ),
                                         Text(
                                           snapshot.data[i].storename,
+                                          textAlign: TextAlign.left,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle2,
+                                        ),
+                                        Text(
+                                          snapshot.data[i].date,
                                           textAlign: TextAlign.left,
                                           style: Theme.of(context)
                                               .textTheme
