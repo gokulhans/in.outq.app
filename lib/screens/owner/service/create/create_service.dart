@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'dart:math';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:outq/Backend/models/owner_models.dart';
 import 'package:outq/screens/owner/components/appbar/owner_appbar.dart';
 import 'package:outq/screens/owner/home/owner_home.dart';
@@ -11,6 +14,10 @@ import 'package:outq/utils/sizes.dart';
 import 'package:outq/utils/widget_functions.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloudinary_public/cloudinary_public.dart';
+import 'package:file_picker/file_picker.dart';
+
+final cloudinary = CloudinaryPublic('dybp5kdy7', 'outqservices', cache: false);
 
 Future save(BuildContext context) async {
   SharedPreferences pref = await SharedPreferences.getInstance();
@@ -115,6 +122,41 @@ class CreateServiceForm extends StatefulWidget {
 ServiceModel service = ServiceModel('', '', '', '', '', '', '', '');
 
 class _CreateServiceFormState extends State<CreateServiceForm> {
+  // Future<void> pickImage(ImageSource source) async {
+  //   final pickedFile = await ImagePicker().pickImage(source: source);
+  //   if (pickedFile != null) {
+  //     selectFile(pickedFile);
+  //   }
+  // }
+
+  File? _imageFile;
+
+  void _selectImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+        print(_imageFile);
+      });
+      _uploadImage();
+    } else {
+      print('error');
+    }
+  }
+
+  void _uploadImage() async {
+    if (_imageFile != null) {
+      final response = await cloudinary.uploadFile(
+        CloudinaryFile.fromFile(_imageFile!.path),
+      );
+      final imageUrl = response.secureUrl;
+      // Do something with the image URL, such as displaying it in an ImageView widget
+    } else {
+      print('error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
@@ -180,11 +222,11 @@ class _CreateServiceFormState extends State<CreateServiceForm> {
                 ),
                 child: TextField(
                   onChanged: (val) {
-                    service.price = val;
+                    service.ogprice = val;
                   },
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
-                    labelText: 'Discounted Price',
+                    labelText: 'Original Price',
                     labelStyle: TextStyle(
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
@@ -203,11 +245,11 @@ class _CreateServiceFormState extends State<CreateServiceForm> {
                 ),
                 child: TextField(
                   onChanged: (val) {
-                    service.ogprice = val;
+                    service.price = val;
                   },
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
-                    labelText: 'Original Price',
+                    labelText: 'Discounted Price',
                     labelStyle: TextStyle(
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
@@ -239,6 +281,12 @@ class _CreateServiceFormState extends State<CreateServiceForm> {
                   ),
                 ),
               ),
+              addVerticalSpace(50),
+              ElevatedButton(
+                onPressed: () => _selectImage(),
+                child: Text('Select Image'),
+              ),
+              addVerticalSpace(50),
               Container(
                 height: 80,
                 padding: const EdgeInsets.symmetric(vertical: 12.0),

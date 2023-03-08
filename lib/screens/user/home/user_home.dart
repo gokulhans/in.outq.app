@@ -479,7 +479,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                 Row(
                                                   children: [
                                                     Text(
-                                                      "${data[index]['price']} ₹",
+                                                      "${data[index]['ogprice']} ₹",
                                                       // data[index]['location'],
                                                       style: TextStyle(
                                                           decoration:
@@ -493,7 +493,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                     ),
                                                     addHorizontalSpace(5),
                                                     Text(
-                                                      "${data[index]['ogprice']} ₹",
+                                                      "${data[index]['price']} ₹",
                                                       // data[index]['location'],
                                                       style: TextStyle(
                                                           fontSize: 12,

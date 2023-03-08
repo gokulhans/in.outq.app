@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:new_version/new_version.dart';
 import 'package:outq/screens/shared/exit_pop/exit_pop_up.dart';
+import 'package:outq/screens/shared/splash/splash_screen.dart';
 import 'package:outq/screens/shared/update_check/update_dialog.dart';
 
 class UpdateHome extends StatefulWidget {
@@ -40,18 +41,19 @@ class _UpdateHomeState extends State<UpdateHome> {
             );
           },
         );
-        // newVersion.showUpdateDialog(
-        //   context: context,
-        //   versionStatus: status,
-        //   dialogText: 'New Version is available in the store (${status.storeVersion}), update now!',
-        //   dialogTitle: 'Update is Available!',
-        // );
+        newVersion.showUpdateDialog(
+          context: context,
+          versionStatus: status,
+          dialogText:
+              'New Version is available in the store (${status.storeVersion}), update now!',
+          dialogTitle: 'Update is Available!',
+        );
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Exithome());
+    return const Scaffold(body: SplashScreen());
   }
 }

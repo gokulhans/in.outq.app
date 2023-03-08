@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:outq/firebase_options.dart';
 import 'package:outq/screens/shared/splash/splash_screen.dart';
+import 'package:outq/screens/shared/update_check/update_home.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -120,7 +121,7 @@ class _MyAppState extends State<MyApp> {
             ),
           )),
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      home: const UpdateHome(),
     );
   }
 }
