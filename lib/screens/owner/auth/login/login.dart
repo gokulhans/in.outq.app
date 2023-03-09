@@ -52,6 +52,7 @@ class _OwnerLoginPageState extends State<OwnerLoginPage> {
 
     if (response.statusCode == 201) {
       var jsonData = jsonDecode(response.body);
+      print(jsonData);
       ownerid = jsonData[0]["id"];
       storeid = jsonData[0]["storeid"];
       msgclr = Colors.green[400];

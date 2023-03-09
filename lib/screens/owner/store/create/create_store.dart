@@ -1,12 +1,16 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
+import 'package:cloudinary/cloudinary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 // import 'package:geocoding/geocoding.dart';
 // import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:outq/Backend/models/owner_models.dart';
 import 'package:outq/screens/owner/components/appbar/owner_appbar.dart';
+import 'package:outq/screens/owner/service/create/create_service.dart';
 import 'package:outq/screens/shared/exit_pop/exit_pop_up.dart';
 import 'package:outq/utils/color_constants.dart';
 import 'package:outq/utils/constants.dart';
@@ -48,6 +52,7 @@ Future save(BuildContext context) async {
         'longitude': shop.longitude,
         'latitude': shop.latitude,
         'pincode': shop.pincode,
+        'gender': "",
       });
 
   if (response.statusCode == 201) {
@@ -242,7 +247,7 @@ class CreateStoreForm extends StatefulWidget {
 // TextEditingController descriptionController = TextEditingController(text: '');
 // TextEditingController locationController = TextEditingController(text: '');
 
-StoreModel shop = StoreModel('', '', '', '', '', '', '', ' ', '', '', '');
+StoreModel shop = StoreModel('', '', '', '', '', '', '', ' ', '', '', '', '');
 
 class _CreateStoreFormState extends State<CreateStoreForm> {
   TimeOfDay selectedTime = TimeOfDay.now();
@@ -283,9 +288,57 @@ class _CreateStoreFormState extends State<CreateStoreForm> {
     }
   }
 
+  String imglink = "https://via.placeholder.com/1920x1080/eee?text=Store-Image";
+  File? _imageFile;
+
+  void _selectImage() async {
+    final pickedFile = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, imageQuality: 30);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+        print(_imageFile);
+      });
+      _uploadImage();
+    } else {
+      print('error');
+    }
+  }
+
+  void _uploadImage() async {
+    final now = DateTime.now();
+    final timestamp = now.microsecondsSinceEpoch;
+    final random = '${DateTime.now().millisecondsSinceEpoch}${now.microsecond}';
+    final publicId = 'service_image_$timestamp$random';
+    if (_imageFile != null) {
+      final response = await cloudinary.upload(
+          file: _imageFile!.path,
+          fileBytes: _imageFile!.readAsBytesSync(),
+          resourceType: CloudinaryResourceType.image,
+          folder: "serviceimages",
+          fileName: publicId,
+          progressCallback: (count, total) {
+            print('Uploading image from file with progress: $count/$total');
+          });
+      if (response.isSuccessful) {
+        print('Get your image from with ${response.secureUrl}');
+        setState(() {
+          imglink = response.secureUrl!;
+        });
+      }
+      shop.img = imglink;
+      print(_imageFile);
+    } else {
+      print('error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
+    String? selectedOption = "Option 1";
+    List<String> options = ["Option 1", "Option 2", "Option 3"];
+
     return Form(
         key: formKey,
         child: Padding(
@@ -320,6 +373,50 @@ class _CreateStoreFormState extends State<CreateStoreForm> {
                   ),
                 ),
               ),
+              DropdownButton<String>(
+                  value: selectedOption,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedOption = newValue;
+                    shop.gender = newValue??"";
+                    });
+                  },
+
+                  items: options.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              // Container(
+              //   height: 80,
+              //   padding: const EdgeInsets.symmetric(vertical: 12.0),
+              //   clipBehavior: Clip.antiAlias,
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(22),
+              //   ),
+
+              //   child: 
+              // ),
+
+                // child: TextFormField(
+                //   initialValue: shop.name,
+                //   // //controller: nameController,
+                //   onChanged: (val) {
+                //     shop.gender = val;
+                //   },
+                //   decoration: const InputDecoration(
+                //     labelText: 'Gender',
+                //     labelStyle: TextStyle(
+                //       fontSize: 14,
+                //       fontFamily: 'Montserrat',
+                //       fontWeight: FontWeight.bold,
+                //       color: Colors.grey,
+                //     ),
+                //     // hintText: 'myshop..',
+                //   ),
+                // ),
               Container(
                 height: 80,
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -329,7 +426,7 @@ class _CreateStoreFormState extends State<CreateStoreForm> {
                 ),
                 child: TextFormField(
                   // //controller: locationController,
-                  // initialValue: widget.location,
+                  initialValue: shop.location,
                   onChanged: (val) {
                     shop.location = val;
                   },
@@ -370,31 +467,49 @@ class _CreateStoreFormState extends State<CreateStoreForm> {
                   ),
                 ),
               ),
-              Container(
-                height: 80,
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(22),
-                ),
-                child: TextFormField(
-                  initialValue: shop.img,
-                  // //controller: descriptionController,
-                  onChanged: (val) {
-                    shop.img = val;
-                  },
-                  decoration: const InputDecoration(
-                    labelText: 'Image Link',
-                    labelStyle: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey,
-                    ),
-                    // hintText: 'myshop..',
+              addVerticalSpace(10),
+              ElevatedButton(
+                onPressed: () => _selectImage(),
+                child: Text('Upload Image'),
+              ),
+              addVerticalSpace(20),
+              SizedBox(
+                width: double.infinity,
+                height: 180,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                  child: Image(
+                    // fit: BoxFit.cover,
+                    image: NetworkImage(imglink),
                   ),
                 ),
               ),
+              addVerticalSpace(50),
+              // Container(
+              //   height: 80,
+              //   padding: const EdgeInsets.symmetric(vertical: 12.0),
+              //   clipBehavior: Clip.antiAlias,
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(22),
+              //   ),
+              //   child: TextFormField(
+              //     initialValue: shop.img,
+              //     // //controller: descriptionController,
+              //     onChanged: (val) {
+              //       shop.img = val;
+              //     },
+              //     decoration: const InputDecoration(
+              //       labelText: 'Image Link',
+              //       labelStyle: TextStyle(
+              //         fontFamily: 'Montserrat',
+              //         fontSize: 14,
+              //         fontWeight: FontWeight.bold,
+              //         color: Colors.grey,
+              //       ),
+              //       // hintText: 'myshop..',
+              //     ),
+              //   ),
+              // ),
               Container(
                 height: 80,
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -575,6 +690,7 @@ class _CreateStoreFormState extends State<CreateStoreForm> {
                           shop.start.isEmpty ||
                           shop.end.isEmpty ||
                           shop.location.isEmpty ||
+                          shop.gender.isEmpty ||
                           shop.employees.isEmpty) {
                         Get.snackbar(
                           "Fill Every Field",

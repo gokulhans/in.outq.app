@@ -39,9 +39,9 @@ class OwnerViewServicePage extends StatelessWidget {
                       'New +',
                       style: GoogleFonts.poppins(
                         color: const Color(0xFFFF7B32),
-                        fontSize: 12,
+                        fontSize: 16,
                         // height: 1.5,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                       ),
                     ))
               ],

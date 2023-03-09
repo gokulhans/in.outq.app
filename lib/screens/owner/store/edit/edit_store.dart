@@ -1,9 +1,13 @@
+import 'dart:io';
 import 'dart:math';
+import 'package:cloudinary/cloudinary.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:outq/Backend/models/owner_models.dart';
 import 'package:outq/screens/owner/components/appbar/owner_appbar.dart';
 import 'package:outq/screens/owner/home/owner_home.dart';
+import 'package:outq/screens/owner/service/create/create_service.dart';
 import 'package:outq/screens/shared/exit_pop/exit_pop_up.dart';
 import 'package:outq/utils/color_constants.dart';
 import 'package:outq/utils/constants.dart';
@@ -133,9 +137,11 @@ class EditStoreForm extends StatefulWidget {
   State<EditStoreForm> createState() => _EditStoreFormState();
 }
 
-Store shop = Store('', '', '', '', '', '', '', '', '', '');
+Store shop = Store('', '', '', '', '', '', '', '', '', '','');
 
 class _EditStoreFormState extends State<EditStoreForm> {
+  File? _imageFile;
+  String imglink = "";
   TimeOfDay selectedTime = TimeOfDay.now();
 
   Future<void> _selectOpeningTime(BuildContext context) async {
@@ -171,6 +177,55 @@ class _EditStoreFormState extends State<EditStoreForm> {
         shop.end = end;
         // print(start);
       });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    imglink = widget.argumentData.img;
+    super.initState();
+  }
+
+  void _selectImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery,imageQuality: 30);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+        print(_imageFile);
+      });
+      _uploadImage();
+    } else {
+      print('error');
+    }
+  }
+
+  void _uploadImage() async {
+    final now = DateTime.now();
+    final timestamp = now.microsecondsSinceEpoch;
+    final random = '${DateTime.now().millisecondsSinceEpoch}${now.microsecond}';
+    final publicId = 'service_image_$timestamp$random';
+    if (_imageFile != null) {
+      final response = await cloudinary.upload(
+          file: _imageFile!.path,
+          fileBytes: _imageFile!.readAsBytesSync(),
+          resourceType: CloudinaryResourceType.image,
+          folder: "serviceimages",
+          fileName: publicId,
+          progressCallback: (count, total) {
+            print('Uploading image from file with progress: $count/$total');
+          });
+      if (response.isSuccessful) {
+        print('Get your image from with ${response.secureUrl}');
+        setState(() {
+          imglink = response.secureUrl!;
+        });
+      }
+      shop.img = imglink;
+      print(_imageFile);
+    } else {
+      print('error');
     }
   }
 
@@ -255,29 +310,48 @@ class _EditStoreFormState extends State<EditStoreForm> {
                   ),
                 ),
               ),
-              Container(
-                height: 80,
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(22),
-                ),
-                child: TextFormField(
-                  initialValue: widget.argumentData.img,
-                  onChanged: (val) {
-                    shop.img = val;
-                  },
-                  decoration: const InputDecoration(
-                    labelText: 'Image Link',
-                    labelStyle: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey,
-                    ),
-                    // hintText: 'myshop..',
+
+              addVerticalSpace(30),
+              SizedBox(
+                width: double.infinity,
+                height: 180,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                  child: Image(
+                    // fit: BoxFit.cover,
+                    image: NetworkImage(imglink),
                   ),
                 ),
               ),
+              addVerticalSpace(30),
+              ElevatedButton(
+                onPressed: () => _selectImage(),
+                child: const Text('Change Image'),
+              ),
+              addVerticalSpace(20),
+              // Container(
+              //   height: 80,
+              //   padding: const EdgeInsets.symmetric(vertical: 12.0),
+              //   clipBehavior: Clip.antiAlias,
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(22),
+              //   ),
+              //   child: TextFormField(
+              //     initialValue: widget.argumentData.img,
+              //     onChanged: (val) {
+              //       shop.img = val;
+              //     },
+              //     decoration: const InputDecoration(
+              //       labelText: 'Image Link',
+              //       labelStyle: TextStyle(
+              //         fontFamily: 'Montserrat',
+              //         fontWeight: FontWeight.bold,
+              //         color: Colors.grey,
+              //       ),
+              //       // hintText: 'myshop..',
+              //     ),
+              //   ),
+              // ),
 
               Container(
                 height: 80,

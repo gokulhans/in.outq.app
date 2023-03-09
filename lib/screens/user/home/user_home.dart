@@ -11,6 +11,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:outq/screens/user/booking/booking.dart';
 import 'package:outq/screens/user/booking/view-booking.dart';
 import 'package:outq/screens/user/components/appbar/user_bar_main.dart';
+import 'package:outq/screens/user/search/gender_search.dart';
 import 'package:outq/screens/user/search/user_search.dart';
 import 'package:outq/screens/user/store/view_store/user_view_store.dart';
 import 'package:outq/utils/color_constants.dart';
@@ -172,7 +173,7 @@ class _UserHomePageState extends State<UserHomePage> {
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: currentIndex,
           onTap: (index) => setState(() => currentIndex = index),
-          unselectedLabelStyle:  GoogleFonts.poppins(
+          unselectedLabelStyle: GoogleFonts.poppins(
             color: Colors.blueGrey[50],
           ),
           selectedIconTheme: IconThemeData(
@@ -238,7 +239,85 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     addVerticalSpace(10),
+                    SizedBox(
+                      height: 180,
+                      width: double.infinity,
+                      child: ListView(
+                        children: [
+                          CarouselSlider(
+                            items: [
+                              //1st Image of Slider
+                              InkWell(
+                                // onTap: () {
+                                //   Get.to(() => const UserViewStorePage(),
+                                //       arguments: [
+                                //         "data[index]['type']",
+                                //         "data[index]['type']",
+                                //         "data[index]['type']",
+                                //         "data[index]['type']",
+                                //         // data[index]['name'],
+                                //         // data[index]['start'],
+                                //         // data[index]['end']
+                                //       ]);
+                                // },
+                                child: Container(
+                                  height: 180,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    image: const DecorationImage(
+                                      image: NetworkImage(
+                                          "https://outq.vercel.app/image1.jpg"),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                // onTap: () {
+                                //   Get.to(() => const UserViewStorePage(),
+                                //       arguments: [
+                                //         "data[index]['type']",
+                                //         "data[index]['type']",
+                                //         "data[index]['type']",
+                                //         "data[index]['type']",
+                                //         // data[index]['name'],
+                                //         // data[index]['start'],
+                                //         // data[index]['end']
+                                //       ]);
+                                // },
+                                child: Container(
+                                  height: 180,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    image: const DecorationImage(
+                                      image: NetworkImage(
+                                          "https://outq.vercel.app/image2.jpg"),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+
+                            //Slider Container properties
+                            options: CarouselOptions(
+                              height: 180.0,
+                              enlargeCenterPage: true,
+                              autoPlay: true,
+                              aspectRatio: 16 / 9,
+                              // autoPlayCurve: Curves.fastOutSlowIn,
+                              enableInfiniteScroll: true,
+                              autoPlayAnimationDuration:
+                                  const Duration(milliseconds: 800),
+                              // viewportFraction: 0.8,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    addVerticalSpace(10),
                     Container(
+                      // padding: EdgeInsets.symmetric(horizontal: 10),
                       child: Row(
                         children: [
                           Expanded(
@@ -290,7 +369,20 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                         ],
                       ),
                     ),
-                    addVerticalSpace(20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: Row(
+                        children: [
+                          Icon(Icons.location_on),
+                          addHorizontalSpace(10),
+                          Text(
+                            "Adoor , Pathanamthitta",
+                            style: TextStyle(),
+                          )
+                        ],
+                      ),
+                    ),
+                    // addVerticalSpace(20),
                     // Container(
                     //   height: 180,
                     //   margin: const EdgeInsets.all(6.0),
@@ -302,91 +394,99 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     //     ),
                     //   ),
                     // ),
-                    SizedBox(
-                      height: 200,
-                      child: ListView(
-                        children: [
-                          CarouselSlider(
-                            items: [
-                              //1st Image of Slider
-                              InkWell(
-                                // onTap: () {
-                                //   Get.to(() => const UserViewStorePage(),
-                                //       arguments: [
-                                //         "data[index]['type']",
-                                //         "data[index]['type']",
-                                //         "data[index]['type']",
-                                //         "data[index]['type']",
-                                //         // data[index]['name'],
-                                //         // data[index]['start'],
-                                //         // data[index]['end']
-                                //       ]);
-                                // },
-                                child: Container(
-                                  height: 180,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    image: const DecorationImage(
-                                      image: NetworkImage("https://outq.vercel.app/image1.jpg"),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                // onTap: () {
-                                //   Get.to(() => const UserViewStorePage(),
-                                //       arguments: [
-                                //         "data[index]['type']",
-                                //         "data[index]['type']",
-                                //         "data[index]['type']",
-                                //         "data[index]['type']",
-                                //         // data[index]['name'],
-                                //         // data[index]['start'],
-                                //         // data[index]['end']
-                                //       ]);
-                                // },
-                                child: Container(
-                                  height: 180,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    image: const DecorationImage(
-                                      image: NetworkImage("https://outq.vercel.app/image2.jpg"),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                    addVerticalSpace(10),
 
-                            //Slider Container properties
-                            options: CarouselOptions(
-                              height: 180.0,
-                              enlargeCenterPage: true,
-                              autoPlay: true,
-                              aspectRatio: 16 / 9,
-                              autoPlayCurve: Curves.fastOutSlowIn,
-                              enableInfiniteScroll: true,
-                              autoPlayAnimationDuration:
-                                  const Duration(milliseconds: 800),
-                              viewportFraction: 0.8,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    addVerticalSpace(20),
+                    // Container(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 10),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       Text(
+                    //         'Gender',
+                    //         style: GoogleFonts.poppins(
+                    //           color: const Color(0xFF09041B),
+                    //           fontSize: 18,
+                    //           // height: 1.5,
+                    //           fontWeight: FontWeight.w600,
+                    //         ),
+                    //       ),
+                    //       // TextButton(
+                    //       //     onPressed: () {},
+                    //       //     child: Text(
+                    //       //       'View More',
+                    //       //       style: GoogleFonts.poppins(
+                    //       //         color: const Color(0xFFFF7B32),
+                    //       //         fontSize: 12,
+                    //       //         // height: 1.5,
+                    //       //         fontWeight: FontWeight.w500,
+                    //       //       ),
+                    //       //     ))
+                    //     ],
+                    //   ),
+                    // ),
+                    // addVerticalSpace(10),
+                    // SizedBox(
+                    //   height: 120,
+                    //   child: ListView.builder(
+                    //     physics: const BouncingScrollPhysics(),
+                    //     scrollDirection: Axis.horizontal,
+                    //     itemCount: 2,
+                    //     itemBuilder: (BuildContext context, int index) {
+                    //       List<String> myArray = [
+                    //         "Gents",
+                    //         "Ladies",
+                    //       ];
+                    //       return InkWell(
+                    //         onTap: (() => {
+                    //               Get.to(() => const GenderFilterPage(),
+                    //                   arguments: [myArray[index]])
+                    //             }),
+                    //         child: Container(
+                    //           margin: EdgeInsets.symmetric(horizontal: 8),
+                    //           child: Container(
+                    //             width: 80.0,
+                    //             height: 80.0,
+                    //             decoration: BoxDecoration(
+                    //               shape: BoxShape.circle,
+                    //               color: Colors.blue,
+                    //             ),
+                    //             child: Center(
+                    //               child: ClipOval(
+                    //                 child: Container(
+                    //                   color: Colors.green,
+                    //                   width: 80.0,
+                    //                   height: 80.0,
+                    //                   child: Center(
+                    //                     child: Text(
+                    //                       myArray[index],
+                    //                       style: TextStyle(
+                    //                         fontSize: 10.0,
+                    //                         fontWeight: FontWeight.bold,
+                    //                         color: Colors.white,
+                    //                       ),
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
+                    addVerticalSpace(10),
+
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Near By Offers',
+                            'Services Types',
                             style: GoogleFonts.poppins(
                               color: const Color(0xFF09041B),
                               fontSize: 18,
-
                               // height: 1.5,
                               fontWeight: FontWeight.w600,
                             ),
@@ -405,7 +505,101 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                         ],
                       ),
                     ),
-                    addVerticalSpace(20),
+                    addVerticalSpace(10),
+
+                    SizedBox(
+                      height: 120,
+                      child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 4,
+                        itemBuilder: (BuildContext context, int index) {
+                          List<String> myArray = [
+                            "Facial",
+                            "Hair Cut",
+                            "Threading",
+                            "Pedicure",
+                          ];
+                          List<String> myArray1 = [
+                            "Facial",
+                            "Cut",
+                            "Threading",
+                            "Pedicure",
+                          ];
+
+                          return InkWell(
+                            onTap: (() => {
+                                  Get.to(() => const UserSearchServicesPage(),
+                                      arguments: [myArray1[index]])
+                                }),
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 8),
+                              child: Container(
+                                width: 80.0,
+                                height: 80.0,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.blue,
+                                ),
+                                child: Center(
+                                  child: ClipOval(
+                                    child: Container(
+                                      color: Colors.green,
+                                      width: 80.0,
+                                      height: 80.0,
+                                      child: Center(
+                                        child: Text(
+                                          myArray[index],
+                                          style: TextStyle(
+                                            fontSize: 13.0,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    addVerticalSpace(10),
+
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Near By Offers',
+                            style: GoogleFonts.poppins(
+                              color: const Color(0xFF09041B),
+                              fontSize: 18,
+                              // height: 1.5,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          // TextButton(
+                          //     onPressed: () {},
+                          //     child: Text(
+                          //       'View More',
+                          //       style: GoogleFonts.poppins(
+                          //         color: const Color(0xFFFF7B32),
+                          //         fontSize: 12,
+                          //         // height: 1.5,
+                          //         fontWeight: FontWeight.w500,
+                          //       ),
+                          //     ))
+                        ],
+                      ),
+                    ),
+                    addVerticalSpace(10),
+
+                    addVerticalSpace(10),
                     FutureBuilder(
                       future: http.get(Uri.parse('${apidomain}service/getall')),
                       builder: (BuildContext context,
@@ -414,7 +608,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           var data = jsonDecode(snapshot.data!.body);
                           // print(data);
                           return SizedBox(
-                            height: 180,
+                            height: 240,
                             child: ListView.builder(
                               physics: const BouncingScrollPhysics(),
                               scrollDirection: Axis.horizontal,
@@ -437,86 +631,106 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                               data[index]['duration']
                                             ])
                                       }),
-                                  child: SizedBox(
-                                    width: 150,
-                                    height: 200,
-                                    child: Card(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 8),
-                                      elevation: 0,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(16)),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: [
-                                          ClipRRect(
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(horizontal: 3),
+                                    //decoration: BoxDecoration(
+                                    //   boxShadow: [
+                                    //     BoxShadow(
+                                    //       color: Colors.black.withOpacity(0.5),
+                                    //       spreadRadius: 2,
+                                    //       blurRadius: 10,
+                                    //       offset: Offset(0, 3), // changes position of shadow
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                    child: SizedBox(
+                                      width: 240,
+                                      height: 140,
+                                      child: Card(
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 8),
+                                        elevation: 0,
+                                        shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                const BorderRadius.vertical(
-                                                    top: Radius.circular(16)),
-                                            child: Image.network(
-                                              data[index]['img'],
-                                              height: 90,
-                                              fit: BoxFit.cover,
+                                                BorderRadius.circular(16)),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  const BorderRadius.vertical(
+                                                      top: Radius.circular(16)),
+                                              child: Image.network(
+                                                data[index]['img'],
+                                                height: 140,
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
-                                          ),
-                                          addVerticalSpace(5),
-                                          Padding(
-                                            padding: const EdgeInsets.all(4),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  data[index]['name'],
-                                                  style: const TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                ),
-                                                addVerticalSpace(5),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      "${data[index]['ogprice']} ₹",
-                                                      // data[index]['location'],
-                                                      style: TextStyle(
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .lineThrough,
-                                                          fontSize: 10,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          color:
-                                                              Colors.red[900]),
-                                                    ),
-                                                    addHorizontalSpace(5),
-                                                    Text(
-                                                      "${data[index]['price']} ₹",
-                                                      // data[index]['location'],
-                                                      style: TextStyle(
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          color: Colors
-                                                              .green[900]),
-                                                    ),
-                                                  ],
-                                                ),
-                                                addVerticalSpace(3),
-                                                Text(
-                                                  "${data[index]['duration']} minutes",
-                                                  style: const TextStyle(
-                                                      fontSize: 11,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                                // addVerticalSpace(5),
-                                              ],
+                                            addVerticalSpace(5),
+                                            Padding(
+                                              padding: const EdgeInsets.all(4),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    data[index]['name'],
+                                                    style: const TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
+                                                  addVerticalSpace(5),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "${data[index]['ogprice']} ₹",
+                                                        // data[index]['location'],
+                                                        style: TextStyle(
+                                                            decoration:
+                                                                TextDecoration
+                                                                    .lineThrough,
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color: Colors
+                                                                .red[900]),
+                                                      ),
+                                                      addHorizontalSpace(5),
+                                                      Text(
+                                                        "${data[index]['price']} ₹",
+                                                        // data[index]['location'],
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color: Colors
+                                                                .green[900]),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  addVerticalSpace(3),
+                                                  Text(
+                                                    "${data[index]['duration']} minutes",
+                                                    style: const TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                  Text(
+                                                    "${data[index]['description']}",
+                                                    style: const TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                  // addVerticalSpace(5),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -530,7 +744,184 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                         return const CircularProgressIndicator();
                       },
                     ),
-                    addVerticalSpace(20),
+                    // addVerticalSpace(10),
+
+                    // addVerticalSpace(10),
+                    // Container(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 10),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       Text(
+                    //         'Saved Stores',
+                    //         style: GoogleFonts.poppins(
+                    //           color: const Color(0xFF09041B),
+                    //           fontSize: 18,
+                    //           // height: 1.5,
+                    //           fontWeight: FontWeight.w600,
+                    //         ),
+                    //       ),
+                    //       // TextButton(
+                    //       //     onPressed: () {},
+                    //       //     child: Text(
+                    //       //       'View More',
+                    //       //       style: GoogleFonts.poppins(
+                    //       //         color: const Color(0xFFFF7B32),
+                    //       //         fontSize: 12,
+                    //       //         // height: 1.5,
+                    //       //         fontWeight: FontWeight.w500,
+                    //       //       ),
+                    //       //     ))
+                    //     ],
+                    //   ),
+                    // ),
+                    // addVerticalSpace(10),
+                    // FutureBuilder(
+                    //   future: http.get(Uri.parse('${apidomain}service/getall')),
+                    //   builder: (BuildContext context,
+                    //       AsyncSnapshot<http.Response> snapshot) {
+                    //     if (snapshot.hasData) {
+                    //       var data = jsonDecode(snapshot.data!.body);
+                    //       // print(data);
+                    //       return SizedBox(
+                    //         height: 240,
+                    //         child: ListView.builder(
+                    //           physics: const BouncingScrollPhysics(),
+                    //           scrollDirection: Axis.horizontal,
+                    //           itemCount: data
+                    //               .length, // Replace with the actual number of items in your list
+                    //           itemBuilder: (BuildContext context, int index) {
+                    //             return InkWell(
+                    //               onTap: (() => {
+                    //                     Get.to(() => const ShopBookingPage(),
+                    //                         arguments: [
+                    //                           data[index]['ownerid'],
+                    //                           data[index]['type'],
+                    //                           data[index]['storeid'],
+                    //                           data[index]['name'],
+                    //                           data[index]['price'],
+                    //                           data[index]['storename'],
+                    //                           data[index]['start'],
+                    //                           data[index]['end'],
+                    //                           data[index]['img'],
+                    //                           data[index]['duration']
+                    //                         ])
+                    //                   }),
+                    //               child: Container(
+                    //                 margin: EdgeInsets.symmetric(horizontal: 3),
+                    //                 //decoration: BoxDecoration(
+                    //                 //   boxShadow: [
+                    //                 //     BoxShadow(
+                    //                 //       color: Colors.black.withOpacity(0.5),
+                    //                 //       spreadRadius: 2,
+                    //                 //       blurRadius: 10,
+                    //                 //       offset: Offset(0, 3), // changes position of shadow
+                    //                 //     ),
+                    //                 //   ],
+                    //                 // ),
+                    //                 child: SizedBox(
+                    //                   width: 240,
+                    //                   height: 140,
+                    //                   child: Card(
+                    //                     margin: const EdgeInsets.symmetric(
+                    //                         horizontal: 8, vertical: 8),
+                    //                     elevation: 0,
+                    //                     shape: RoundedRectangleBorder(
+                    //                         borderRadius:
+                    //                             BorderRadius.circular(16)),
+                    //                     child: Column(
+                    //                       crossAxisAlignment:
+                    //                           CrossAxisAlignment.stretch,
+                    //                       children: [
+                    //                         ClipRRect(
+                    //                           borderRadius:
+                    //                               const BorderRadius.vertical(
+                    //                                   top: Radius.circular(16)),
+                    //                           child: Image.network(
+                    //                             data[index]['img'],
+                    //                             height: 140,
+                    //                             fit: BoxFit.cover,
+                    //                           ),
+                    //                         ),
+                    //                         addVerticalSpace(5),
+                    //                         Padding(
+                    //                           padding: const EdgeInsets.all(4),
+                    //                           child: Column(
+                    //                             crossAxisAlignment:
+                    //                                 CrossAxisAlignment.start,
+                    //                             children: [
+                    //                               Text(
+                    //                                 data[index]['name'],
+                    //                                 style: const TextStyle(
+                    //                                     fontSize: 16,
+                    //                                     fontWeight:
+                    //                                         FontWeight.w700),
+                    //                               ),
+                    //                               addVerticalSpace(5),
+                    //                               Row(
+                    //                                 children: [
+                    //                                   Text(
+                    //                                     "${data[index]['ogprice']} ₹",
+                    //                                     // data[index]['location'],
+                    //                                     style: TextStyle(
+                    //                                         decoration:
+                    //                                             TextDecoration
+                    //                                                 .lineThrough,
+                    //                                         fontSize: 12,
+                    //                                         fontWeight:
+                    //                                             FontWeight.w700,
+                    //                                         color: Colors
+                    //                                             .red[900]),
+                    //                                   ),
+                    //                                   addHorizontalSpace(5),
+                    //                                   Text(
+                    //                                     "${data[index]['price']} ₹",
+                    //                                     // data[index]['location'],
+                    //                                     style: TextStyle(
+                    //                                         fontSize: 14,
+                    //                                         fontWeight:
+                    //                                             FontWeight.w700,
+                    //                                         color: Colors
+                    //                                             .green[900]),
+                    //                                   ),
+                    //                                 ],
+                    //                               ),
+                    //                               addVerticalSpace(3),
+                    //                               Text(
+                    //                                 "${data[index]['duration']} minutes",
+                    //                                 style: const TextStyle(
+                    //                                     fontSize: 12,
+                    //                                     fontWeight:
+                    //                                         FontWeight.w500),
+                    //                               ),
+                    //                               Text(
+                    //                                 "${data[index]['description']}",
+                    //                                 style: const TextStyle(
+                    //                                     fontSize: 12,
+                    //                                     fontWeight:
+                    //                                         FontWeight.w500),
+                    //                               ),
+                    //                               // addVerticalSpace(5),
+                    //                             ],
+                    //                           ),
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //             );
+                    //           },
+                    //         ),
+                    //       );
+                    //     } else if (snapshot.hasError) {
+                    //       return Text('${snapshot.error}');
+                    //     }
+                    //     return const CircularProgressIndicator();
+                    //   },
+                    // ),
+
+                    addVerticalSpace(10),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Row(
@@ -569,7 +960,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           var data = jsonDecode(snapshot.data!.body);
                           // print(data);
                           return SizedBox(
-                            height: 200,
+                            height: 260,
                             child: ListView.builder(
                               physics: const BouncingScrollPhysics(),
                               scrollDirection: Axis.horizontal,
@@ -586,7 +977,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                         ]);
                                   },
                                   child: SizedBox(
-                                    width: 150,
+                                    width: 240,
                                     height: 200,
                                     child: Card(
                                       margin: const EdgeInsets.symmetric(
@@ -605,7 +996,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                     top: Radius.circular(16)),
                                             child: Image.network(
                                               data[index]['img'],
-                                              height: 100,
+                                              height: 140,
                                               fit: BoxFit.cover,
                                             ),
                                           ),
@@ -619,7 +1010,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                 Text(
                                                   data[index]['name'],
                                                   style: const TextStyle(
-                                                      fontSize: 14,
+                                                      fontSize: 16,
                                                       fontWeight:
                                                           FontWeight.w700),
                                                 ),
@@ -628,7 +1019,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                   data[index]['location'],
                                                   // data[index]['location'],
                                                   style: TextStyle(
-                                                      fontSize: 10,
+                                                      fontSize: 12,
                                                       fontWeight:
                                                           FontWeight.w700,
                                                       color:

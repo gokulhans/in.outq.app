@@ -6,6 +6,7 @@ import 'package:outq/screens/user/notifications/user_notifications.dart';
 import 'package:outq/screens/user/profile/myprofile.dart';
 import 'package:outq/utils/color_constants.dart';
 import 'package:outq/utils/widget_functions.dart';
+import 'package:badges/badges.dart';
 
 class UserAppBar extends StatelessWidget {
   final String title;
@@ -67,9 +68,12 @@ class UserAppBar extends StatelessWidget {
       // centerTitle: true,
       actions: [
         IconButton(
-            icon: const Icon(
-              Icons.notifications_active,
-              size: 30,
+            icon: const Badge(
+              badgeContent: Text('1',style: TextStyle(color: Colors.white,fontSize: 10),),
+              child: Icon(
+                Icons.notifications,
+                size: 30,
+              ),
             ),
             onPressed: () {
               Get.to(() => const UserNotifications());

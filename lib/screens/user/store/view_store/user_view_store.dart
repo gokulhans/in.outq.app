@@ -204,116 +204,160 @@ class _UserViewStorePageState extends State<UserViewStorePage> {
                           physics: const BouncingScrollPhysics(),
                           itemCount: snapshot.data.length,
                           itemBuilder: (context, i) {
-                            return Row(
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                        child: Image(
-                                          fit: BoxFit.cover,
-                                          image: NetworkImage(
-                                              snapshot.data[i].img),
-                                          width: 60,
-                                          height: 50,
-                                        )),
+                            return Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              padding: const EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 1,
+                                    blurRadius: 3,
+                                    offset: Offset(
+                                        0, 3), // changes position of shadow
                                   ),
+                                ],
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 0.1,
                                 ),
-                                Expanded(
-                                  flex: 4,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            snapshot.data[i].name,
-                                            textAlign: TextAlign.left,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle1,
-                                          ),
-                                          Text(
-                                            "${snapshot.data[i].duration} minutes",
-                                            textAlign: TextAlign.left,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle2,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                snapshot.data[i].ogprice + " ₹",
-                                                textAlign: TextAlign.left,
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Colors.red,
-                                                    decoration: TextDecoration
-                                                        .lineThrough),
-                                              ),
-                                              addHorizontalSpace(10),
-                                              Text(
-                                                  snapshot.data[i].price + " ₹",
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 3,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                          child: Image(
+                                            fit: BoxFit.cover,
+                                            image: NetworkImage(
+                                                snapshot.data[i].img),
+                                            width: 100,
+                                            height: 80,
+                                          )),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 4,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              snapshot.data[i].name,
+                                              textAlign: TextAlign.left,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle1,
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.timelapse,
+                                                  size: 14,
+                                                ),
+                                                addHorizontalSpace(3),
+                                                Text(
+                                                  "${snapshot.data[i].duration} minutes",
                                                   textAlign: TextAlign.left,
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .headline5),
-                                            ],
-                                          ),
-                                        ]),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(12),
-                                      child: Container(
-                                        width: 100,
-                                        height: 25,
-                                        color: Colors.blue[700],
-                                        child: Center(
-                                            child: TextButton(
-                                          onPressed: () {
-                                            Get.to(
-                                                () => const ShopBookingPage(),
-                                                arguments: [
-                                                  snapshot.data[i].id,
-                                                  snapshot.data[i].storeid,
-                                                  argumentData[0],
-                                                  snapshot.data[i].name,
-                                                  snapshot.data[i].price,
-                                                  argumentData[1],
-                                                  argumentData[2],
-                                                  argumentData[3],
-                                                  snapshot.data[i].img,
-                                                  snapshot.data[i].duration,
-                                                ]);
-                                          },
-                                          child: Text(
-                                            "Book",
-                                            textAlign: TextAlign.left,
-                                            style: GoogleFonts.poppins(
-                                              color: Colors.white,
-                                              fontSize: 10,
-                                              letterSpacing: 0.5,
-                                              fontWeight: FontWeight.w600,
-                                              height: 1,
+                                                      .subtitle2,
+                                                ),
+                                              ],
                                             ),
-                                          ),
-                                        )),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  snapshot.data[i].ogprice +
+                                                      " ₹",
+                                                  textAlign: TextAlign.left,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.red,
+                                                      decoration: TextDecoration
+                                                          .lineThrough),
+                                                ),
+                                                addHorizontalSpace(10),
+                                                Text(
+                                                    snapshot.data[i].price +
+                                                        " ₹",
+                                                    textAlign: TextAlign.left,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline5),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "${snapshot.data[i].description}",
+                                                  textAlign: TextAlign.left,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .subtitle2,
+                                                ),
+                                              ],
+                                            ),
+                                          ]),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: Container(
+                                          width: 100,
+                                          height: 25,
+                                          color: Colors.blue[700],
+                                          child: Center(
+                                              child: TextButton(
+                                            onPressed: () {
+                                              Get.to(
+                                                  () => const ShopBookingPage(),
+                                                  arguments: [
+                                                    snapshot.data[i].id,
+                                                    snapshot.data[i].storeid,
+                                                    argumentData[0],
+                                                    snapshot.data[i].name,
+                                                    snapshot.data[i].price,
+                                                    argumentData[1],
+                                                    argumentData[2],
+                                                    argumentData[3],
+                                                    snapshot.data[i].img,
+                                                    snapshot.data[i].duration,
+                                                  ]);
+                                            },
+                                            child: Text(
+                                              "Book",
+                                              textAlign: TextAlign.left,
+                                              style: GoogleFonts.poppins(
+                                                color: Colors.white,
+                                                fontSize: 10,
+                                                letterSpacing: 0.5,
+                                                fontWeight: FontWeight.w600,
+                                                height: 1,
+                                              ),
+                                            ),
+                                          )),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             );
                           },
                         ),

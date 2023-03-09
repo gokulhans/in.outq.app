@@ -26,7 +26,9 @@ Future getOwnerStore() async {
         u["img"],
         u["start"],
         u["end"],
-        u["employees"]);
+        u["employees"],
+        u["gender"]
+        );
     stores.add(store);
   }
   // print(stores);

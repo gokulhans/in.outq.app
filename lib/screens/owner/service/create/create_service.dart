@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:math';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:outq/Backend/models/owner_models.dart';
@@ -14,10 +16,16 @@ import 'package:outq/utils/sizes.dart';
 import 'package:outq/utils/widget_functions.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cloudinary_public/cloudinary_public.dart';
+// import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:cloudinary/cloudinary.dart';
 
-final cloudinary = CloudinaryPublic('dybp5kdy7', 'outqservices', cache: false);
+// final cloudinary = CloudinaryPublic('dybp5kdy7', 'outqservices', cache: false);
+Cloudinary cloudinary = Cloudinary.signedConfig(
+  cloudName: 'dybp5kdy7',
+  apiKey: '732197174288973',
+  apiSecret: 'lz9XKeaVatdP3OjGB-ADMlRPapc',
+);
 
 Future save(BuildContext context) async {
   SharedPreferences pref = await SharedPreferences.getInstance();
@@ -49,6 +57,8 @@ Future save(BuildContext context) async {
     // print(jsonData);
     // print(jsonData["success"]);
     if (jsonData["success"]) {
+ service = ServiceModel('', '', '', '', '', '', '', '');
+
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
               builder: (BuildContext context) =>
@@ -128,12 +138,14 @@ class _CreateServiceFormState extends State<CreateServiceForm> {
   //     selectFile(pickedFile);
   //   }
   // }
-
+  String imglink =
+      "https://via.placeholder.com/1920x1080/eee?text=Service-Image";
   File? _imageFile;
+  String _priview = "Image is mandatory ";
 
   void _selectImage() async {
     final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+        await ImagePicker().pickImage(source: ImageSource.gallery,imageQuality: 30);
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
@@ -146,15 +158,45 @@ class _CreateServiceFormState extends State<CreateServiceForm> {
   }
 
   void _uploadImage() async {
+   
+    final now = DateTime.now();
+    final timestamp = now.microsecondsSinceEpoch;
+    final random = '${DateTime.now().millisecondsSinceEpoch}${now.microsecond}';
+    final publicId = 'service_image_$timestamp$random';
     if (_imageFile != null) {
-      final response = await cloudinary.uploadFile(
-        CloudinaryFile.fromFile(_imageFile!.path),
-      );
-      final imageUrl = response.secureUrl;
-      // Do something with the image URL, such as displaying it in an ImageView widget
+      final response = await cloudinary.upload(
+          file: _imageFile!.path,
+          fileBytes: _imageFile!.readAsBytesSync(),
+          resourceType: CloudinaryResourceType.image,
+          folder: "serviceimages",
+          fileName: publicId,
+          progressCallback: (count, total) {
+            print('Uploading image from file with progress: $count/$total');
+            setState(() {
+              _priview =
+                  'Uploading image from file with progress: $count/$total';
+            });
+          });
+      if (response.isSuccessful) {
+        print('Get your image from with ${response.secureUrl}');
+        setState(() {
+          imglink = response.secureUrl!;
+          _priview = 'Image uploaded Successfully';
+        });
+      }
+      service.img = imglink;
+      print(_imageFile);
     } else {
       print('error');
     }
+  }
+
+  bool isLoading = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    service.img = imglink;
   }
 
   @override
@@ -169,6 +211,25 @@ class _CreateServiceFormState extends State<CreateServiceForm> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              ElevatedButton(
+                onPressed: () => _selectImage(),
+                child: Text('Upload Image'),
+              ),
+              addVerticalSpace(20),
+              Text(_priview),
+              addVerticalSpace(20),
+              SizedBox(
+                width: double.infinity,
+                height: 180,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                  child: Image(
+                    // fit: BoxFit.cover,
+                    image: NetworkImage(imglink),
+                  ),
+                ),
+              ),
+              addVerticalSpace(50),
               Container(
                 height: 80,
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -176,7 +237,8 @@ class _CreateServiceFormState extends State<CreateServiceForm> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(22),
                 ),
-                child: TextField(
+                child: TextFormField(
+                  initialValue: service.name,
                   onChanged: (val) {
                     service.name = val;
                   },
@@ -198,7 +260,8 @@ class _CreateServiceFormState extends State<CreateServiceForm> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(22),
                 ),
-                child: TextField(
+                child: TextFormField(
+                  initialValue: service.description,
                   onChanged: (val) {
                     service.description = val;
                   },
@@ -220,7 +283,8 @@ class _CreateServiceFormState extends State<CreateServiceForm> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(22),
                 ),
-                child: TextField(
+                child: TextFormField(
+                  initialValue: service.ogprice,
                   onChanged: (val) {
                     service.ogprice = val;
                   },
@@ -243,7 +307,8 @@ class _CreateServiceFormState extends State<CreateServiceForm> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(22),
                 ),
-                child: TextField(
+                child: TextFormField(
+                  initialValue: service.price,
                   onChanged: (val) {
                     service.price = val;
                   },
@@ -259,6 +324,31 @@ class _CreateServiceFormState extends State<CreateServiceForm> {
                   ),
                 ),
               ),
+              // Container(
+              //   height: 80,
+              //   padding: const EdgeInsets.symmetric(vertical: 12.0),
+              //   clipBehavior: Clip.antiAlias,
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(22),
+              //   ),
+              //   child: TextField(
+              //     onChanged: (val) {
+              //       service.img = val;
+              //     },
+              //     decoration: const InputDecoration(
+              //       labelText: 'Image Link',
+              //       labelStyle: TextStyle(
+              //         fontFamily: 'Montserrat',
+              //         fontWeight: FontWeight.bold,
+              //         color: Colors.grey,
+              //       ),
+              //       // hintText: 'myservice..',
+              //     ),
+              //   ),
+              // ),
+
+              addVerticalSpace(10),
+
               Container(
                 height: 80,
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -266,35 +356,8 @@ class _CreateServiceFormState extends State<CreateServiceForm> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(22),
                 ),
-                child: TextField(
-                  onChanged: (val) {
-                    service.img = val;
-                  },
-                  decoration: const InputDecoration(
-                    labelText: 'Image Link',
-                    labelStyle: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey,
-                    ),
-                    // hintText: 'myservice..',
-                  ),
-                ),
-              ),
-              addVerticalSpace(50),
-              ElevatedButton(
-                onPressed: () => _selectImage(),
-                child: Text('Select Image'),
-              ),
-              addVerticalSpace(50),
-              Container(
-                height: 80,
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(22),
-                ),
-                child: TextField(
+                child: TextFormField(
+                  initialValue: service.duration,
                   onChanged: (val) {
                     service.duration = val;
                   },
@@ -328,6 +391,11 @@ class _CreateServiceFormState extends State<CreateServiceForm> {
                 child: Center(
                   child: TextButton(
                     onPressed: () {
+                      setState(() {
+                        isLoading = true;
+                      });
+
+                      print(' called');
                       if (service.name.isEmpty ||
                           service.description.isEmpty ||
                           service.price.isEmpty ||
@@ -347,14 +415,32 @@ class _CreateServiceFormState extends State<CreateServiceForm> {
                           dismissDirection: DismissDirection.horizontal,
                           forwardAnimationCurve: Curves.bounceIn,
                         );
+                        setState(() {
+                          isLoading = false;
+                        });
                       } else {
+                        setState(() {
+                          isLoading = true;
+                        });
+
                         save(context);
                       }
                     },
-                    child: Text(
-                      "Save",
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
+                    child: isLoading
+                        ? const Center(
+                            child: SizedBox(
+                              height: 15,
+                              width: 15,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 3,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                        : Text(
+                            "Save",
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
                   ),
                 ),
               ),

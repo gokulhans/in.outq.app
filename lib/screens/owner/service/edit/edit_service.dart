@@ -1,15 +1,26 @@
+import 'dart:io';
 import 'dart:math';
+import 'package:cloudinary/cloudinary.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:outq/Backend/models/owner_models.dart';
 import 'package:outq/screens/owner/components/appbar/owner_appbar.dart';
 import 'package:outq/screens/owner/home/owner_home.dart';
+import 'package:outq/screens/owner/service/create/create_service.dart';
 import 'package:outq/utils/color_constants.dart';
 import 'package:outq/utils/constants.dart';
 import 'package:outq/utils/sizes.dart';
 import 'package:outq/utils/widget_functions.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
+
+Cloudinary cloudinary = Cloudinary.signedConfig(
+  cloudName: 'dybp5kdy7',
+  apiKey: '732197174288973',
+  apiSecret: 'lz9XKeaVatdP3OjGB-ADMlRPapc',
+);
 
 void onload() {
   dynamic argumentData = Get.arguments;
@@ -28,7 +39,7 @@ Future save(BuildContext context) async {
   var storeid = pref.getString("storeid") ?? " ";
 
   dynamic argumentData = Get.arguments;
-  http.post(
+  var response = await http.post(
       Uri.parse(
         "${apidomain}service/edit/${service.id}",
       ),
@@ -128,6 +139,64 @@ GetServiceModel service =
     GetServiceModel('', '', '', '', '', '', '', '', '', '', '', '', '');
 
 class _EditServiceFormState extends State<EditServiceForm> {
+  String imglink = "";
+  File? _imageFile;
+  String _priview = " ";
+
+  void _selectImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery,imageQuality: 30);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+        print(_imageFile);
+      });
+      _uploadImage();
+    } else {
+      print('error');
+    }
+  }
+
+  @override
+  void initState() {
+    imglink = widget.argumentData.img;
+    // TODO: implement initState
+    super.initState();
+  }
+
+  void _uploadImage() async {
+    final now = DateTime.now();
+    final timestamp = now.microsecondsSinceEpoch;
+    final random = '${DateTime.now().millisecondsSinceEpoch}${now.microsecond}';
+    final publicId = 'service_image_$timestamp$random';
+    if (_imageFile != null) {
+      final response = await cloudinary.upload(
+          file: _imageFile!.path,
+          fileBytes: _imageFile!.readAsBytesSync(),
+          resourceType: CloudinaryResourceType.image,
+          folder: "serviceimages",
+          fileName: publicId,
+          progressCallback: (count, total) {
+            print('Uploading image from file with progress: $count/$total');
+              setState(() {
+              _priview =
+                  'Uploading image from file with progress: $count/$total';
+            });
+          });
+      if (response.isSuccessful) {
+        print('Get your image from with ${response.secureUrl}');
+        setState(() {
+          imglink = response.secureUrl!;
+          _priview = 'Image uploaded Successfully';
+        });
+      }
+      service.img = imglink;
+      print(_imageFile);
+    } else {
+      print('error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
@@ -140,6 +209,26 @@ class _EditServiceFormState extends State<EditServiceForm> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              SizedBox(
+                width: double.infinity,
+                height: 180,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                  child: Image(
+                    // fit: BoxFit.cover,
+                    image: NetworkImage(imglink),
+                  ),
+                ),
+              ),
+              addVerticalSpace(30),
+              ElevatedButton(
+                onPressed: () => _selectImage(),
+                child: const Text('Change Image'),
+              ),
+              Text(_priview),
+
+              addVerticalSpace(30),
+
               Container(
                 height: 80,
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -234,29 +323,31 @@ class _EditServiceFormState extends State<EditServiceForm> {
                   ),
                 ),
               ),
-              Container(
-                height: 80,
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(22),
-                ),
-                child: TextFormField(
-                  initialValue: widget.argumentData.img,
-                  onChanged: (val) {
-                    service.img = val;
-                  },
-                  decoration: const InputDecoration(
-                    labelText: 'Image Link',
-                    labelStyle: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey,
-                    ),
-                    // hintText: 'myservice..',
-                  ),
-                ),
-              ),
+              // Container(
+              //   height: 80,
+              //   padding: const EdgeInsets.symmetric(vertical: 12.0),
+              //   clipBehavior: Clip.antiAlias,
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(22),
+              //   ),
+              //   child: TextFormField(
+              //     initialValue: widget.argumentData.img,
+              //     onChanged: (val) {
+              //       service.img = val;
+              //     },
+              //     decoration: const InputDecoration(
+              //       labelText: 'Image Link',
+              //       labelStyle: TextStyle(
+              //         fontFamily: 'Montserrat',
+              //         fontWeight: FontWeight.bold,
+              //         color: Colors.grey,
+              //       ),
+              //       // hintText: 'myservice..',
+              //     ),
+              //   ),
+              // ),
+              
+              addVerticalSpace(20),
               Container(
                 height: 80,
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
