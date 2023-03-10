@@ -17,7 +17,9 @@ Future getUserId(BuildContext context) async {
 }
 
 class UserSearchServicesPage extends StatefulWidget {
-  const UserSearchServicesPage({super.key});
+  var title;
+
+  UserSearchServicesPage({super.key, required this.title});
 
   @override
   State<UserSearchServicesPage> createState() => _UserSearchServicesPageState();
@@ -34,10 +36,10 @@ class _UserSearchServicesPageState extends State<UserSearchServicesPage> {
   Widget build(BuildContext context) {
     getUserId(context);
     return Scaffold(
-      appBar: const PreferredSize(
+      appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: UserAppBarWithBack(
-          title: "Search Results",
+          title: widget.title,
         ),
       ),
       body: Container(
@@ -160,6 +162,7 @@ class _UserSearchServicesPageState extends State<UserSearchServicesPage> {
                                             data[i]['start'],
                                             data[i]['end'],
                                             data[i]['img'],
+                                            data[i]['duration'],
                                           ]);
                                     },
                                     child: Text(

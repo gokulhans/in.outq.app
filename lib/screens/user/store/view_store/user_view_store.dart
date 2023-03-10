@@ -89,12 +89,12 @@ class _UserViewStorePageState extends State<UserViewStorePage> {
                         itemCount: data.length,
                         itemBuilder: (context, i) {
                           return Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               SizedBox(
                                 width: double.infinity,
-                                height: 180,
+                                height: 210,
                                 child: ClipRRect(
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(4)),
@@ -105,56 +105,65 @@ class _UserViewStorePageState extends State<UserViewStorePage> {
                                 ),
                               ),
                               addVerticalSpace(10),
-                              Text(
-                                data[i]["name"],
-                                style: Theme.of(context).textTheme.headline4,
-                              ),
-                              Text(
-                                data[i]["location"],
-                                style: Theme.of(context).textTheme.subtitle2,
-                              ),
                               Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  // isFollowed
-                                  //     ?
-                                  // Text(followcount),
-                                  // :
                                   Text(
-                                      "${data[i]["followerslist"].length} Followers"),
-                                  addVerticalSpace(10),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Container(
-                                      width: 100,
-                                      height: 40,
-                                      color: isFollowed
-                                          ? Colors.grey
-                                          : Colors.blue,
-                                      child: TextButton(
-                                        onPressed: () async {
-                                          setState(() {
-                                            isFollowed = !isFollowed;
-                                          });
-                                          await http.get(Uri.parse(
-                                              '${apidomain}follow/follow/${data[i]["_id"]}/$userid'));
-                                        },
-                                        child: isFollowed
-                                            ? const Text(
-                                                "Unfollow",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              )
-                                            : const Text(
-                                                "Follow",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                      ),
+                                    data[i]["name"],
+                                    style: GoogleFonts.poppins(
+                                      color: Colors.black87,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w700,
                                     ),
                                   ),
+                                  Text(
+                                    data[i]["location"],
+                                    style: Theme.of(context).textTheme.subtitle2,
+                                  ),
+                                  Column(
+                                    children: [
+                                      // isFollowed
+                                      //     ?
+                                      // Text(followcount),
+                                      // :
+                                      Text(
+                                          "${data[i]["followerslist"].length} Followers"),
+                                      addVerticalSpace(10),
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: Container(
+                                          width: 100,
+                                          height: 40,
+                                          color: isFollowed
+                                              ? Colors.grey
+                                              : Colors.blue,
+                                          child: TextButton(
+                                            onPressed: () async {
+                                              setState(() {
+                                                isFollowed = !isFollowed;
+                                              });
+                                              await http.get(Uri.parse(
+                                                  '${apidomain}follow/follow/${data[i]["_id"]}/$userid'));
+                                            },
+                                            child: isFollowed
+                                                ? const Text(
+                                                    "Unfollow",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  )
+                                                : const Text(
+                                                    "Follow",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  addVerticalSpace(20),
                                 ],
                               ),
-                              addVerticalSpace(20),
                             ],
                           );
                         },
@@ -298,16 +307,14 @@ class _UserViewStorePageState extends State<UserViewStorePage> {
                                                         .headline5),
                                               ],
                                             ),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  "${snapshot.data[i].description}",
-                                                  textAlign: TextAlign.left,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .subtitle2,
-                                                ),
-                                              ],
+                                            Text(
+                                              "${snapshot.data[i].description}",
+                                              textAlign: TextAlign.left,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle2,
                                             ),
                                           ]),
                                     ),

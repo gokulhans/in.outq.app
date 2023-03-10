@@ -163,8 +163,8 @@ class _UserHomePageState extends State<UserHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(55),
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(55),
         child: UserAppBar(
           title: "_currentAddress",
         ),
@@ -349,7 +349,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           ),
                           TextButton(
                               onPressed: () {
-                                Get.to(() => const UserSearchServicesPage(),
+                                Get.to(
+                                    () => UserSearchServicesPage(
+                                          title: "Search Results for $query",
+                                        ),
                                     arguments: [query]);
                               },
                               child: Container(
@@ -373,9 +376,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: Row(
                         children: [
-                          Icon(Icons.location_on),
+                          const Icon(Icons.location_on),
                           addHorizontalSpace(10),
-                          Text(
+                          const Text(
                             "Adoor , Pathanamthitta",
                             style: TextStyle(),
                           )
@@ -486,7 +489,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                             'Services Types',
                             style: GoogleFonts.poppins(
                               color: const Color(0xFF09041B),
-                              fontSize: 18,
+                              fontSize: 20,
                               // height: 1.5,
                               fontWeight: FontWeight.w600,
                             ),
@@ -505,70 +508,227 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                         ],
                       ),
                     ),
-                    addVerticalSpace(10),
-
-                    SizedBox(
-                      height: 120,
-                      child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 4,
-                        itemBuilder: (BuildContext context, int index) {
-                          List<String> myArray = [
-                            "Facial",
-                            "Hair Cut",
-                            "Threading",
-                            "Pedicure",
-                          ];
-                          List<String> myArray1 = [
-                            "Facial",
-                            "Cut",
-                            "Threading",
-                            "Pedicure",
-                          ];
-
-                          return InkWell(
+                    addVerticalSpace(20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: InkWell(
                             onTap: (() => {
-                                  Get.to(() => const UserSearchServicesPage(),
-                                      arguments: [myArray1[index]])
-                                }),
-                            child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: 8),
-                              child: Container(
-                                width: 80.0,
-                                height: 80.0,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.blue,
-                                ),
-                                child: Center(
-                                  child: ClipOval(
-                                    child: Container(
-                                      color: Colors.green,
-                                      width: 80.0,
-                                      height: 80.0,
-                                      child: Center(
-                                        child: Text(
-                                          myArray[index],
-                                          style: TextStyle(
-                                            fontSize: 13.0,
-                                            fontWeight: FontWeight.bold,
-                                            fontStyle: FontStyle.italic,
-                                            color: Colors.white,
+                                  Get.to(
+                                      () => UserSearchServicesPage(
+                                            title: "Facial",
                                           ),
+                                      arguments: ["facial"])
+                                }),
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Container(
+                                    width: 60.0,
+                                    height: 60.0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[100],
+                                      shape: BoxShape.circle,
+                                      // color: Colors.blue,
+                                      border: Border.all(
+                                        color: Colors.black,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: ClipOval(
+                                        child: Container(
+                                          // color: Colors.green,
+                                          width: 60.0,
+                                          height: 60.0,
+                                          child: const Center(
+                                              child: Icon(
+                                            Icons.face,
+                                            size: 32,
+                                          )),
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
+                                addVerticalSpace(5),
+                                Text(
+                                  "Facial ",
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16),
+                                )
+                              ],
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: InkWell(
+                            onTap: (() => {
+                                  Get.to(
+                                      () => UserSearchServicesPage(
+                                            title: "Cut",
+                                          ),
+                                      arguments: ["cut"])
+                                }),
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Container(
+                                    width: 60.0,
+                                    height: 60.0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[100],
+                                      shape: BoxShape.circle,
+                                      // color: Colors.blue,
+                                      border: Border.all(
+                                        color: Colors.black,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: ClipOval(
+                                        child: Container(
+                                          // color: Colors.green,
+                                          width: 80.0,
+                                          height: 80.0,
+                                          child: const Center(
+                                              child: Icon(Icons.cut, size: 24)),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                addVerticalSpace(5),
+                                Text(
+                                  "Hair Cut",
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: InkWell(
+                            onTap: (() => {
+                                  Get.to(
+                                      () => UserSearchServicesPage(
+                                            title: "Threading",
+                                          ),
+                                      arguments: ["Threading"])
+                                }),
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Container(
+                                    width: 60.0,
+                                    height: 60.0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[100],
+                                      shape: BoxShape.circle,
+                                      // color: Colors.blue,
+                                      border: Border.all(
+                                        color: Colors.black,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: ClipOval(
+                                        child: Container(
+                                          // color: Colors.green,
+                                          width: 80.0,
+                                          height: 80.0,
+                                          child: const Center(
+                                              child: Icon(
+                                                  Icons.remove_red_eye_outlined,
+                                                  size: 32)),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                addVerticalSpace(5),
+                                Text(
+                                  "Threading ",
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: InkWell(
+                            onTap: (() => {
+                                  Get.to(
+                                      () => UserSearchServicesPage(
+                                            title: "Pedicure",
+                                          ),
+                                      arguments: ["Pedicure"])
+                                }),
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Container(
+                                    width: 60.0,
+                                    height: 60.0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[100],
+                                      shape: BoxShape.circle,
+                                      // color: Colors.blue,
+                                      border: Border.all(
+                                        color: Colors.black,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: ClipOval(
+                                        child: Container(
+                                          // color: Colors.green,
+                                          width: 80.0,
+                                          height: 80.0,
+                                          child: const Center(
+                                              child: Icon(Icons.fingerprint,
+                                                  size: 32)),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                addVerticalSpace(5),
+                                Text(
+                                  "Pedicure ",
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    addVerticalSpace(10),
-
+                    addVerticalSpace(20),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Row(
@@ -578,7 +738,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                             'Near By Offers',
                             style: GoogleFonts.poppins(
                               color: const Color(0xFF09041B),
-                              fontSize: 18,
+                              fontSize: 20,
                               // height: 1.5,
                               fontWeight: FontWeight.w600,
                             ),
@@ -608,7 +768,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           var data = jsonDecode(snapshot.data!.body);
                           // print(data);
                           return SizedBox(
-                            height: 240,
+                            height: 280,
                             child: ListView.builder(
                               physics: const BouncingScrollPhysics(),
                               scrollDirection: Axis.horizontal,
@@ -632,7 +792,27 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                             ])
                                       }),
                                   child: Container(
-                                    margin: EdgeInsets.symmetric(horizontal: 3),
+                                    // margin: EdgeInsets.symmetric(horizontal: 3),
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 5),
+                                    // padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 1,
+                                          blurRadius: 3,
+                                          offset: const Offset(0,
+                                              3), // changes position of shadow
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.circular(10),
+                                      // border: Border.all(
+                                      //   color: Colors.black,
+                                      //   width: 0.1,
+                                      // ),
+                                    ),
                                     //decoration: BoxDecoration(
                                     //   boxShadow: [
                                     //     BoxShadow(
@@ -645,41 +825,45 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                     // ),
                                     child: SizedBox(
                                       width: 240,
-                                      height: 140,
-                                      child: Card(
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 8, vertical: 8),
-                                        elevation: 0,
-                                        shape: RoundedRectangleBorder(
+                                      height: 160,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          ClipRRect(
                                             borderRadius:
-                                                BorderRadius.circular(16)),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  const BorderRadius.vertical(
-                                                      top: Radius.circular(16)),
-                                              child: Image.network(
-                                                data[index]['img'],
-                                                height: 140,
-                                                fit: BoxFit.cover,
-                                              ),
+                                                const BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(10),
+                                                    topRight:
+                                                        Radius.circular(10)),
+                                            child: Image.network(
+                                              data[index]['img'],
+                                              height: 130,
+                                              fit: BoxFit.cover,
                                             ),
-                                            addVerticalSpace(5),
-                                            Padding(
-                                              padding: const EdgeInsets.all(4),
+                                          ),
+                                          addVerticalSpace(10),
+                                          Expanded(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 12.0),
                                               child: Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
                                                 children: [
                                                   Text(
                                                     data[index]['name'],
                                                     style: const TextStyle(
-                                                        fontSize: 16,
+                                                        fontSize: 18,
                                                         fontWeight:
-                                                            FontWeight.w700),
+                                                            FontWeight.w600),
                                                   ),
                                                   addVerticalSpace(5),
                                                   Row(
@@ -691,7 +875,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                             decoration:
                                                                 TextDecoration
                                                                     .lineThrough,
-                                                            fontSize: 12,
+                                                            fontSize: 14,
                                                             fontWeight:
                                                                 FontWeight.w700,
                                                             color: Colors
@@ -702,7 +886,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                         "${data[index]['price']} ₹",
                                                         // data[index]['location'],
                                                         style: TextStyle(
-                                                            fontSize: 14,
+                                                            fontSize: 16,
                                                             fontWeight:
                                                                 FontWeight.w700,
                                                             color: Colors
@@ -710,27 +894,45 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                       ),
                                                     ],
                                                   ),
-                                                  addVerticalSpace(3),
-                                                  Text(
-                                                    "${data[index]['duration']} minutes",
-                                                    style: const TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500),
+                                                  addVerticalSpace(5),
+                                                  Row(
+                                                    children: [
+                                                      const Icon(
+                                                        Icons.timelapse,
+                                                        size: 14,
+                                                      ),
+                                                      addHorizontalSpace(3),
+                                                      Text(
+                                                        "${data[index]['duration']} minutes",
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          color: Colors
+                                                              .yellow[900],
+                                                          fontSize: 12,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
+                                                  addVerticalSpace(5),
                                                   Text(
                                                     "${data[index]['description']}",
-                                                    style: const TextStyle(
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: GoogleFonts.poppins(
+                                                        color: Colors.grey[600],
                                                         fontSize: 12,
                                                         fontWeight:
-                                                            FontWeight.w500),
+                                                            FontWeight.w400),
                                                   ),
-                                                  // addVerticalSpace(5),
+                                                  addVerticalSpace(5),
                                                 ],
                                               ),
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
@@ -920,8 +1122,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     //     return const CircularProgressIndicator();
                     //   },
                     // ),
-
-                    addVerticalSpace(10),
+                    addVerticalSpace(20),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Row(
@@ -931,7 +1132,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                             'Near By Stores',
                             style: GoogleFonts.poppins(
                               color: const Color(0xFF09041B),
-                              fontSize: 18,
+                              fontSize: 20,
                               // height: 1.5,
                               fontWeight: FontWeight.w600,
                             ),
@@ -959,81 +1160,115 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                         if (snapshot.hasData) {
                           var data = jsonDecode(snapshot.data!.body);
                           // print(data);
-                          return SizedBox(
-                            height: 260,
-                            child: ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              scrollDirection: Axis.horizontal,
-                              itemCount: data.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return InkWell(
-                                  onTap: () {
-                                    Get.to(() => const UserViewStorePage(),
-                                        arguments: [
-                                          data[index]['type'],
-                                          data[index]['name'],
-                                          data[index]['start'],
-                                          data[index]['end']
-                                        ]);
-                                  },
-                                  child: SizedBox(
-                                    width: 240,
-                                    height: 200,
-                                    child: Card(
+                          return Container(
+                            child: SizedBox(
+                              height: 240,
+                              child: ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: data.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Get.to(() => const UserViewStorePage(),
+                                          arguments: [
+                                            data[index]['type'],
+                                            data[index]['name'],
+                                            data[index]['start'],
+                                            data[index]['end']
+                                          ]);
+                                    },
+                                    child: Container(
                                       margin: const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 8),
-                                      elevation: 0,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(16)),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                const BorderRadius.vertical(
-                                                    top: Radius.circular(16)),
-                                            child: Image.network(
-                                              data[index]['img'],
-                                              height: 140,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                          addVerticalSpace(10),
-                                          Padding(
-                                            padding: const EdgeInsets.all(4),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  data[index]['name'],
-                                                  style: const TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                ),
-                                                addVerticalSpace(5),
-                                                Text(
-                                                  data[index]['location'],
-                                                  // data[index]['location'],
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color:
-                                                          Colors.yellow[900]),
-                                                ),
-                                              ],
-                                            ),
+                                          vertical: 10, horizontal: 5),
+                                      // padding: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            spreadRadius: 1,
+                                            blurRadius: 3,
+                                            offset: const Offset(0,
+                                                3), // changes position of shadow
                                           ),
                                         ],
+                                        borderRadius: BorderRadius.circular(10),
+                                        // border: Border.all(
+                                        //   color: Colors.black,
+                                        //   width: 0.1,
+                                        // ),
+                                      ),
+                                      child: SizedBox(
+                                        width: 240,
+                                        height: 200,
+                                        child: Card(
+                                          // margin: const EdgeInsets.symmetric(
+                                          //     horizontal: 8,),
+                                          elevation: 0,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(16)),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius: const BorderRadius
+                                                        .vertical(
+                                                    top: Radius.circular(10)),
+                                                child: Image.network(
+                                                  data[index]['img'],
+                                                  height: 140,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                              addVerticalSpace(10),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(4),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    Text(
+                                                      data[index]['name'],
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                    ),
+                                                    addVerticalSpace(5),
+                                                    Text(
+                                                      data[index]['location'],
+                                                      // data[index]['location'],
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              color: Colors
+                                                                  .yellow[900]),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
+                                  );
+                                },
+                              ),
                             ),
                           );
                         } else if (snapshot.hasError) {
