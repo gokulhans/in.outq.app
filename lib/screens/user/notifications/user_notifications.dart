@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:outq/screens/owner/components/appbar/owner_appbar.dart';
 import 'package:http/http.dart' as http;
 import 'package:outq/screens/owner/service/edit/edit_service.dart';
+import 'package:outq/screens/user/booking/booking.dart';
 import 'package:outq/utils/constants.dart';
 import 'package:outq/utils/sizes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -82,21 +84,40 @@ class _UserNotificationsState extends State<UserNotifications> {
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  data[i]["title"],
-                                  textAlign: TextAlign.left,
-                                  style: Theme.of(context).textTheme.subtitle1,
-                                ),
-                                Text(
-                                  data[i]["message"],
-                                  textAlign: TextAlign.left,
-                                  style: Theme.of(context).textTheme.subtitle2,
-                                ),
-                              ]),
+                          child: InkWell(
+                            // onTap: (() => {
+                            //       Get.to(() => const ShopBookingPage(),
+                            //           arguments: [
+                            //             data[i]['ownerid'],
+                            //             data[i]['type'],
+                            //             data[i]['storeid'],
+                            //             data[i]['name'],
+                            //             data[i]['price'],
+                            //             data[i]['storename'],
+                            //             data[i]['start'],
+                            //             data[i]['end'],
+                            //             data[i]['img'],
+                            //             data[i]['duration']
+                            //           ])
+                            //     }),
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    data[i]["title"],
+                                    textAlign: TextAlign.left,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
+                                  ),
+                                  Text(
+                                    data[i]["message"],
+                                    textAlign: TextAlign.left,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle2,
+                                  ),
+                                ]),
+                          ),
                         ),
                       ),
                     ],

@@ -1,16 +1,61 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:outq/screens/user/home/user_home.dart';
+import 'package:outq/screens/user/location/asklocation.dart';
 import 'package:outq/screens/user/notifications/user_notifications.dart';
 import 'package:outq/screens/user/profile/myprofile.dart';
 import 'package:outq/utils/color_constants.dart';
+import 'package:outq/utils/constants.dart';
 import 'package:outq/utils/widget_functions.dart';
 import 'package:badges/badges.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
-class UserAppBar extends StatelessWidget {
+class UserAppBar extends StatefulWidget {
   final String title;
   const UserAppBar({super.key, required this.title});
+
+  @override
+  State<UserAppBar> createState() => _UserAppBarState();
+}
+
+class _UserAppBarState extends State<UserAppBar> {
+  var userid;
+  String location = "Select Location...";
+  void onload() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    userid = pref.getString("userid");
+    final response =
+        await http.get(Uri.parse('${apidomain}auth/user/location/$userid'));
+    var jsonData = jsonDecode(response.body);
+    print({"fdgdf", jsonData, response});
+    print(location);
+    setState(() {
+      location = jsonData[0]["location"];
+    });
+    if (response.statusCode == 201) {
+      var jsonData = jsonDecode(response.body);
+      // print(jsonData);
+      // print(jsonData["success"]);
+      if (jsonData["status"]) {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (BuildContext context) => const UserHomePage()),
+            (Route<dynamic> route) => false);
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    onload();
+    super.initState();
+    // print(_future);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +75,37 @@ class UserAppBar extends StatelessWidget {
       //     onPressed: () {}),
       title: Row(
         children: [
-          Text(
-            'OutQ',
-            style: GoogleFonts.poppins(
-              color: const Color(0xFF09041B),
-              fontSize: 18,
-              // height: 1.5,
-              fontWeight: FontWeight.w800,
+          // Text(
+          //   'OutQ',
+          //   style: GoogleFonts.poppins(
+          //     color: const Color(0xFF09041B),
+          //     fontSize: 18,
+          //     // height: 1.5,
+          //     fontWeight: FontWeight.w800,
+          //   ),
+          // ),
+          InkWell(
+            onTap: () {
+              Get.to(() => const UserAskLocationPage());
+            },
+            child: Container(
+              child: Row(
+                children: [
+                  const Icon(Icons.location_on),
+                  addHorizontalSpace(10),
+                  Container(
+                    width: 220,
+                    child: Text(
+                      location,
+                      // maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           // IconButton(
@@ -69,7 +138,10 @@ class UserAppBar extends StatelessWidget {
       actions: [
         IconButton(
             icon: const Badge(
-              badgeContent: Text('1',style: TextStyle(color: Colors.white,fontSize: 10),),
+              badgeContent: Text(
+                '1',
+                style: TextStyle(color: Colors.white, fontSize: 10),
+              ),
               child: Icon(
                 Icons.notifications,
                 size: 30,

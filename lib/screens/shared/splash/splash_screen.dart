@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:outq/screens/shared/exit_pop/exit_pop_up.dart';
 import 'package:outq/utils/color_constants.dart';
+import 'package:outq/utils/widget_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -59,10 +61,17 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
         child: Center(
             child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: const [
-            Image(image: AssetImage("assets/app_icon/playstore.png"))
+          children: [
+            addVerticalSpace(30),
+            const Image(image: AssetImage("assets/app_icon/playstore.png")),
+            // addVerticalSpace(50),
+            Text(
+              "Be Out From The Queue",
+              style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w500, color: Colors.white),
+            )
           ],
         )),
       ),

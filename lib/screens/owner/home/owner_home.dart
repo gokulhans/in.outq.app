@@ -10,6 +10,7 @@ import 'package:outq/screens/owner/components/drawer/owner_drawer.dart';
 import 'package:outq/screens/owner/history/appoinment_history.dart';
 import 'package:outq/screens/owner/service/view/owner_view_service.dart';
 import 'package:get/get.dart';
+import 'package:outq/screens/owner/store/create/create_store.dart';
 import 'package:outq/screens/owner/store/view/owner_view_store.dart';
 import 'package:outq/utils/sizes.dart';
 
@@ -83,9 +84,9 @@ class _OwnerHomePageState extends State<OwnerHomePage> {
             ),
             BottomNavigationBarItem(
               icon: FaIcon(
-            FontAwesomeIcons.chartSimple,
-            size: 16,
-          ),
+                FontAwesomeIcons.chartSimple,
+                size: 16,
+              ),
               label: 'Analytics',
             ),
             BottomNavigationBarItem(
@@ -150,11 +151,17 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
             future: getOwnerStore(),
             builder: (context, AsyncSnapshot snapshot) {
               if (snapshot.data == null) {
-                return const Center(
-                    child: SpinKitCircle(
-                  color: Colors.blue,
-                  size: 50.0,
-                ));
+                return ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CreateStorePage()),
+                    );
+                  },
+                  // onPressed: () {},
+                  child: const Text("Create Your Store To Continue"),
+                );
               } else {
                 if (snapshot.data.length == 0) {
                   return const Center(

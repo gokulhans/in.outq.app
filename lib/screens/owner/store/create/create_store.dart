@@ -7,6 +7,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 // import 'package:geocoding/geocoding.dart';
 // import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:outq/Backend/models/owner_models.dart';
 import 'package:outq/screens/owner/components/appbar/owner_appbar.dart';
@@ -18,6 +19,8 @@ import 'package:outq/utils/sizes.dart';
 import 'package:outq/utils/widget_functions.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 
 bool isVisible = false;
 bool isLoading = false;
@@ -52,7 +55,7 @@ Future save(BuildContext context) async {
         'longitude': shop.longitude,
         'latitude': shop.latitude,
         'pincode': shop.pincode,
-        'gender': "",
+        'gender': shop.gender,
       });
 
   if (response.statusCode == 201) {
@@ -77,83 +80,83 @@ class CreateStorePage extends StatefulWidget {
 }
 
 class _CreateStorePageState extends State<CreateStorePage> {
-  // String _currentAddress = "";
-  // Position? _currentPosition;
+  String _currentAddress = "";
+  Position? _currentPosition;
 
-  // Future<bool> _handleLocationPermission() async {
-  //   bool serviceEnabled;
-  //   LocationPermission permission;
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
 
-  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  //   if (!serviceEnabled) {
-  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //         content: Text(
-  //             'Location services are disabled. Please enable the services')));
-  //     return false;
-  //   }
-  //   permission = await Geolocator.checkPermission();
-  //   if (permission == LocationPermission.denied) {
-  //     permission = await Geolocator.requestPermission();
-  //     if (permission == LocationPermission.denied) {
-  //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //           content:
-  //               Text('Location permissions are denied. Enable to Continue')));
-  //       return false;
-  //     }
-  //   }
-  //   if (permission == LocationPermission.deniedForever) {
-  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //         content: Text(
-  //             'Location permissions are permanently denied, we cannot request permissions.')));
-  //     return false;
-  //   }
-  //   return true;
-  // }
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content:
+                Text('Location permissions are denied. Enable to Continue')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
+  }
 
-  // Future<void> _getCurrentPosition() async {
-  //   final hasPermission = await _handleLocationPermission();
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
 
-  //   if (!hasPermission) {
-  //     Geolocator.openLocationSettings();
-  //   }
-  //   // return;
-  //   await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-  //       .then((Position position) {
-  //     setState(() => _currentPosition = position);
-  //     _getAddressFromLatLng(_currentPosition!);
-  //   }).catchError((e) {
-  //     debugPrint(e);
-  //   });
-  // }
+    if (!hasPermission) {
+      Geolocator.openLocationSettings();
+    }
+    // return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
 
-  // Future<void> _getAddressFromLatLng(Position position) async {
-  //   await placemarkFromCoordinates(
-  //           _currentPosition!.latitude, _currentPosition!.longitude)
-  //       .then((List<Placemark> placemarks) {
-  //     Placemark place = placemarks[0];
-  //     // print(place.country);
-  //     setState(() {
-  //       _currentAddress =
-  //           '${place.administrativeArea}, ${place.locality}, ${place.thoroughfare}, ${place.postalCode}';
-  //     });
-  //     // print({_currentAddress, _currentPosition});
-  //     shop.location = _currentAddress;
-  //     shop.longitude = _currentPosition!.longitude.toString();
-  //     shop.latitude = _currentPosition!.latitude.toString();
-  //     shop.pincode = place.postalCode.toString();
-  //     isVisible = true;
-  //     isButtonVisible = false;
-  //   }).catchError((e) {
-  //     debugPrint(e);
-  //   });
-  // }
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+            _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      // print(place.country);
+      setState(() {
+        _currentAddress =
+            '${place.administrativeArea}, ${place.locality}, ${place.thoroughfare}, ${place.postalCode}';
+      });
+      // print({_currentAddress, _currentPosition});
+      shop.location = _currentAddress;
+      shop.longitude = _currentPosition!.longitude.toString();
+      shop.latitude = _currentPosition!.latitude.toString();
+      shop.pincode = place.postalCode.toString();
+      isVisible = true;
+      isButtonVisible = false;
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     shop.start = "9:00 AM";
     shop.end = "5:00 PM";
-    // _handleLocationPermission();
+    _handleLocationPermission();
   }
 
   @override
@@ -193,38 +196,50 @@ class _CreateStorePageState extends State<CreateStorePage> {
                   ],
                 ),
               ),
-              CreateStoreForm()
-              // isButtonVisible
-              //     ? Center(
-              //         child: Column(
-              //           mainAxisAlignment: MainAxisAlignment.center,
-              //           children: [
-              //             // Text('LAT: ${_currentPosition?.latitude ?? ""}'),
-              //             // Text('LNG: ${_currentPosition?.longitude ?? ""}'),
-              //             // Text('ADDRESS: ${_currentAddress ?? ""}'),
-              //             const SizedBox(height: 32),
-              //             ElevatedButton(
-              //               // onPressed: _getCurrentPosition,
-              //               onPressed: (){},
-              //               child: const Text(
-              //                   "Fetch Your Current Location to Continue"),
-              //             )
-              //           ],
-              //         ),
-              //       )
-              // : Container(),
-              // isVisible
-              // ? CreateStoreForm(location: _currentAddress)
-              // : Column(
-              //     children: [
-              //       addVerticalSpace(100),
-              //       const Center(
-              //           child: SpinKitCircle(
-              //         color: Colors.blue,
-              //         size: 50.0,
-              //       )),
-              //     ],
-              //   ),
+              // CreateStoreForm()
+              isButtonVisible
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Text('LAT: ${_currentPosition?.latitude ?? ""}'),
+                          // Text('LNG: ${_currentPosition?.longitude ?? ""}'),
+                          // Text('ADDRESS: ${_currentAddress ?? ""}'),
+                          const SizedBox(height: 32),
+                          ElevatedButton(
+                            onPressed: _getCurrentPosition,
+                            // onPressed: () {},
+                            child: const Text(
+                                "Fetch Your Current Location to Continue"),
+                          )
+                        ],
+                      ),
+                    )
+                  : Container(),
+              isVisible
+                  ? CreateStoreForm(location: _currentAddress)
+                  : Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          addVerticalSpace(50),
+                          Center(
+                            child: Text(
+                              "Click Button to fetch Your Location. We use Location to List Your Services To Near Users",
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          addVerticalSpace(10),
+                          const Center(
+                              child: SpinKitCircle(
+                            color: Colors.blue,
+                            size: 20.0,
+                          )),
+                        ],
+                      ),
+                    ),
             ],
           ),
         ),
@@ -234,9 +249,9 @@ class _CreateStorePageState extends State<CreateStorePage> {
 }
 
 class CreateStoreForm extends StatefulWidget {
-  // const CreateStoreForm({super.key, required this.location});
-  const CreateStoreForm({super.key});
-  // final String location;
+  const CreateStoreForm({super.key, required this.location});
+  // const CreateStoreForm({super.key});
+  final String location;
 
   @override
   State<CreateStoreForm> createState() => _CreateStoreFormState();
@@ -333,11 +348,13 @@ class _CreateStoreFormState extends State<CreateStoreForm> {
     }
   }
 
+  String dropdownValue = 'Select Category';
+
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
     String? selectedOption = "Option 1";
-    List<String> options = ["Option 1", "Option 2", "Option 3"];
+    // List<String> options = ["Option 1", "Option 2", "Option 3"];
 
     return Form(
         key: formKey,
@@ -373,22 +390,22 @@ class _CreateStoreFormState extends State<CreateStoreForm> {
                   ),
                 ),
               ),
-              DropdownButton<String>(
-                  value: selectedOption,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedOption = newValue;
-                    shop.gender = newValue??"";
-                    });
-                  },
+              // DropdownButton<String>(
+              //     value: selectedOption,
+              //     onChanged: (String? newValue) {
+              //       setState(() {
+              //         selectedOption = newValue;
+              //       shop.gender = newValue??"";
+              //       });
+              //     },
 
-                  items: options.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
+              //     items: options.map<DropdownMenuItem<String>>((String value) {
+              //       return DropdownMenuItem<String>(
+              //         value: value,
+              //         child: Text(value),
+              //       );
+              //     }).toList(),
+              //   ),
               // Container(
               //   height: 80,
               //   padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -397,26 +414,26 @@ class _CreateStoreFormState extends State<CreateStoreForm> {
               //     borderRadius: BorderRadius.circular(22),
               //   ),
 
-              //   child: 
+              //   child:
               // ),
 
-                // child: TextFormField(
-                //   initialValue: shop.name,
-                //   // //controller: nameController,
-                //   onChanged: (val) {
-                //     shop.gender = val;
-                //   },
-                //   decoration: const InputDecoration(
-                //     labelText: 'Gender',
-                //     labelStyle: TextStyle(
-                //       fontSize: 14,
-                //       fontFamily: 'Montserrat',
-                //       fontWeight: FontWeight.bold,
-                //       color: Colors.grey,
-                //     ),
-                //     // hintText: 'myshop..',
-                //   ),
-                // ),
+              // child: TextFormField(
+              //   initialValue: shop.name,
+              //   // //controller: nameController,
+              //   onChanged: (val) {
+              //     shop.gender = val;
+              //   },
+              //   decoration: const InputDecoration(
+              //     labelText: 'Gender',
+              //     labelStyle: TextStyle(
+              //       fontSize: 14,
+              //       fontFamily: 'Montserrat',
+              //       fontWeight: FontWeight.bold,
+              //       color: Colors.grey,
+              //     ),
+              //     // hintText: 'myshop..',
+              //   ),
+              // ),
               Container(
                 height: 80,
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -536,6 +553,55 @@ class _CreateStoreFormState extends State<CreateStoreForm> {
                   ),
                 ),
               ),
+              addVerticalSpace(20),
+              Container(
+                // decoration: BoxDecoration(
+                //   color: Colors.white,
+                //   boxShadow: [
+                //     BoxShadow(
+                //       color: Colors.grey.withOpacity(0.5),
+                //       spreadRadius: 1,
+                //       blurRadius: 3,
+                //       offset: Offset(0, 3), // changes position of shadow
+                //     ),
+                //   ],
+                //   borderRadius: BorderRadius.circular(10),
+                //   border: Border.all(
+                //     color: Colors.black,
+                //     width: 0.1,
+                //   ),
+                // ),
+                width: double.infinity,
+                child: DropdownButton<String>(
+                  // underline: Un,
+                  // Step 3.
+                  value: dropdownValue,
+                  // Step 4.
+                  items: <String>[
+                    'Select Category',
+                    'Men',
+                    'Women',
+                    'Unisex',
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: GoogleFonts.poppins(
+                            fontSize: 16, fontWeight: FontWeight.w400),
+                      ),
+                    );
+                  }).toList(),
+                  // Step 5.
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      dropdownValue = newValue!;
+                      shop.gender = dropdownValue;
+                    });
+                  },
+                ),
+              ),
+              addVerticalSpace(20),
               Container(
                 height: 80,
                 // padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -679,43 +745,46 @@ class _CreateStoreFormState extends State<CreateStoreForm> {
                             "Save",
                             style: Theme.of(context).textTheme.headline6,
                           ),
-                    onPressed: () {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      shop.type = "null";
-                      if (shop.name.isEmpty ||
-                          shop.description.isEmpty ||
-                          shop.type.isEmpty ||
-                          shop.start.isEmpty ||
-                          shop.end.isEmpty ||
-                          shop.location.isEmpty ||
-                          shop.gender.isEmpty ||
-                          shop.employees.isEmpty) {
-                        Get.snackbar(
-                          "Fill Every Field",
-                          "Fill every fields to continue",
-                          icon: const Icon(Icons.person, color: Colors.white),
-                          snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: Colors.red,
-                          borderRadius: 12,
-                          margin: const EdgeInsets.all(15),
-                          colorText: Colors.white,
-                          duration: const Duration(seconds: 3),
-                          isDismissible: true,
-                          dismissDirection: DismissDirection.horizontal,
-                          forwardAnimationCurve: Curves.bounceIn,
-                        );
-                        setState(() {
-                          isLoading = false;
-                        });
-                      } else {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        save(context);
-                      }
-                    },
+                    onPressed: !isLoading
+                        ? () {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            shop.type = "null";
+                            if (shop.name.isEmpty ||
+                                shop.description.isEmpty ||
+                                shop.type.isEmpty ||
+                                shop.start.isEmpty ||
+                                shop.end.isEmpty ||
+                                shop.location.isEmpty ||
+                                shop.gender == 'Select Category' ||
+                                shop.employees.isEmpty) {
+                              Get.snackbar(
+                                "Fill Every Field",
+                                "Fill every fields to continue",
+                                icon: const Icon(Icons.person,
+                                    color: Colors.white),
+                                snackPosition: SnackPosition.BOTTOM,
+                                backgroundColor: Colors.red,
+                                borderRadius: 12,
+                                margin: const EdgeInsets.all(15),
+                                colorText: Colors.white,
+                                duration: const Duration(seconds: 3),
+                                isDismissible: true,
+                                dismissDirection: DismissDirection.horizontal,
+                                forwardAnimationCurve: Curves.bounceIn,
+                              );
+                              setState(() {
+                                isLoading = false;
+                              });
+                            } else {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              save(context);
+                            }
+                          }
+                        : null,
                   ),
                 ),
               ),

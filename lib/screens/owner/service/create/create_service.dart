@@ -20,6 +20,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:cloudinary/cloudinary.dart';
 
+bool isLoading = false;
+
 // final cloudinary = CloudinaryPublic('dybp5kdy7', 'outqservices', cache: false);
 Cloudinary cloudinary = Cloudinary.signedConfig(
   cloudName: 'dybp5kdy7',
@@ -57,8 +59,8 @@ Future save(BuildContext context) async {
     // print(jsonData);
     // print(jsonData["success"]);
     if (jsonData["success"]) {
- service = ServiceModel('', '', '', '', '', '', '', '');
-
+      service = ServiceModel('', '', '', '', '', '', '', '');
+      isLoading = false;
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
               builder: (BuildContext context) =>
@@ -144,8 +146,8 @@ class _CreateServiceFormState extends State<CreateServiceForm> {
   String _priview = "Image is mandatory ";
 
   void _selectImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery,imageQuality: 30);
+    final pickedFile = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, imageQuality: 30);
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
@@ -158,7 +160,6 @@ class _CreateServiceFormState extends State<CreateServiceForm> {
   }
 
   void _uploadImage() async {
-   
     final now = DateTime.now();
     final timestamp = now.microsecondsSinceEpoch;
     final random = '${DateTime.now().millisecondsSinceEpoch}${now.microsecond}';
@@ -191,7 +192,6 @@ class _CreateServiceFormState extends State<CreateServiceForm> {
     }
   }
 
-  bool isLoading = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -390,42 +390,44 @@ class _CreateServiceFormState extends State<CreateServiceForm> {
                 ),
                 child: Center(
                   child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        isLoading = true;
-                      });
+                    onPressed: !isLoading
+                        ? () {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            print('called');
+                            if (service.name.isEmpty ||
+                                // service.description.isEmpty ||
+                                service.price.isEmpty ||
+                                service.ogprice.isEmpty ||
+                                service.duration.isEmpty) {
+                              Get.snackbar(
+                                "Fill Every Field",
+                                "Fill every fields to continue",
+                                icon: const Icon(Icons.person,
+                                    color: Colors.white),
+                                snackPosition: SnackPosition.BOTTOM,
+                                backgroundColor: Colors.red,
+                                borderRadius: 12,
+                                margin: const EdgeInsets.all(15),
+                                colorText: Colors.white,
+                                duration: const Duration(seconds: 3),
+                                isDismissible: true,
+                                dismissDirection: DismissDirection.horizontal,
+                                forwardAnimationCurve: Curves.bounceIn,
+                              );
+                              setState(() {
+                                isLoading = false;
+                              });
+                            } else {
+                              setState(() {
+                                isLoading = true;
+                              });
 
-                      print(' called');
-                      if (service.name.isEmpty ||
-                          service.description.isEmpty ||
-                          service.price.isEmpty ||
-                          service.ogprice.isEmpty ||
-                          service.duration.isEmpty) {
-                        Get.snackbar(
-                          "Fill Every Field",
-                          "Fill every fields to continue",
-                          icon: const Icon(Icons.person, color: Colors.white),
-                          snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: Colors.red,
-                          borderRadius: 12,
-                          margin: const EdgeInsets.all(15),
-                          colorText: Colors.white,
-                          duration: const Duration(seconds: 3),
-                          isDismissible: true,
-                          dismissDirection: DismissDirection.horizontal,
-                          forwardAnimationCurve: Curves.bounceIn,
-                        );
-                        setState(() {
-                          isLoading = false;
-                        });
-                      } else {
-                        setState(() {
-                          isLoading = true;
-                        });
-
-                        save(context);
-                      }
-                    },
+                              save(context);
+                            }
+                          }
+                        : null,
                     child: isLoading
                         ? const Center(
                             child: SizedBox(

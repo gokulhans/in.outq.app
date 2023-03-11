@@ -68,104 +68,104 @@ class _UserSearchServicesPageState extends State<UserSearchServicesPage> {
                       physics: const BouncingScrollPhysics(),
                       itemCount: data.length,
                       itemBuilder: (BuildContext context, int i) {
-                        return Row(
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                  child: Image(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(data[i]['img']),
-                                    width: 60,
-                                    height: 50,
+                        return InkWell(
+                          onTap: () {
+                            // Get.to(() => UserViewSingleStorePage(),
+                            //     arguments: [
+                            //       data[i]['storeid'],
+                            //     ]);
+                            Get.to(() => const ShopBookingPage(), arguments: [
+                              data[i]['ownerid'],
+                              data[i]['type'],
+                              data[i]['storeid'],
+                              data[i]['name'],
+                              data[i]['price'],
+                              data[i]['storename'],
+                              data[i]['start'],
+                              data[i]['end'],
+                              data[i]['img'],
+                              data[i]['duration'],
+                            ]);
+                          },
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    child: Image(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(data[i]['img']),
+                                      width: 60,
+                                      height: 50,
+                                    ),
+                                    // child: const Image(
+                                    //     image: AssetImage(
+                                    //         'assets/images/userImage.png'))
                                   ),
-                                  // child: const Image(
-                                  //     image: AssetImage(
-                                  //         'assets/images/userImage.png'))
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              flex: 4,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        data[i]['name'],
-                                        textAlign: TextAlign.left,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle1,
-                                      ),
-                                      Text(
-                                        data[i]['storename'],
-                                        textAlign: TextAlign.left,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle2,
-                                      ),
-                                      // Text('₹7',
-                                      //     textAlign: TextAlign.left,
-                                      //     style: Theme.of(context)
-                                      //         .textTheme
-                                      //         .headline5),
-                                    ]),
+                              Expanded(
+                                flex: 4,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          data[i]['name'],
+                                          textAlign: TextAlign.left,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle1,
+                                        ),
+                                        Text(
+                                          data[i]['storename'],
+                                          textAlign: TextAlign.left,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle2,
+                                        ),
+                                        // Text('₹7',
+                                        //     textAlign: TextAlign.left,
+                                        //     style: Theme.of(context)
+                                        //         .textTheme
+                                        //         .headline5),
+                                      ]),
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Container(
-                                  width: 100,
-                                  height: 25,
-                                  decoration: const BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(17.5),
-                                      topRight: Radius.circular(17.5),
-                                      bottomLeft: Radius.circular(17.5),
-                                      bottomRight: Radius.circular(17.5),
+                              Expanded(
+                                flex: 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Container(
+                                    width: 100,
+                                    height: 25,
+                                    decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(17.5),
+                                        topRight: Radius.circular(17.5),
+                                        bottomLeft: Radius.circular(17.5),
+                                        bottomRight: Radius.circular(17.5),
+                                      ),
+                                      gradient: LinearGradient(
+                                        begin: Alignment(0.8459399938583374,
+                                            0.1310659646987915),
+                                        end: Alignment(-0.1310659646987915,
+                                            0.11150387674570084),
+                                        colors: [
+                                          Color.fromRGBO(0, 81, 255, 1),
+                                          Color.fromRGBO(0, 132, 255, 1)
+                                        ],
+                                      ),
                                     ),
-                                    gradient: LinearGradient(
-                                      begin: Alignment(0.8459399938583374,
-                                          0.1310659646987915),
-                                      end: Alignment(-0.1310659646987915,
-                                          0.11150387674570084),
-                                      colors: [
-                                        Color.fromRGBO(0, 81, 255, 1),
-                                        Color.fromRGBO(0, 132, 255, 1)
-                                      ],
-                                    ),
-                                  ),
-                                  child: Center(
-                                      child: TextButton(
-                                    onPressed: () {
-                                      // Get.to(() => UserViewSingleStorePage(),
-                                      //     arguments: [
-                                      //       data[i]['storeid'],
-                                      //     ]);
-                                      Get.to(() => const ShopBookingPage(),
-                                          arguments: [
-                                            data[i]['ownerid'],
-                                            data[i]['type'],
-                                            data[i]['storeid'],
-                                            data[i]['name'],
-                                            data[i]['price'],
-                                            data[i]['storename'],
-                                            data[i]['start'],
-                                            data[i]['end'],
-                                            data[i]['img'],
-                                            data[i]['duration'],
-                                          ]);
-                                    },
-                                    child: Text(
+                                    child: Center(
+                                        child: Text(
                                       "Book",
                                       textAlign: TextAlign.left,
                                       style: GoogleFonts.poppins(
@@ -175,12 +175,12 @@ class _UserSearchServicesPageState extends State<UserSearchServicesPage> {
                                         fontWeight: FontWeight.w600,
                                         height: 1,
                                       ),
-                                    ),
-                                  )),
+                                    )),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         );
                       },
                     ),

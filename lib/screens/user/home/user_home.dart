@@ -4,6 +4,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 // import 'package:geocoding/geocoding.dart';
 // import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -26,15 +28,22 @@ String? userlatitude;
 String? userpincode;
 bool isVisible = true;
 
+String? userid;
+Future getUserId(BuildContext context) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  userid = prefs.getString("userid")!;
+  // print(userid);
+}
+
 Future updateuser(BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String userid = prefs.getString("userid") ?? "null";
-  String deviceid = "";
+  // String deviceid = "";
 
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
-  messaging.getToken().then((token) {
-    deviceid = token!;
-  });
+  // FirebaseMessaging messaging = FirebaseMessaging.instance;
+  // messaging.getToken().then((token) {
+  //   deviceid = token!;
+  // });
 
   http.post(
       Uri.parse(
@@ -44,11 +53,11 @@ Future updateuser(BuildContext context) async {
         'Context-Type': 'application/json; charset=UTF-8',
       },
       body: <String, String>{
-        'location': userlocation ?? "Pathanamthitta",
-        'pincode': userpincode ?? "689645",
-        'longitude': userlongitude ?? "76.7873",
-        'latitude': userlatitude ?? "9.2640",
-        'deviceid': deviceid
+        'location': userlocation ?? "",
+        'pincode': userpincode ?? "",
+        'longitude': userlongitude ?? "",
+        'latitude': userlatitude ?? "",
+        // 'deviceid': deviceid
       });
 
   // if (response.statusCode == 201) {
@@ -71,85 +80,85 @@ class UserHomePage extends StatefulWidget {
 }
 
 class _UserHomePageState extends State<UserHomePage> {
-  // String _currentAddress = "";
-  // Position? _currentPosition;
+  String _currentAddress = "";
+  Position? _currentPosition;
 
-  // Future<bool> _handleLocationPermission() async {
-  //   bool serviceEnabled;
-  //   LocationPermission permission;
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
 
-  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  //   if (!serviceEnabled) {
-  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //         content: Text(
-  //             'Location services are disabled. Please enable the services')));
-  //     return false;
-  //   }
-  //   permission = await Geolocator.checkPermission();
-  //   if (permission == LocationPermission.denied) {
-  //     permission = await Geolocator.requestPermission();
-  //     if (permission == LocationPermission.denied) {
-  //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //           content:
-  //               Text('Location permissions are denied. Enable to Continue')));
-  //       return false;
-  //     }
-  //   }
-  //   if (permission == LocationPermission.deniedForever) {
-  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //         content: Text(
-  //             'Location permissions are permanently denied, we cannot request permissions.')));
-  //     return false;
-  //   }
-  //   return true;
-  // }
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content:
+                Text('Location permissions are denied. Enable to Continue')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
+  }
 
-  // Future<void> _getCurrentPosition() async {
-  //   final hasPermission = await _handleLocationPermission();
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
 
-  //   if (!hasPermission) {
-  //     Geolocator.openLocationSettings();
-  //   }
-  //   // return;
-  //   await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-  //       .then((Position position) {
-  //     setState(() => _currentPosition = position);
-  //     _getAddressFromLatLng(_currentPosition!);
-  //   }).catchError((e) {
-  //     debugPrint(e);
-  //   });
-  // }
+    if (!hasPermission) {
+      Geolocator.openLocationSettings();
+    }
+    // return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
 
-  // Future<void> _getAddressFromLatLng(Position position) async {
-  //   await placemarkFromCoordinates(
-  //           _currentPosition!.latitude, _currentPosition!.longitude)
-  //       .then((List<Placemark> placemarks) {
-  //     Placemark place = placemarks[0];
-  //     // print(place.country);
-  //     setState(() {
-  //       _currentAddress =
-  //           '${place.administrativeArea}, ${place.locality}, ${place.thoroughfare}, ${place.postalCode}';
-  //     });
-  //     // print({_currentAddress, _currentPosition});
-  //     userlocation = _currentAddress;
-  //     userlongitude = _currentPosition!.longitude.toString();
-  //     userlatitude = _currentPosition!.latitude.toString();
-  //     userpincode = place.postalCode.toString();
-  //     updateuser(context);
-  //     isVisible = true;
-  //     setState(() {});
-  //     // print("object");
-  //     // print(isVisible);
-  //   }).catchError((e) {
-  //     debugPrint(e);
-  //   });
-  // }
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+            _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      // print(place.country);
+      setState(() {
+        _currentAddress =
+            '${place.administrativeArea}, ${place.locality}, ${place.thoroughfare}, ${place.postalCode}';
+      });
+      // print({_currentAddress, _currentPosition});
+      userlocation = _currentAddress;
+      userlongitude = _currentPosition!.longitude.toString();
+      userlatitude = _currentPosition!.latitude.toString();
+      userpincode = place.postalCode.toString();
+      updateuser(context);
+      isVisible = true;
+      setState(() {});
+      // print("object");
+      // print(isVisible);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _getCurrentPosition();
-  // }
+  @override
+  void initState() {
+    _getCurrentPosition();
+    super.initState();
+  }
 
   int currentIndex = 0;
   List tabScreens = [
@@ -248,18 +257,19 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                             items: [
                               //1st Image of Slider
                               InkWell(
-                                // onTap: () {
-                                //   Get.to(() => const UserViewStorePage(),
-                                //       arguments: [
-                                //         "data[index]['type']",
-                                //         "data[index]['type']",
-                                //         "data[index]['type']",
-                                //         "data[index]['type']",
-                                //         // data[index]['name'],
-                                //         // data[index]['start'],
-                                //         // data[index]['end']
-                                //       ]);
-                                // },
+                                onTap: () {
+                                  Get.to(() => const UserViewStorePage(),
+                                      arguments: [
+                                        // "6409b179b4eee0572655fef8",
+                                        // "nsah",
+                                        // "9:00 AM",
+                                        // "5:00 PM",
+                                        //  "data[index]['type']",
+                                        //         // data[index]['name'],
+                                        //         // data[index]['start'],
+                                        //         // data[index]['end']
+                                      ]);
+                                },
                                 child: Container(
                                   height: 180,
                                   decoration: BoxDecoration(
@@ -372,19 +382,6 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.location_on),
-                          addHorizontalSpace(10),
-                          const Text(
-                            "Adoor , Pathanamthitta",
-                            style: TextStyle(),
-                          )
-                        ],
-                      ),
-                    ),
                     // addVerticalSpace(20),
                     // Container(
                     //   height: 180,
@@ -398,7 +395,6 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     //   ),
                     // ),
                     addVerticalSpace(10),
-
                     // Container(
                     //   padding: const EdgeInsets.symmetric(horizontal: 10),
                     //   child: Row(
@@ -479,7 +475,92 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     //   ),
                     // ),
                     addVerticalSpace(10),
-
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: InkWell(
+                            onTap: (() => {
+                                  Get.to(() => const GenderFilterPage(),
+                                      arguments: ['Men'])
+                                }),
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Container(
+                                    // width: 60.0,
+                                    height: 60.0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[100],
+                                      // shape: BoxShape.circle,
+                                      borderRadius: BorderRadius.circular(12),
+                                      // color: Colors.blue,
+                                      border: Border.all(
+                                        color: Colors.black,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      "Men",
+                                      style: GoogleFonts.poppins(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16),
+                                    )),
+                                  ),
+                                ),
+                                addVerticalSpace(5),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: InkWell(
+                            onTap: (() => {
+                                  Get.to(() => const GenderFilterPage(),
+                                      arguments: ['Women'])
+                                }),
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Container(
+                                    // width: 60.0,
+                                    height: 60.0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[100],
+                                      // shape: BoxShape.circle,
+                                      borderRadius: BorderRadius.circular(12),
+                                      // color: Colors.blue,
+                                      border: Border.all(
+                                        color: Colors.black,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      "Women",
+                                      style: GoogleFonts.poppins(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16),
+                                    )),
+                                  ),
+                                ),
+                                addVerticalSpace(5),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    addVerticalSpace(20),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Row(
@@ -758,7 +839,6 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       ),
                     ),
                     addVerticalSpace(10),
-
                     addVerticalSpace(10),
                     FutureBuilder(
                       future: http.get(Uri.parse('${apidomain}service/getall')),
@@ -1248,6 +1328,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                     addVerticalSpace(5),
                                                     Text(
                                                       data[index]['location'],
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       // data[index]['location'],
                                                       style:
                                                           GoogleFonts.poppins(
@@ -1269,6 +1352,381 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                   );
                                 },
                               ),
+                            ),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text('${snapshot.error}');
+                        }
+                        return const CircularProgressIndicator();
+                      },
+                    ),
+                    // addVerticalSpace(20),
+                    // Container(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 10),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       Text(
+                    //         'Followed Stores',
+                    //         style: GoogleFonts.poppins(
+                    //           color: const Color(0xFF09041B),
+                    //           fontSize: 20,
+                    //           // height: 1.5,
+                    //           fontWeight: FontWeight.w600,
+                    //         ),
+                    //       ),
+                    //       // TextButton(
+                    //       //     onPressed: () {},
+                    //       //     child: Text(
+                    //       //       'View More',
+                    //       //       style: GoogleFonts.poppins(
+                    //       //         color: const Color(0xFFFF7B32),
+                    //       //         fontSize: 12,
+                    //       //         // height: 1.5,
+                    //       //         fontWeight: FontWeight.w500,
+                    //       //       ),
+                    //       //     ))
+                    //     ],
+                    //   ),
+                    // ),
+                    // addVerticalSpace(20),
+                    // FutureBuilder(
+                    //   future:
+                    //       http.get(Uri.parse('${apidomain}auth/user/saved/$userid')),
+                    //   builder: (BuildContext context,
+                    //       AsyncSnapshot<http.Response> snapshot) {
+                    //     if (snapshot.hasData) {
+                    //       var data = jsonDecode(snapshot.data!.body);
+                    //       print(data);
+                    //       return Container(
+                    //         child: SizedBox(
+                    //           height: 240,
+                    //           child: ListView.builder(
+                    //             physics: const BouncingScrollPhysics(),
+                    //             scrollDirection: Axis.horizontal,
+                    //             itemCount: data.length,
+                    //             itemBuilder: (BuildContext context, int index) {
+                    //               return InkWell(
+                    //                 onTap: () {
+                    //                   Get.to(() => const UserViewStorePage(),
+                    //                       arguments: [
+                    //                         data[index]['type'],
+                    //                         data[index]['name'],
+                    //                         data[index]['start'],
+                    //                         data[index]['end']
+                    //                       ]);
+                    //                 },
+                    //                 child: Container(
+                    //                   margin: const EdgeInsets.symmetric(
+                    //                       vertical: 10, horizontal: 5),
+                    //                   // padding: const EdgeInsets.all(5),
+                    //                   decoration: BoxDecoration(
+                    //                     color: Colors.white,
+                    //                     boxShadow: [
+                    //                       BoxShadow(
+                    //                         color: Colors.grey.withOpacity(0.5),
+                    //                         spreadRadius: 1,
+                    //                         blurRadius: 3,
+                    //                         offset: const Offset(0,
+                    //                             3), // changes position of shadow
+                    //                       ),
+                    //                     ],
+                    //                     borderRadius: BorderRadius.circular(10),
+                    //                     // border: Border.all(
+                    //                     //   color: Colors.black,
+                    //                     //   width: 0.1,
+                    //                     // ),
+                    //                   ),
+                    //                   child: SizedBox(
+                    //                     width: 240,
+                    //                     height: 200,
+                    //                     child: Card(
+                    //                       // margin: const EdgeInsets.symmetric(
+                    //                       //     horizontal: 8,),
+                    //                       elevation: 0,
+                    //                       shape: RoundedRectangleBorder(
+                    //                           borderRadius:
+                    //                               BorderRadius.circular(16)),
+                    //                       child: Column(
+                    //                         crossAxisAlignment:
+                    //                             CrossAxisAlignment.stretch,
+                    //                         mainAxisAlignment:
+                    //                             MainAxisAlignment.start,
+                    //                         children: [
+                    //                           ClipRRect(
+                    //                             borderRadius: const BorderRadius
+                    //                                     .vertical(
+                    //                                 top: Radius.circular(10)),
+                    //                             child: Image.network(
+                    //                               data[index]['img'],
+                    //                               height: 140,
+                    //                               fit: BoxFit.cover,
+                    //                             ),
+                    //                           ),
+                    //                           addVerticalSpace(10),
+                    //                           Padding(
+                    //                             padding:
+                    //                                 const EdgeInsets.all(4),
+                    //                             child: Column(
+                    //                               crossAxisAlignment:
+                    //                                   CrossAxisAlignment.center,
+                    //                               mainAxisAlignment:
+                    //                                   MainAxisAlignment
+                    //                                       .spaceEvenly,
+                    //                               children: [
+                    //                                 Text(
+                    //                                   data[index]['name'],
+                    //                                   style:
+                    //                                       GoogleFonts.poppins(
+                    //                                           fontSize: 18,
+                    //                                           fontWeight:
+                    //                                               FontWeight
+                    //                                                   .w700),
+                    //                                 ),
+                    //                                 addVerticalSpace(5),
+                    //                                 Text(
+                    //                                   data[index]['location'],
+                    //                                   maxLines: 1,
+                    //                                   overflow:
+                    //                                       TextOverflow.ellipsis,
+                    //                                   // data[index]['location'],
+                    //                                   style:
+                    //                                       GoogleFonts.poppins(
+                    //                                           fontSize: 12,
+                    //                                           fontWeight:
+                    //                                               FontWeight
+                    //                                                   .w700,
+                    //                                           color: Colors
+                    //                                               .yellow[900]),
+                    //                                 ),
+                    //                               ],
+                    //                             ),
+                    //                           ),
+                    //                         ],
+                    //                       ),
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               );
+                    //             },
+                    //           ),
+                    //         ),
+                    //       );
+                    //     } else if (snapshot.hasError) {
+                    //       return Text('${snapshot.error}');
+                    //     }
+                    //     return const CircularProgressIndicator();
+                    //   },
+                    // ),
+                    addVerticalSpace(20),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Combo Offers',
+                            style: GoogleFonts.poppins(
+                              color: const Color(0xFF09041B),
+                              fontSize: 20,
+                              // height: 1.5,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          // TextButton(
+                          //     onPressed: () {},
+                          //     child: Text(
+                          //       'View More',
+                          //       style: GoogleFonts.poppins(
+                          //         color: const Color(0xFFFF7B32),
+                          //         fontSize: 12,
+                          //         // height: 1.5,
+                          //         fontWeight: FontWeight.w500,
+                          //       ),
+                          //     ))
+                        ],
+                      ),
+                    ),
+                    addVerticalSpace(20),
+                    FutureBuilder(
+                      future: http.get(Uri.parse(
+                          '${apidomain}service/search/combo/$userid')),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<http.Response> snapshot) {
+                        if (snapshot.hasData) {
+                          var data = jsonDecode(snapshot.data!.body);
+                          // print(data);
+                          return SizedBox(
+                            height: 280,
+                            child: ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: data
+                                  .length, // Replace with the actual number of items in your list
+                              itemBuilder: (BuildContext context, int index) {
+                                return InkWell(
+                                  onTap: (() => {
+                                        Get.to(() => const ShopBookingPage(),
+                                            arguments: [
+                                              data[index]['ownerid'],
+                                              data[index]['type'],
+                                              data[index]['storeid'],
+                                              data[index]['name'],
+                                              data[index]['price'],
+                                              data[index]['storename'],
+                                              data[index]['start'],
+                                              data[index]['end'],
+                                              data[index]['img'],
+                                              data[index]['duration']
+                                            ])
+                                      }),
+                                  child: Container(
+                                    // margin: EdgeInsets.symmetric(horizontal: 3),
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 5),
+                                    // padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 1,
+                                          blurRadius: 3,
+                                          offset: const Offset(0,
+                                              3), // changes position of shadow
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.circular(10),
+                                      // border: Border.all(
+                                      //   color: Colors.black,
+                                      //   width: 0.1,
+                                      // ),
+                                    ),
+                                    //decoration: BoxDecoration(
+                                    //   boxShadow: [
+                                    //     BoxShadow(
+                                    //       color: Colors.black.withOpacity(0.5),
+                                    //       spreadRadius: 2,
+                                    //       blurRadius: 10,
+                                    //       offset: Offset(0, 3), // changes position of shadow
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                    child: SizedBox(
+                                      width: 240,
+                                      height: 160,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(10),
+                                                    topRight:
+                                                        Radius.circular(10)),
+                                            child: Image.network(
+                                              data[index]['img'],
+                                              height: 130,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          addVerticalSpace(10),
+                                          Expanded(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 12.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  Text(
+                                                    data[index]['name'],
+                                                    style: const TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                  addVerticalSpace(5),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "${data[index]['ogprice']} ₹",
+                                                        // data[index]['location'],
+                                                        style: TextStyle(
+                                                            decoration:
+                                                                TextDecoration
+                                                                    .lineThrough,
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color: Colors
+                                                                .red[900]),
+                                                      ),
+                                                      addHorizontalSpace(5),
+                                                      Text(
+                                                        "${data[index]['price']} ₹",
+                                                        // data[index]['location'],
+                                                        style: TextStyle(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color: Colors
+                                                                .green[900]),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  addVerticalSpace(5),
+                                                  Row(
+                                                    children: [
+                                                      const Icon(
+                                                        Icons.timelapse,
+                                                        size: 14,
+                                                      ),
+                                                      addHorizontalSpace(3),
+                                                      Text(
+                                                        "${data[index]['duration']} minutes",
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          color: Colors
+                                                              .yellow[900],
+                                                          fontSize: 12,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  addVerticalSpace(5),
+                                                  Text(
+                                                    "${data[index]['description']}",
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: GoogleFonts.poppins(
+                                                        color: Colors.grey[600],
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                  addVerticalSpace(5),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           );
                         } else if (snapshot.hasError) {
