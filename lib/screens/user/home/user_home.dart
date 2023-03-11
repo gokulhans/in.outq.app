@@ -10,6 +10,7 @@ import 'package:geolocator/geolocator.dart';
 // import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:outq/screens/owner/service/edit/edit_service.dart';
 import 'package:outq/screens/user/booking/booking.dart';
 import 'package:outq/screens/user/booking/view-booking.dart';
 import 'package:outq/screens/user/components/appbar/user_bar_main.dart';
@@ -27,13 +28,6 @@ String? userlongitude;
 String? userlatitude;
 String? userpincode;
 bool isVisible = true;
-
-String? userid;
-Future getUserId(BuildContext context) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  userid = prefs.getString("userid")!;
-  // print(userid);
-}
 
 Future updateuser(BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -232,6 +226,27 @@ class UserHomeScreen extends StatefulWidget {
 }
 
 class _UserHomeScreenState extends State<UserHomeScreen> {
+  Future<http.Response>? _followfuture;
+  Future<http.Response>? _combofuture;
+  var userid;
+  void onload() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    userid = pref.getString("userid");
+    setState(() {
+      _combofuture =
+          http.get(Uri.parse('${apidomain}service/search/combo/$userid'));
+      _followfuture =
+          http.get(Uri.parse('${apidomain}auth/user/saved/$userid'));
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    onload();
+    super.initState();
+  }
+
   var query;
   @override
   Widget build(BuildContext context) {
@@ -1360,164 +1375,163 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                         return const CircularProgressIndicator();
                       },
                     ),
-                    // addVerticalSpace(20),
-                    // Container(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 10),
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       Text(
-                    //         'Followed Stores',
-                    //         style: GoogleFonts.poppins(
-                    //           color: const Color(0xFF09041B),
-                    //           fontSize: 20,
-                    //           // height: 1.5,
-                    //           fontWeight: FontWeight.w600,
-                    //         ),
-                    //       ),
-                    //       // TextButton(
-                    //       //     onPressed: () {},
-                    //       //     child: Text(
-                    //       //       'View More',
-                    //       //       style: GoogleFonts.poppins(
-                    //       //         color: const Color(0xFFFF7B32),
-                    //       //         fontSize: 12,
-                    //       //         // height: 1.5,
-                    //       //         fontWeight: FontWeight.w500,
-                    //       //       ),
-                    //       //     ))
-                    //     ],
-                    //   ),
-                    // ),
-                    // addVerticalSpace(20),
-                    // FutureBuilder(
-                    //   future:
-                    //       http.get(Uri.parse('${apidomain}auth/user/saved/$userid')),
-                    //   builder: (BuildContext context,
-                    //       AsyncSnapshot<http.Response> snapshot) {
-                    //     if (snapshot.hasData) {
-                    //       var data = jsonDecode(snapshot.data!.body);
-                    //       print(data);
-                    //       return Container(
-                    //         child: SizedBox(
-                    //           height: 240,
-                    //           child: ListView.builder(
-                    //             physics: const BouncingScrollPhysics(),
-                    //             scrollDirection: Axis.horizontal,
-                    //             itemCount: data.length,
-                    //             itemBuilder: (BuildContext context, int index) {
-                    //               return InkWell(
-                    //                 onTap: () {
-                    //                   Get.to(() => const UserViewStorePage(),
-                    //                       arguments: [
-                    //                         data[index]['type'],
-                    //                         data[index]['name'],
-                    //                         data[index]['start'],
-                    //                         data[index]['end']
-                    //                       ]);
-                    //                 },
-                    //                 child: Container(
-                    //                   margin: const EdgeInsets.symmetric(
-                    //                       vertical: 10, horizontal: 5),
-                    //                   // padding: const EdgeInsets.all(5),
-                    //                   decoration: BoxDecoration(
-                    //                     color: Colors.white,
-                    //                     boxShadow: [
-                    //                       BoxShadow(
-                    //                         color: Colors.grey.withOpacity(0.5),
-                    //                         spreadRadius: 1,
-                    //                         blurRadius: 3,
-                    //                         offset: const Offset(0,
-                    //                             3), // changes position of shadow
-                    //                       ),
-                    //                     ],
-                    //                     borderRadius: BorderRadius.circular(10),
-                    //                     // border: Border.all(
-                    //                     //   color: Colors.black,
-                    //                     //   width: 0.1,
-                    //                     // ),
-                    //                   ),
-                    //                   child: SizedBox(
-                    //                     width: 240,
-                    //                     height: 200,
-                    //                     child: Card(
-                    //                       // margin: const EdgeInsets.symmetric(
-                    //                       //     horizontal: 8,),
-                    //                       elevation: 0,
-                    //                       shape: RoundedRectangleBorder(
-                    //                           borderRadius:
-                    //                               BorderRadius.circular(16)),
-                    //                       child: Column(
-                    //                         crossAxisAlignment:
-                    //                             CrossAxisAlignment.stretch,
-                    //                         mainAxisAlignment:
-                    //                             MainAxisAlignment.start,
-                    //                         children: [
-                    //                           ClipRRect(
-                    //                             borderRadius: const BorderRadius
-                    //                                     .vertical(
-                    //                                 top: Radius.circular(10)),
-                    //                             child: Image.network(
-                    //                               data[index]['img'],
-                    //                               height: 140,
-                    //                               fit: BoxFit.cover,
-                    //                             ),
-                    //                           ),
-                    //                           addVerticalSpace(10),
-                    //                           Padding(
-                    //                             padding:
-                    //                                 const EdgeInsets.all(4),
-                    //                             child: Column(
-                    //                               crossAxisAlignment:
-                    //                                   CrossAxisAlignment.center,
-                    //                               mainAxisAlignment:
-                    //                                   MainAxisAlignment
-                    //                                       .spaceEvenly,
-                    //                               children: [
-                    //                                 Text(
-                    //                                   data[index]['name'],
-                    //                                   style:
-                    //                                       GoogleFonts.poppins(
-                    //                                           fontSize: 18,
-                    //                                           fontWeight:
-                    //                                               FontWeight
-                    //                                                   .w700),
-                    //                                 ),
-                    //                                 addVerticalSpace(5),
-                    //                                 Text(
-                    //                                   data[index]['location'],
-                    //                                   maxLines: 1,
-                    //                                   overflow:
-                    //                                       TextOverflow.ellipsis,
-                    //                                   // data[index]['location'],
-                    //                                   style:
-                    //                                       GoogleFonts.poppins(
-                    //                                           fontSize: 12,
-                    //                                           fontWeight:
-                    //                                               FontWeight
-                    //                                                   .w700,
-                    //                                           color: Colors
-                    //                                               .yellow[900]),
-                    //                                 ),
-                    //                               ],
-                    //                             ),
-                    //                           ),
-                    //                         ],
-                    //                       ),
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               );
-                    //             },
-                    //           ),
-                    //         ),
-                    //       );
-                    //     } else if (snapshot.hasError) {
-                    //       return Text('${snapshot.error}');
-                    //     }
-                    //     return const CircularProgressIndicator();
-                    //   },
-                    // ),
+                    addVerticalSpace(20),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Followed Stores',
+                            style: GoogleFonts.poppins(
+                              color: const Color(0xFF09041B),
+                              fontSize: 20,
+                              // height: 1.5,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          // TextButton(
+                          //     onPressed: () {},
+                          //     child: Text(
+                          //       'View More',
+                          //       style: GoogleFonts.poppins(
+                          //         color: const Color(0xFFFF7B32),
+                          //         fontSize: 12,
+                          //         // height: 1.5,
+                          //         fontWeight: FontWeight.w500,
+                          //       ),
+                          //     ))
+                        ],
+                      ),
+                    ),
+                    addVerticalSpace(20),
+                    FutureBuilder(
+                      future: _followfuture,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<http.Response> snapshot) {
+                        if (snapshot.hasData) {
+                          var data = jsonDecode(snapshot.data!.body);
+                          print(data);
+                          return Container(
+                            child: SizedBox(
+                              height: 240,
+                              child: ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: data.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Get.to(() => const UserViewStorePage(),
+                                          arguments: [
+                                            data[index]['type'],
+                                            data[index]['name'],
+                                            data[index]['start'],
+                                            data[index]['end']
+                                          ]);
+                                    },
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 5),
+                                      // padding: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            spreadRadius: 1,
+                                            blurRadius: 3,
+                                            offset: const Offset(0,
+                                                3), // changes position of shadow
+                                          ),
+                                        ],
+                                        borderRadius: BorderRadius.circular(10),
+                                        // border: Border.all(
+                                        //   color: Colors.black,
+                                        //   width: 0.1,
+                                        // ),
+                                      ),
+                                      child: SizedBox(
+                                        width: 240,
+                                        height: 200,
+                                        child: Card(
+                                          // margin: const EdgeInsets.symmetric(
+                                          //     horizontal: 8,),
+                                          elevation: 0,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(16)),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius: const BorderRadius
+                                                        .vertical(
+                                                    top: Radius.circular(10)),
+                                                child: Image.network(
+                                                  data[index]['img'],
+                                                  height: 140,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                              addVerticalSpace(10),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(4),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    Text(
+                                                      data[index]['name'],
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                    ),
+                                                    addVerticalSpace(5),
+                                                    Text(
+                                                      data[index]['location'],
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      // data[index]['location'],
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              color: Colors
+                                                                  .yellow[900]),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text('${snapshot.error}');
+                        }
+                        return const CircularProgressIndicator();
+                      },
+                    ),
                     addVerticalSpace(20),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -1549,8 +1563,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     ),
                     addVerticalSpace(20),
                     FutureBuilder(
-                      future: http.get(Uri.parse(
-                          '${apidomain}service/search/combo/$userid')),
+                      future: _combofuture,
                       builder: (BuildContext context,
                           AsyncSnapshot<http.Response> snapshot) {
                         if (snapshot.hasData) {

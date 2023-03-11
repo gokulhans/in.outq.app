@@ -18,7 +18,7 @@ class UserNotifications extends StatefulWidget {
 
 class _UserNotificationsState extends State<UserNotifications> {
   var userid;
-  late Future<http.Response> _future;
+  Future<http.Response>? _future;
   void onload() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     userid = pref.getString("userid");

@@ -158,7 +158,7 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
   //   super.initState();
   // }
 
-  late Future<dynamic> _future;
+  Future<dynamic>? _future;
   @override
   void initState() {
     super.initState();

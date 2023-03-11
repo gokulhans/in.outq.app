@@ -38,7 +38,7 @@ class ChartDashBoardState extends State<ChartDashBoard> {
     _SalesData('May', 40)
   ];
 
-  late Future<http.Response> _future;
+  Future<http.Response>? _future;
   var storeid;
   void onload() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
