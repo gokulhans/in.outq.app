@@ -154,7 +154,7 @@
 //             //             Text(
 //             //               "Appointment",
 //             //               textAlign: TextAlign.center,
-//             //               style: GoogleFonts.poppins(
+//             //               style: GoogleFonts.montserrat(
 //             //                 fontWeight: FontWeight.w700,
 //             //               ),
 //             //             ),
@@ -187,7 +187,7 @@
 //             //             Text(
 //             //               "Track Bus",
 //             //               textAlign: TextAlign.center,
-//             //               style: GoogleFonts.poppins(
+//             //               style: GoogleFonts.montserrat(
 //             //                 fontWeight: FontWeight.w700,
 //             //               ),
 //             //             ),
@@ -236,7 +236,7 @@
 //             //               onPressed: () {}),
 //             //           Text(
 //             //             'Calicut, Kerala',
-//             //             style: GoogleFonts.poppins(
+//             //             style: GoogleFonts.montserrat(
 //             //               color: const Color(0xFF09041B),
 //             //               fontSize: 16,
 //             //               // height: 1.5,
@@ -282,7 +282,7 @@
 //             //               onTap: () {},
 //             //               child: Text(
 //             //                 'SALOON',
-//             //                 style: GoogleFonts.poppins(
+//             //                 style: GoogleFonts.montserrat(
 //             //                   color: Colors.white,
 //             //                   fontSize: 14,
 //             //                   // height: 1.5,
@@ -304,7 +304,7 @@
 //             //               onTap: () {},
 //             //               child: Text(
 //             //                 'BUSES',
-//             //                 style: GoogleFonts.poppins(
+//             //                 style: GoogleFonts.montserrat(
 //             //                   color: Colors.white,
 //             //                   fontSize: 14,
 //             //                   // height: 1.5,
@@ -326,7 +326,7 @@
 //             //               onTap: () {},
 //             //               child: Text(
 //             //                 'TURF',
-//             //                 style: GoogleFonts.poppins(
+//             //                 style: GoogleFonts.montserrat(
 //             //                   color: Colors.white,
 //             //                   fontSize: 14,
 //             //                   // height: 1.5,
@@ -348,7 +348,7 @@
 //             //               onTap: () {},
 //             //               child: Text(
 //             //                 'PETS',
-//             //                 style: GoogleFonts.poppins(
+//             //                 style: GoogleFonts.montserrat(
 //             //                   color: Colors.white,
 //             //                   fontSize: 14,
 //             //                   // height: 1.5,
@@ -385,7 +385,7 @@
 //                   return Text('${snapshot.error}');
 //                 }
 
-//                 return CircularProgressIndicator();
+//                 return PlaceholderLong();
 //               },
 //             ),
 //             Container(
@@ -512,7 +512,7 @@
 //             //     children: [
 //             //       // Text(
 //             //       //   'Nearest Services',
-//             //       //   style: GoogleFonts.poppins(
+//             //       //   style: GoogleFonts.montserrat(
 //             //       //     color: const Color(0xFF09041B),
 //             //       //     fontSize: 20,
 //             //       //     // height: 1.5,
@@ -521,7 +521,7 @@
 //             //       // ),
 //             //       // Text(
 //             //       //   'View More',
-//             //       //   style: GoogleFonts.poppins(
+//             //       //   style: GoogleFonts.montserrat(
 //             //       //     color: const Color(0xFFFF7B32),
 //             //       //     fontSize: 12,
 //             //       //     // height: 1.5,
@@ -655,7 +655,7 @@
 //             //                           child: Text(
 //             //                             "view",
 //             //                             textAlign: TextAlign.left,
-//             //                             style: GoogleFonts.poppins(
+//             //                             style: GoogleFonts.montserrat(
 //             //                               color: Colors.white,
 //             //                               fontSize: 10,
 //             //                               letterSpacing: 0.5,

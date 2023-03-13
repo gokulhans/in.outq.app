@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:horizontal_calendar/horizontal_calendar.dart';
 import 'package:outq/Backend/api/user_api.dart';
 import 'package:outq/Backend/models/user_models.dart';
+import 'package:outq/components/placeholders/placeholder.dart';
 import 'package:outq/screens/shared/exit_pop/exit_pop_up.dart';
 import 'package:outq/screens/user/booking/success_booked.dart';
 import 'package:outq/screens/user/components/appbar/user_appbar.dart';
@@ -267,8 +268,129 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 5),
+                        // margin: const EdgeInsets.symmetric(
+                        //     vertical: 10, horizontal: 20),
+                        // padding: const EdgeInsets.symmetric(horizontal: 5),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 1,
+                              blurRadius: 3,
+                              offset: const Offset(
+                                  0, 3), // changes position of shadow
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(10),
+                          // border: Border.all(
+                          //   color: Colors.black,
+                          //   width: 0.1,
+                          // ),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 2,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                            child: Image(
+                                              fit: BoxFit.cover,
+                                              image:
+                                                  NetworkImage(argumentData[8]),
+                                              width: 100,
+                                              height: 80,
+                                            )),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 4,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                argumentData[3],
+                                                textAlign: TextAlign.left,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .subtitle1,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  const Icon(
+                                                    Icons.timelapse,
+                                                    size: 14,
+                                                  ),
+                                                  addHorizontalSpace(3),
+                                                  Text(
+                                                    "${argumentData[9]} minutes",
+                                                    textAlign: TextAlign.left,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .subtitle2,
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  // Text(
+                                                  //   data.ogprice + " ₹",
+                                                  //   textAlign: TextAlign.left,
+                                                  //   style: const TextStyle(
+                                                  //       fontWeight:
+                                                  //           FontWeight.w600,
+                                                  //       color: Colors.red,
+                                                  //       decoration:
+                                                  //           TextDecoration
+                                                  //               .lineThrough),
+                                                  // ),
+                                                  // addHorizontalSpace(10),
+                                                  Text(argumentData[4] + " ₹",
+                                                      textAlign: TextAlign.left,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headline5),
+                                                ],
+                                              ),
+                                              // Text(
+                                              //   argumentData[9],
+                                              //   textAlign: TextAlign.left,
+                                              //   maxLines: 1,
+                                              //   overflow: TextOverflow.ellipsis,
+                                              //   style: Theme.of(context)
+                                              //       .textTheme
+                                              //       .subtitle2,
+                                              // ),
+                                            ]),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       // Text(argumentData[2]),
-                      // addVerticalSpace(20),
+                      addVerticalSpace(20),
                       const Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -414,11 +536,7 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                           } else if (snapshot.hasData) {
                             return Text('Error: ${snapshot.error}');
                           } else {
-                            return const SizedBox(
-                                height: 200,
-                                width: 200,
-                                child:
-                                    Center(child: CircularProgressIndicator()));
+                            return Center(child: PlaceholderLong());
                           }
                         },
                       ),
@@ -631,7 +749,7 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                                 child: Text(
                                   argumentData[5],
                                   textAlign: TextAlign.right,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.blue,
                                     fontSize: 15,
                                     letterSpacing: 0.5,
@@ -673,7 +791,7 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                                 child: Text(
                                   argumentData[3],
                                   textAlign: TextAlign.right,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.blue,
                                     fontSize: 15,
                                     letterSpacing: 0.5,
@@ -715,7 +833,7 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                                 child: Text(
                                   argumentData[4],
                                   textAlign: TextAlign.right,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.blue,
                                     fontSize: 15,
                                     letterSpacing: 0.5,
@@ -758,7 +876,7 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                                 child: Text(
                                   argumentData[9],
                                   textAlign: TextAlign.right,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.blue,
                                     fontSize: 15,
                                     letterSpacing: 0.5,

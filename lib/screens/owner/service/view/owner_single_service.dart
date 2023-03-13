@@ -67,7 +67,7 @@ class OwnerSingleServicePage extends StatelessWidget {
                                     children: [
                                       Text(
                                         'Service Details',
-                                        style: GoogleFonts.poppins(
+                                        style: GoogleFonts.montserrat(
                                           color: const Color(0xFF09041B),
                                           fontSize: 18,
                                           // height: 1.5,
@@ -106,8 +106,8 @@ class OwnerSingleServicePage extends StatelessWidget {
                                                     addHorizontalSpace(5),
                                                     Text(
                                                       'Edit',
-                                                      style:
-                                                          GoogleFonts.poppins(
+                                                      style: GoogleFonts
+                                                          .montserrat(
                                                         color: Colors.white,
                                                         // const Color(
                                                         //     0xFFFF7B32),
@@ -152,7 +152,7 @@ class OwnerSingleServicePage extends StatelessWidget {
                                       children: [
                                         Text(
                                           'Name',
-                                          style: GoogleFonts.poppins(
+                                          style: GoogleFonts.montserrat(
                                             color: const Color(0xFF09041B),
                                             fontSize: 15,
                                             // height: 1.5,
@@ -201,7 +201,7 @@ class OwnerSingleServicePage extends StatelessWidget {
                                           children: [
                                             Text(
                                               'Description',
-                                              style: GoogleFonts.poppins(
+                                              style: GoogleFonts.montserrat(
                                                 color: const Color(0xFF09041B),
                                                 fontSize: 15,
                                                 // height: 1.5,
@@ -212,7 +212,7 @@ class OwnerSingleServicePage extends StatelessWidget {
                                             //     onPressed: () {},
                                             //     child: Text(
                                             //       'Edit',
-                                            //       style: GoogleFonts.poppins(
+                                            //       style: GoogleFonts.montserrat(
                                             //         color: const Color(0xFFFF7B32),
                                             //         fontSize: 12,
                                             //         // height: 1.5,
@@ -259,7 +259,7 @@ class OwnerSingleServicePage extends StatelessWidget {
                                       children: [
                                         Text(
                                           'Image',
-                                          style: GoogleFonts.poppins(
+                                          style: GoogleFonts.montserrat(
                                             color: const Color(0xFF09041B),
                                             fontSize: 15,
                                             // height: 1.5,
@@ -318,7 +318,7 @@ class OwnerSingleServicePage extends StatelessWidget {
                                           children: [
                                             Text(
                                               'Discounted Price',
-                                              style: GoogleFonts.poppins(
+                                              style: GoogleFonts.montserrat(
                                                 color: const Color(0xFF09041B),
                                                 fontSize: 15,
                                                 // height: 1.5,
@@ -329,7 +329,7 @@ class OwnerSingleServicePage extends StatelessWidget {
                                             //     onPressed: () {},
                                             //     child: Text(
                                             //       'Edit',
-                                            //       style: GoogleFonts.poppins(
+                                            //       style: GoogleFonts.montserrat(
                                             //         color: const Color(0xFFFF7B32),
                                             //         fontSize: 12,
                                             //         // height: 1.5,
@@ -380,7 +380,7 @@ class OwnerSingleServicePage extends StatelessWidget {
                                           children: [
                                             Text(
                                               'Original Price',
-                                              style: GoogleFonts.poppins(
+                                              style: GoogleFonts.montserrat(
                                                 color: const Color(0xFF09041B),
                                                 fontSize: 15,
                                                 // height: 1.5,
@@ -391,7 +391,7 @@ class OwnerSingleServicePage extends StatelessWidget {
                                             //     onPressed: () {},
                                             //     child: Text(
                                             //       'Edit',
-                                            //       style: GoogleFonts.poppins(
+                                            //       style: GoogleFonts.montserrat(
                                             //         color: const Color(0xFFFF7B32),
                                             //         fontSize: 12,
                                             //         // height: 1.5,
@@ -420,7 +420,7 @@ class OwnerSingleServicePage extends StatelessWidget {
                                       },
                                       child: Text(
                                         'Delete Service',
-                                        style: GoogleFonts.poppins(
+                                        style: GoogleFonts.montserrat(
                                           color: Colors.red,
                                           fontSize: 14,
                                           // height: 1.5,
@@ -467,7 +467,7 @@ class ServiceListTile extends StatelessWidget {
         //   onPressed: () {},
         //   child: Text(
         //     'Edit',
-        //     style: GoogleFonts.poppins(
+        //     style: GoogleFonts.montserrat(
         //       color: const Color(0xFFFF7B32),
         //       fontSize: 12,
         //       // height: 1.5,

@@ -19,7 +19,7 @@ class _UpdateHomeState extends State<UpdateHome> {
       androidId: 'in.outq.app',
     );
 
-    Timer(const Duration(milliseconds: 800), () {
+    Timer(const Duration(milliseconds: 2000), () {
       checkNewVersion(newVersion);
     });
 

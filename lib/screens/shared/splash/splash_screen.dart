@@ -69,7 +69,7 @@ class _SplashScreenState extends State<SplashScreen> {
             // addVerticalSpace(50),
             Text(
               "Be Out From The Queue",
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.montserrat(
                   fontWeight: FontWeight.w500, color: Colors.white),
             )
           ],

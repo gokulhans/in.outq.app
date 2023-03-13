@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:outq/components/placeholders/placeholder.dart';
 import 'package:outq/screens/owner/components/appbar/owner_appbar.dart';
 import 'package:http/http.dart' as http;
 import 'package:outq/screens/owner/service/edit/edit_service.dart';
@@ -108,10 +109,7 @@ class _OwnerNotificationsState extends State<OwnerNotifications> {
           } else if (snapshot.hasData) {
             return Text('Error: ${snapshot.error}');
           } else {
-            return const SizedBox(
-                height: 200,
-                width: 200,
-                child: Center(child: CircularProgressIndicator()));
+            return Center(child: PlaceholderLong());
           }
         },
       ),

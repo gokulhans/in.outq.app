@@ -165,7 +165,7 @@ class _OwnerAppoinmentHistoryPageState
                                               ? Text(
                                                   snapshot.data[i].orderid,
                                                   textAlign: TextAlign.left,
-                                                  style: GoogleFonts.poppins(
+                                                  style: GoogleFonts.montserrat(
                                                     color: Colors.red,
                                                     fontSize: 12,
                                                     letterSpacing: 0.5,
@@ -176,7 +176,7 @@ class _OwnerAppoinmentHistoryPageState
                                               : Text(
                                                   snapshot.data[i].orderid,
                                                   textAlign: TextAlign.left,
-                                                  style: GoogleFonts.poppins(
+                                                  style: GoogleFonts.montserrat(
                                                     color: Colors.green,
                                                     fontSize: 12,
                                                     letterSpacing: 0.5,

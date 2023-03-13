@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:outq/components/placeholders/placeholder.dart';
 import 'package:outq/utils/constants.dart';
 import 'package:outq/utils/widget_functions.dart';
 // import 'package:syncfusion_flutter_charts/charts.dart';
@@ -95,7 +96,7 @@ class ChartDashBoardState extends State<ChartDashBoard> {
                         children: [
                           Text(
                             'Today Appoinments',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.montserrat(
                               color: Colors.blue,
                               fontSize: 14,
                               // height: 1.5,
@@ -105,7 +106,7 @@ class ChartDashBoardState extends State<ChartDashBoard> {
                           addVerticalSpace(10),
                           Text(
                             data["t"].toString(),
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.montserrat(
                               color: const Color(0xFF09041B),
                               fontSize: 32,
                               // height: 1.5,
@@ -120,7 +121,7 @@ class ChartDashBoardState extends State<ChartDashBoard> {
                         children: [
                           Text(
                             'YesterDay Appoinments',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.montserrat(
                               color: Colors.blue,
                               fontSize: 14,
                               // height: 1.5,
@@ -130,7 +131,7 @@ class ChartDashBoardState extends State<ChartDashBoard> {
                           addVerticalSpace(10),
                           Text(
                             data["y"].toString(),
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.montserrat(
                               color: const Color(0xFF09041B),
                               fontSize: 32,
                               // height: 1.5,
@@ -145,7 +146,7 @@ class ChartDashBoardState extends State<ChartDashBoard> {
                         children: [
                           Text(
                             "Growth Rate",
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.montserrat(
                               color: Colors.blue,
                               fontSize: 14,
                               // height: 1.5,
@@ -156,7 +157,7 @@ class ChartDashBoardState extends State<ChartDashBoard> {
                           (double.parse(data["growth"]) > 0)
                               ? Text(
                                   "+${data["growth"].toString()} %",
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.green,
                                     fontSize: 25,
                                     // height: 1.5,
@@ -165,7 +166,7 @@ class ChartDashBoardState extends State<ChartDashBoard> {
                                 )
                               : Text(
                                   "${data["growth"].toString()} %",
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.red,
                                     fontSize: 25,
                                     // height: 1.5,
@@ -179,10 +180,7 @@ class ChartDashBoardState extends State<ChartDashBoard> {
                 } else if (snapshot.hasData) {
                   return Text('Error: ${snapshot.error}');
                 } else {
-                  return const SizedBox(
-                      height: 200,
-                      width: 200,
-                      child: Center(child: CircularProgressIndicator()));
+                  return Center(child: PlaceholderLong());
                 }
               },
             ),

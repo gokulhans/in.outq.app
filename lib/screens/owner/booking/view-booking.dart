@@ -101,7 +101,7 @@ class _OwnerAppoinmentInfoPageState extends State<OwnerAppoinmentInfoPage> {
                                 Text(
                                   "Time",
                                   textAlign: TextAlign.left,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.black,
                                     fontSize: 15,
                                     letterSpacing: 0.5,
@@ -125,7 +125,7 @@ class _OwnerAppoinmentInfoPageState extends State<OwnerAppoinmentInfoPage> {
                                 child: Text(
                                   argumentData[0],
                                   textAlign: TextAlign.right,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.blue,
                                     fontSize: 15,
                                     letterSpacing: 0.5,
@@ -150,7 +150,7 @@ class _OwnerAppoinmentInfoPageState extends State<OwnerAppoinmentInfoPage> {
                                 Text(
                                   "Price",
                                   textAlign: TextAlign.left,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.black,
                                     fontSize: 15,
                                     letterSpacing: 0.5,
@@ -174,7 +174,7 @@ class _OwnerAppoinmentInfoPageState extends State<OwnerAppoinmentInfoPage> {
                                 child: Text(
                                   argumentData[5],
                                   textAlign: TextAlign.right,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.blue,
                                     fontSize: 15,
                                     letterSpacing: 0.5,
@@ -199,7 +199,7 @@ class _OwnerAppoinmentInfoPageState extends State<OwnerAppoinmentInfoPage> {
                                 Text(
                                   "Service",
                                   textAlign: TextAlign.left,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.black,
                                     fontSize: 15,
                                     letterSpacing: 0.5,
@@ -223,7 +223,7 @@ class _OwnerAppoinmentInfoPageState extends State<OwnerAppoinmentInfoPage> {
                                 child: Text(
                                   argumentData[3],
                                   textAlign: TextAlign.right,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.blue,
                                     fontSize: 15,
                                     letterSpacing: 0.5,
@@ -248,7 +248,7 @@ class _OwnerAppoinmentInfoPageState extends State<OwnerAppoinmentInfoPage> {
                                 Text(
                                   "Store",
                                   textAlign: TextAlign.left,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.black,
                                     fontSize: 15,
                                     letterSpacing: 0.5,
@@ -272,7 +272,7 @@ class _OwnerAppoinmentInfoPageState extends State<OwnerAppoinmentInfoPage> {
                                 child: Text(
                                   argumentData[4],
                                   textAlign: TextAlign.right,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.blue,
                                     fontSize: 15,
                                     letterSpacing: 0.5,
@@ -298,7 +298,7 @@ class _OwnerAppoinmentInfoPageState extends State<OwnerAppoinmentInfoPage> {
                           },
                           child: Text(
                             'Done',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.montserrat(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
                               fontSize: 16.0,
@@ -318,7 +318,7 @@ class _OwnerAppoinmentInfoPageState extends State<OwnerAppoinmentInfoPage> {
                     //       },
                     //       child: Text(
                     //         'Get Direction',
-                    //         style: GoogleFonts.poppins(
+                    //         style: GoogleFonts.montserrat(
                     //           color: Colors.white,
                     //           fontWeight: FontWeight.w600,
                     //           fontSize: 16.0,
@@ -339,7 +339,7 @@ class _OwnerAppoinmentInfoPageState extends State<OwnerAppoinmentInfoPage> {
                     //       },
                     //       child: Text(
                     //         'Cancel Appoinment',
-                    //         style: GoogleFonts.poppins(
+                    //         style: GoogleFonts.montserrat(
                     //           color: Colors.white,
                     //           fontWeight: FontWeight.w600,
                     //           fontSize: 16.0,

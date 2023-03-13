@@ -19,8 +19,12 @@ class ColorConstants {
   static Color black = const Color.fromRGBO(48, 47, 48, 1.0);
   static Color grey = const Color.fromRGBO(141, 141, 141, 1.0);
   static Color white = Colors.white;
-  static Color bluegradient1 = const Color.fromARGB(255, 83, 164, 231) ;
+  static Color bluegradient1 = const Color.fromARGB(255, 83, 164, 231);
   static Color bluegradient2 = const Color.fromARGB(255, 20, 128, 190);
-  static Color greengradient1 = const Color(0xFF53E78B) ;
+  static Color greengradient1 = const Color(0xFF53E78B);
   static Color greengradient2 = const Color(0xFF14BE77);
+  static Color appbgclr = const Color.fromARGB(255, 3, 25, 58);
+  static Color appbgclr2 = const Color.fromARGB(255, 5, 47, 110);
+  static Color textclr = Colors.white;
+  static Color iconclr = Colors.white;
 }

@@ -1,6 +1,6 @@
 class OwnerSignUpModel {
-  String name, email, pswd,deviceid;
-  OwnerSignUpModel(this.name, this.email, this.pswd,this.deviceid);
+  String name, email, pswd, phone, deviceid;
+  OwnerSignUpModel(this.name, this.email, this.phone, this.pswd, this.deviceid);
 }
 
 class OwnerLoginModel {
@@ -9,15 +9,47 @@ class OwnerLoginModel {
 }
 
 class StoreModel {
-  String name, location, description, type, img, start, end, employees,longitude,latitude,pincode,gender;
-  StoreModel(this.name, this.location, this.description, this.type, this.img,
-      this.start, this.end, this.employees,this.longitude,this.latitude,this.pincode,this.gender);
+  String name,
+      location,
+      description,
+      type,
+      img,
+      start,
+      end,
+      employees,
+      longitude,
+      latitude,
+      pincode,
+      gender;
+  StoreModel(
+      this.name,
+      this.location,
+      this.description,
+      this.type,
+      this.img,
+      this.start,
+      this.end,
+      this.employees,
+      this.longitude,
+      this.latitude,
+      this.pincode,
+      this.gender);
 }
 
 class Store {
-  String _id, name, location, id, description, type, img, start, end, employees,gender;
+  String _id,
+      name,
+      location,
+      id,
+      description,
+      type,
+      img,
+      start,
+      end,
+      employees,
+      gender;
   Store(this._id, this.name, this.location, this.id, this.description,
-      this.type, this.img, this.start, this.end, this.employees,this.gender);
+      this.type, this.img, this.start, this.end, this.employees, this.gender);
 }
 
 class ServiceModel {

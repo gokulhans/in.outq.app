@@ -72,7 +72,7 @@ class _UserSingleServicePageState extends State<UserSingleServicePage> {
                                 Text(
                                   "Price",
                                   textAlign: TextAlign.left,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.black,
                                     fontSize: 15,
                                     letterSpacing: 0.5,
@@ -96,7 +96,7 @@ class _UserSingleServicePageState extends State<UserSingleServicePage> {
                                 child: Text(
                                   "100 ₹",
                                   textAlign: TextAlign.right,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.blue,
                                     fontSize: 15,
                                     letterSpacing: 0.5,
@@ -121,7 +121,7 @@ class _UserSingleServicePageState extends State<UserSingleServicePage> {
                                 Text(
                                   "Service",
                                   textAlign: TextAlign.left,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.black,
                                     fontSize: 15,
                                     letterSpacing: 0.5,
@@ -145,7 +145,7 @@ class _UserSingleServicePageState extends State<UserSingleServicePage> {
                                 child: Text(
                                   "Hair Cutting",
                                   textAlign: TextAlign.right,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.blue,
                                     fontSize: 15,
                                     letterSpacing: 0.5,
@@ -170,7 +170,7 @@ class _UserSingleServicePageState extends State<UserSingleServicePage> {
                                 Text(
                                   "Store",
                                   textAlign: TextAlign.left,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.black,
                                     fontSize: 15,
                                     letterSpacing: 0.5,
@@ -194,7 +194,7 @@ class _UserSingleServicePageState extends State<UserSingleServicePage> {
                                 child: Text(
                                   "Mens Fashion",
                                   textAlign: TextAlign.right,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     color: Colors.blue,
                                     fontSize: 15,
                                     letterSpacing: 0.5,
@@ -220,7 +220,7 @@ class _UserSingleServicePageState extends State<UserSingleServicePage> {
                           },
                           child: Text(
                             'Get Direction',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.montserrat(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
                               fontSize: 16.0,

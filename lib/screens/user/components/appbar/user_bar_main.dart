@@ -41,7 +41,7 @@ class _UserAppBarState extends State<UserAppBar> {
       var jsonData = jsonDecode(response.body);
       // print(jsonData);
       // print(jsonData["success"]);
-      if (jsonData["status"]) {
+      if (jsonData["status"] == "201") {
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (BuildContext context) => const UserHomePage()),
@@ -60,12 +60,13 @@ class _UserAppBarState extends State<UserAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      systemOverlayStyle: const SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.white, // navigation bar color
-          systemNavigationBarIconBrightness: Brightness.dark,
-          statusBarColor: Colors.white,
-          statusBarIconBrightness: Brightness.dark,
-          statusBarBrightness: Brightness.light),
+      systemOverlayStyle: SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.white, // navigation bar color
+        systemNavigationBarIconBrightness: Brightness.dark,
+        statusBarColor: ColorConstants.appbgclr2,
+        statusBarIconBrightness: Brightness.light,
+        // statusBarBrightness: Brightness.light
+      ),
       // leading: IconButton(
       //     icon: const Icon(
       //       Icons.location_on,
@@ -74,40 +75,38 @@ class _UserAppBarState extends State<UserAppBar> {
       //     ),
       //     onPressed: () {}),
       title: Row(
-        children: [
-          // Text(
-          //   'OutQ',
-          //   style: GoogleFonts.poppins(
-          //     color: const Color(0xFF09041B),
-          //     fontSize: 18,
-          //     // height: 1.5,
-          //     fontWeight: FontWeight.w800,
+        children: const [
+          Image(
+            image: AssetImage("assets/app_icon/logohead.png"),
+            height: 50,
+            width: 100,
+            // alignment: Alignment.centerLeft,
+            fit: BoxFit.contain,
+          ),
+          // InkWell(
+          //   onTap: () {
+          //     Get.to(() => const UserAskLocationPage());
+          //   },
+          //   child: Container(
+          //     child: Row(
+          //       children: [
+          //         const Icon(Icons.location_on),
+          //         addHorizontalSpace(10),
+          //         Container(
+          //           width: 150,
+          //           child: Text(
+          //             location,
+          //             // maxLines: 1,
+          //             overflow: TextOverflow.ellipsis,
+          //             style: GoogleFonts.montserrat(
+          //               fontSize: 12,
+          //             ),
+          //           ),
+          //         )
+          //       ],
+          //     ),
           //   ),
           // ),
-          InkWell(
-            onTap: () {
-              Get.to(() => const UserAskLocationPage());
-            },
-            child: Container(
-              child: Row(
-                children: [
-                  const Icon(Icons.location_on),
-                  addHorizontalSpace(10),
-                  Container(
-                    width: 220,
-                    child: Text(
-                      location,
-                      // maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
           // IconButton(
           //     icon: const Icon(
           //       Icons.queue,
@@ -117,7 +116,7 @@ class _UserAppBarState extends State<UserAppBar> {
           //     onPressed: () {}),
           // Text(
           //   'OutQ',
-          //   style: GoogleFonts.poppins(
+          //   style: GoogleFonts.montserrat(
           //     color: const Color(0xFF09041B),
           //     fontSize: 16,
           //     // height: 1.5,
@@ -132,8 +131,8 @@ class _UserAppBarState extends State<UserAppBar> {
       ),
       automaticallyImplyLeading: false,
       elevation: 0,
-      backgroundColor: ColorConstants.white,
-      foregroundColor: Colors.black,
+      backgroundColor: ColorConstants.appbgclr2,
+      foregroundColor: Colors.white,
       // centerTitle: true,
       actions: [
         IconButton(
@@ -178,7 +177,7 @@ class _UserAppBarState extends State<UserAppBar> {
       //               onPressed: () {}),
       //           Text(
       //             'Calicut, Kerala',
-      //             style: GoogleFonts.poppins(
+      //             style: GoogleFonts.montserrat(
       //               color: const Color(0xFF09041B),
       //               fontSize: 16,
       //               // height: 1.5,

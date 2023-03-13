@@ -6,22 +6,23 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:horizontal_calendar/horizontal_calendar.dart';
+import 'package:outq/Backend/api/owner_api.dart';
 import 'package:outq/Backend/api/user_api.dart';
 import 'package:outq/Backend/models/user_models.dart';
-import 'package:outq/screens/owner/home/owner_home.dart';
 import 'package:outq/screens/shared/exit_pop/exit_pop_up.dart';
-import 'package:outq/screens/shared/welcome_screen/welcome_screen.dart';
 import 'package:outq/screens/user/booking/success_booked.dart';
 import 'package:outq/screens/user/components/appbar/user_appbar.dart';
-import 'package:outq/screens/user/components/appbar/user_bar_main.dart';
-import 'package:outq/screens/user/home/user_home.dart';
+import 'package:outq/screens/user/store/view_store/user_view_store.dart';
 import 'package:outq/utils/color_constants.dart';
 import 'package:outq/utils/constants.dart';
 import 'package:outq/utils/sizes.dart';
 import 'package:outq/utils/widget_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table_calendar/table_calendar.dart';
+// import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+
+bool isLoadingBB = false;
 
 Future save(BuildContext context) async {
   dynamic argumentData = Get.arguments;
@@ -30,12 +31,11 @@ Future save(BuildContext context) async {
   if (userid == "null") {
     Get.to(() => const Exithome());
   }
-
-  getTimeSlots(booking.serviceid, booking.date);
-  // print({booking.start});
+  getTimeSlots(booking.storeid, booking.date);
+  print({booking.date, booking.start, booking.storeid});
   final response = await http.post(
       Uri.parse(
-        "${apidomain}booking/",
+        "${apidomain}booking/book",
       ),
       headers: <String, String>{
         'Context-Type': 'application/json; charset=UTF-8',
@@ -48,11 +48,12 @@ Future save(BuildContext context) async {
         'userid': userid,
         'price': booking.price,
         'date': booking.date,
-        'servicename': argumentData[3],
-        'storename': argumentData[5],
-        'img': argumentData[8],
+        'servicename': booking.servicename,
+        'storename': booking.storename,
+        'img': booking.img,
         'username': userid,
       });
+  isLoadingBB = false;
   // print(response);
   var jsonData = jsonDecode(response.body);
   // print(jsonData["success"]);
@@ -61,11 +62,27 @@ Future save(BuildContext context) async {
         const SnackBar(content: Text('Slot Successfully Booked')));
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-            builder: (BuildContext context) => AppointmentBooked()),
+            builder: (BuildContext context) => const AppointmentBooked()),
         (Route<dynamic> route) => false);
+    isLoadingBB = false;
   } else {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Slot Already Booked')));
+    Get.snackbar(
+      "Booking Failed",
+      "Slot Can not book",
+      icon: const Icon(Icons.person, color: Colors.white),
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.red,
+      borderRadius: 12,
+      margin: const EdgeInsets.all(15),
+      colorText: Colors.white,
+      duration: const Duration(seconds: 4),
+      isDismissible: true,
+      dismissDirection: DismissDirection.horizontal,
+      forwardAnimationCurve: Curves.bounceIn,
+    );
+    // ScaffoldMessenger.of(context)
+    //     .showSnackBar(const SnackBar(content: Text('Slot Could Not Booked')));
+    isLoadingBB = false;
   }
 }
 
@@ -121,13 +138,13 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
   dynamic argumentData = Get.arguments;
 
   //declaration
-  CalendarFormat _format = CalendarFormat.month;
-  DateTime _focusDay = DateTime.now();
-  DateTime _currentDay = DateTime.now();
+  // final CalendarFormat _format = CalendarFormat.month;
+  final DateTime _focusDay = DateTime.now();
+  final DateTime _currentDay = DateTime.now();
   int? _currentIndex;
-  bool _isWeekend = false;
-  bool _dateSelected = false;
-  bool _timeSelected = false;
+  final bool _isWeekend = false;
+  final bool _dateSelected = false;
+  final bool _timeSelected = false;
   String? token; //get token for insert booking date and time into database
 
   // Time
@@ -160,16 +177,70 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
   //   super.initState();
   // }
 
-  late Future<dynamic> _future;
+  late Future<http.Response> _future;
+
   @override
   void initState() {
     super.initState();
-    _future = getTimeSlots(argumentData[0], booking.date);
+    booking.start = "10:00 AM";
+    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    booking.date = formattedDate;
+    print({booking.date, booking.start});
+    _future = http.get(Uri.parse(
+        '${apidomain}booking/timeslots/${argumentData[2]}/${booking.date}'));
+    // print(_future);
+    // print(DateTime.now());
+  }
+
+  TimeOfDay selectedTime = TimeOfDay.now();
+
+  Future<void> _selectBookingTime(BuildContext context) async {
+    final TimeOfDay? pickedS = await showTimePicker(
+      context: context,
+      initialTime: selectedTime,
+    );
+    if (pickedS != null && pickedS != selectedTime) {
+      setState(() {
+        selectedTime = pickedS;
+        final localizations = MaterialLocalizations.of(context);
+        final formattedTimeOfDay = localizations.formatTimeOfDay(selectedTime);
+        var start = formattedTimeOfDay;
+        booking.start = start;
+        // print(start);
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     dynamic argumentData = Get.arguments;
+
+    List<Widget> timeSlots = [];
+
+    final DateTime startTime = DateTime(2023, 3, 6, 9, 0); // 9:00 AM
+    final DateTime endTime = DateTime(2023, 3, 6, 17, 0); // 5:00 PM
+    final int timeIntervalInMinutes = 10;
+
+    // Loop through each 10-minute interval between start and end time
+    for (DateTime time = startTime;
+        time.isBefore(endTime);
+        time = time.add(Duration(minutes: timeIntervalInMinutes))) {
+      DateTime endTimeForSlot =
+          time.add(Duration(minutes: timeIntervalInMinutes));
+
+      // Format the start and end time for display
+      String startTimeString = DateFormat.jm().format(time);
+      String endTimeString = DateFormat.jm().format(endTimeForSlot);
+
+      // Create a list item for the time interval
+      timeSlots.add(ListTile(
+        title: Text('$startTimeString - $endTimeString'),
+        onTap: () {
+          // Handle booking logic when a time slot is tapped
+        },
+      ));
+    }
+
     // int start = 12 - int.parse(argumentData[6]);
     // int end = int.parse(argumentData[7]);
     // int hours = start + end + 1;
@@ -177,7 +248,7 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
     // final doctor = ModalRoute.of(context)!.settings.arguments as Map;
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(55),
+        preferredSize: const Size.fromHeight(55),
         child: UserAppBarWithBack(
           title: argumentData[3],
         ),
@@ -217,17 +288,22 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                         showMonth: true,
                         onDateSelected: (date) {
                           // // print(argumentData);
+                          print(date);
                           booking.date = date.toString();
                           // print(booking.date);
-                          Get.to(() => ShopBookingPage());
                           setState(() {
-                            _future =
-                                getTimeSlots(booking.serviceid, booking.date);
+                            _future = http.get(Uri.parse(
+                                '${apidomain}booking/timeslots/${argumentData[2]}/${booking.date}'));
+                            print({
+                              booking.date,
+                              booking.storeid,
+                              argumentData[2]
+                            });
                           });
+                          Get.to(() => const ShopBookingPage());
                         },
                       ),
                       addVerticalSpace(50),
-
                       // addVerticalSpace(30),
                       // Padding(
                       //   padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -238,20 +314,115 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                       //     child: const Text('Choose Time'),
                       //   ),
                       // ),
-
-                      addVerticalSpace(20),
                       const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: Text(
-                          'Already Booked Time',
+                          'Chose Your Time',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
                         ),
                       ),
-                      FutureBuilder(
+                      addVerticalSpace(20),
+                      FutureBuilder<http.Response>(
                         future: _future,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<http.Response> snapshot) {
+                          if (snapshot.hasData) {
+                            var data = jsonDecode(snapshot.data!.body);
+                            // return Expanded(
+                            //   child: ListView.builder(
+                            //     itemCount: data.length,
+                            //     itemBuilder: (BuildContext context, int index) {
+                            //       return ListTile(
+                            //         title: Text(data[index]['name']),
+                            //       );
+                            //     },
+                            //   ),
+                            // );
+                            return GridView.builder(
+                                // physics:
+                                //     const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
+                                shrinkWrap: true,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 4, childAspectRatio: 2),
+                                itemCount: data.length,
+                                physics: BouncingScrollPhysics(),
+                                itemBuilder: (BuildContext context, int index) {
+                                  final rowNumber = (index / 3).floor() + 1;
+
+                                  if (rowNumber % 2 == 0 && index % 6 == 0) {
+                                    // Add a SizedBox after each 6th widget in even rows
+                                    return Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 20.0,
+                                        ),
+                                        // _buildGridItem(index),
+                                      ],
+                                    );
+                                  } else {
+                                    return InkWell(
+                                      splashColor: Colors.transparent,
+                                      onTap: () {
+                                        print(data[index]["time"]);
+                                        setState(() {
+                                          _currentIndex = index;
+                                          booking.start = data[index]["time"];
+                                        });
+                                      },
+                                      child: Container(
+                                        height: 50,
+                                        margin: const EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: _currentIndex == index
+                                                ? Colors.white
+                                                : (data[index]["status"] == "n")
+                                                    ? Colors.black
+                                                    : Colors.white,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          color: _currentIndex == index
+                                              ? Colors.blue
+                                              : (data[index]["status"] == "n")
+                                                  ? Colors.white
+                                                  : Colors.red,
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          data[index]['time'],
+                                          style: TextStyle(
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.bold,
+                                              color: _currentIndex == index
+                                                  ? Colors.white
+                                                  : (data[index]["status"] ==
+                                                          "n")
+                                                      ? Colors.black
+                                                      : Colors.white),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                });
+                          } else if (snapshot.hasData) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            return const SizedBox(
+                                height: 200,
+                                width: 200,
+                                child:
+                                    Center(child: PlaceholderLong()));
+                          }
+                        },
+                      ),
+                      FutureBuilder(
+                        future: getSingleServiceDetails(argumentData[0]),
                         builder: (context, AsyncSnapshot snapshot) {
                           if (snapshot.data == null) {
                             return const Center(
@@ -261,298 +432,292 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                             ));
                           } else {
                             if (snapshot.data.length == 0) {
-                              return const Padding(
-                                padding: EdgeInsets.all(24.0),
-                                child: Center(
-                                    child: Text(
-                                  'No Appoinment Found Today',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w800,
-                                    color: Colors.red,
-                                  ),
-                                )),
-                              );
+                              return const Center(
+                                  child: Text(
+                                'No Content is available right now.',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ));
                             } else {
-                              return SizedBox(
-                                height: 100,
-                                child: Center(
-                                  child: GridView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
-                                      shrinkWrap: true,
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 4,
-                                              childAspectRatio: 1.6),
-                                      itemCount: snapshot.data.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return InkWell(
-                                          splashColor: Colors.transparent,
-                                          onTap: () {
-                                            // setState(() {
-                                            //   // print(
-                                            //       "${index + 9}:${30} ${index + 9 > 11 ? "PM" : "AM"}");
-                                            //   _currentIndex = index;
-                                            //   _timeSelected = true;
-                                            // });
-                                          },
-                                          child: Container(
-                                            height: 50,
-                                            margin: const EdgeInsets.all(5),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: _currentIndex == index
-                                                    ? Colors.white
-                                                    : Colors.white,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              color: Colors.red,
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: snapshot.data.length,
+                                itemBuilder: (context, i) {
+                                  return Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      addVerticalSpace(30),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10.0),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              flex: 4,
+                                              child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: const [
+                                                    Text(
+                                                      'Store',
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 20,
+                                                      ),
+                                                    ),
+                                                  ]),
                                             ),
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              snapshot.data[index].start,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: _currentIndex == index
-                                                      ? Colors.white
-                                                      : Colors.white),
+                                            Container(
+                                              // width: 100,
+                                              // height: 25,
+                                              // color: Colors.blue[700],
+                                              child: Center(
+                                                  child: TextButton(
+                                                onPressed: () {},
+                                                child: Text(
+                                                  snapshot.data[i].storename,
+                                                  textAlign: TextAlign.right,
+                                                  style: GoogleFonts.montserrat(
+                                                    color: Colors.blue,
+                                                    fontSize: 15,
+                                                    letterSpacing: 0.5,
+                                                    fontWeight: FontWeight.w700,
+                                                    height: 1,
+                                                  ),
+                                                ),
+                                              )),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10.0),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              flex: 4,
+                                              child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: const [
+                                                    Text(
+                                                      'Service',
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 20,
+                                                      ),
+                                                    ),
+                                                  ]),
+                                            ),
+                                            Container(
+                                              // width: 100,
+                                              // height: 25,
+                                              // color: Colors.blue[700],
+                                              child: Center(
+                                                  child: TextButton(
+                                                onPressed: () {},
+                                                child: Text(
+                                                  snapshot.data[i].name,
+                                                  textAlign: TextAlign.right,
+                                                  style: GoogleFonts.montserrat(
+                                                    color: Colors.blue,
+                                                    fontSize: 15,
+                                                    letterSpacing: 0.5,
+                                                    fontWeight: FontWeight.w700,
+                                                    height: 1,
+                                                  ),
+                                                ),
+                                              )),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10.0),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              flex: 4,
+                                              child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: const [
+                                                    Text(
+                                                      "Price",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 20,
+                                                      ),
+                                                    ),
+                                                  ]),
+                                            ),
+                                            Container(
+                                              // width: 100,
+                                              // height: 25,
+                                              // color: Colors.blue[700],
+                                              child: Center(
+                                                  child: TextButton(
+                                                onPressed: () {},
+                                                child: Text(
+                                                  snapshot.data[i].price,
+                                                  textAlign: TextAlign.right,
+                                                  style: GoogleFonts.montserrat(
+                                                    color: Colors.blue,
+                                                    fontSize: 15,
+                                                    letterSpacing: 0.5,
+                                                    fontWeight: FontWeight.w700,
+                                                    height: 1,
+                                                  ),
+                                                ),
+                                              )),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      // addVerticalSpace(10),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10.0),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              flex: 4,
+                                              child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: const [
+                                                    Text(
+                                                      "Duration",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 20,
+                                                      ),
+                                                    ),
+                                                  ]),
+                                            ),
+                                            Container(
+                                              // width: 100,
+                                              // height: 25,
+                                              // color: Colors.blue[700],
+                                              child: Center(
+                                                  child: TextButton(
+                                                onPressed: () {},
+                                                child: Text(
+                                                  snapshot.data[i].duration,
+                                                  textAlign: TextAlign.right,
+                                                  style: GoogleFonts.montserrat(
+                                                    color: Colors.blue,
+                                                    fontSize: 15,
+                                                    letterSpacing: 0.5,
+                                                    fontWeight: FontWeight.w700,
+                                                    height: 1,
+                                                  ),
+                                                ),
+                                              )),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      addVerticalSpace(20),
+                                      Center(
+                                        child: Container(
+                                          width: 150,
+                                          height: 50,
+                                          clipBehavior: Clip.antiAlias,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                ColorConstants.bluegradient1,
+                                                ColorConstants.bluegradient2
+                                              ],
+                                              transform: const GradientRotation(
+                                                  9 * pi / 180),
                                             ),
                                           ),
-                                        );
-                                      }),
-                                ),
+                                          child: Center(
+                                            child: TextButton(
+                                              child: isLoadingBB
+                                                  ? const Center(
+                                                      child: SizedBox(
+                                                        height: 15,
+                                                        width: 15,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          strokeWidth: 3,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      "Book",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headline6,
+                                                    ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  isLoadingBB = true;
+                                                });
+                                                // print('booking 1');
+                                                // print(booking);
+                                                // print({
+                                                //   booking.serviceid,
+                                                //   booking.storeid,
+                                                //   booking.price,
+                                                //   booking.img
+                                                // });
+                                                // print('booking 2');
+                                                // print({argumentData[0], argumentData[2]});
+                                                // print('booking 3');
+                                                booking.serviceid =
+                                                    argumentData[0];
+                                                booking.storeid =
+                                                    snapshot.data[i].storeid;
+                                                booking.price =
+                                                    snapshot.data[i].price;
+                                                booking.img =
+                                                    snapshot.data[i].img;
+                                                booking.storename =
+                                                    snapshot.data[i].storename;
+                                                booking.servicename = snapshot
+                                                    .data[i].servicename;
+                                                // print('booking');
+                                                save(context);
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      addVerticalSpace(20),
+                                    ],
+                                  );
+                                },
                               );
                             }
                           }
                         },
                       ),
-                      addVerticalSpace(30),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
-                          'Select Your Time',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 200,
-                        child: Center(
-                          child: GridView.builder(
-                              physics:
-                                  const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
-                              shrinkWrap: true,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 4, childAspectRatio: 1.6),
-                              itemCount: 10,
-                              itemBuilder: (BuildContext context, int index) {
-                                return InkWell(
-                                  splashColor: Colors.transparent,
-                                  onTap: () {
-                                    booking.start =
-                                        "${index + 9}:00 ${index + 9 > 11 ? "PM" : "AM"}";
-                                    // print(booking.start);
-                                    setState(() {
-                                      _currentIndex = index;
-                                      _timeSelected = true;
-                                    });
-                                  },
-                                  child: Container(
-                                    margin: const EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: _currentIndex == index
-                                            ? Colors.white
-                                            : Colors.black,
-                                      ),
-                                      borderRadius: BorderRadius.circular(15),
-                                      color: _currentIndex == index
-                                          ? Colors.blue
-                                          : null,
-                                    ),
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      '${index + 9}:00 ${index + 9 > 11 ? "PM" : "AM"}',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: _currentIndex == index
-                                            ? Colors.white
-                                            : null,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }),
-                        ),
-                      ),
-                      addVerticalSpace(30),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 4,
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Store',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ]),
-                            ),
-                            Container(
-                              // width: 100,
-                              // height: 25,
-                              // color: Colors.blue[700],
-                              child: Center(
-                                  child: TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  argumentData[5],
-                                  textAlign: TextAlign.right,
-                                  style: GoogleFonts.poppins(
-                                    color: Colors.blue,
-                                    fontSize: 15,
-                                    letterSpacing: 0.5,
-                                    fontWeight: FontWeight.w700,
-                                    height: 1,
-                                  ),
-                                ),
-                              )),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 4,
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Service',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ]),
-                            ),
-                            Container(
-                              // width: 100,
-                              // height: 25,
-                              // color: Colors.blue[700],
-                              child: Center(
-                                  child: TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  argumentData[3],
-                                  textAlign: TextAlign.right,
-                                  style: GoogleFonts.poppins(
-                                    color: Colors.blue,
-                                    fontSize: 15,
-                                    letterSpacing: 0.5,
-                                    fontWeight: FontWeight.w700,
-                                    height: 1,
-                                  ),
-                                ),
-                              )),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 4,
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Price",
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ]),
-                            ),
-                            Container(
-                              // width: 100,
-                              // height: 25,
-                              // color: Colors.blue[700],
-                              child: Center(
-                                  child: TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  argumentData[4],
-                                  textAlign: TextAlign.right,
-                                  style: GoogleFonts.poppins(
-                                    color: Colors.blue,
-                                    fontSize: 15,
-                                    letterSpacing: 0.5,
-                                    fontWeight: FontWeight.w700,
-                                    height: 1,
-                                  ),
-                                ),
-                              )),
-                            ),
-                          ],
-                        ),
-                      ),
-                      addVerticalSpace(20),
-                      Center(
-                        child: Container(
-                          width: 150,
-                          height: 50,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            gradient: LinearGradient(
-                              colors: [
-                                ColorConstants.bluegradient1,
-                                ColorConstants.bluegradient2
-                              ],
-                              transform: const GradientRotation(9 * pi / 180),
-                            ),
-                          ),
-                          child: Center(
-                            child: TextButton(
-                              child: Text(
-                                "Book",
-                                style: Theme.of(context).textTheme.headline6,
-                              ),
-                              onPressed: () {
-                                booking.serviceid = argumentData[0];
-                                booking.storeid = argumentData[2];
-                                booking.price = argumentData[4];
-                                booking.img = argumentData[8];
-                                save(context);
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      addVerticalSpace(20),
                     ],
                   ),
                 ),
@@ -561,45 +726,4 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
       ),
     );
   }
-
-//   //table calendar
-//   Widget _tableCalendar() {
-//     return TableCalendar(
-//       focusedDay: _focusDay,
-//       firstDay: DateTime.now(),
-//       lastDay: DateTime(2023, 12, 31),
-//       calendarFormat: _format,
-//       currentDay: _currentDay,
-//       rowHeight: 48,
-//       calendarStyle: const CalendarStyle(
-//         todayDecoration:
-//             BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
-//       ),
-//       availableCalendarFormats: const {
-//         CalendarFormat.month: 'Month',
-//       },
-//       onFormatChanged: (format) {
-//         setState(() {
-//           _format = format;
-//         });
-//       },
-//       onDaySelected: ((selectedDay, focusedDay) {
-//         setState(() {
-//           _currentDay = selectedDay;
-//           _focusDay = focusedDay;
-//           _dateSelected = true;
-
-//           //check if weekend is selected
-//           if (selectedDay.weekday == 6 || selectedDay.weekday == 7) {
-//             _isWeekend = true;
-//             _timeSelected = false;
-//             _currentIndex = null;
-//           } else {
-//             _isWeekend = false;
-//           }
-//         });
-//       }),
-//     );
-//   }
 }
-

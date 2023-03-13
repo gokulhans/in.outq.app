@@ -13,11 +13,12 @@ import 'package:outq/utils/widget_functions.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+var location;
+
 Future updateuser(BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String userid = prefs.getString("userid") ?? "null";
   // String deviceid = "";
-
   // FirebaseMessaging messaging = FirebaseMessaging.instance;
   // messaging.getToken().then((token) {
   //   deviceid = token!;
@@ -31,7 +32,7 @@ Future updateuser(BuildContext context) async {
         'Context-Type': 'application/json; charset=UTF-8',
       },
       body: <String, String>{
-        'location': userlocation ?? "",
+        'location': location ?? "",
         // 'pincode': userpincode ?? "",
         // 'longitude': userlongitude ?? "",
         // 'latitude': userlatitude ?? "",
@@ -71,7 +72,6 @@ class DropdownDemo extends StatefulWidget {
 class _DropdownDemoState extends State<DropdownDemo> {
   String dropdownValue = 'Select Location';
   var userid;
-  var location;
   void onload() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     userid = pref.getString("userid");
@@ -112,7 +112,7 @@ class _DropdownDemoState extends State<DropdownDemo> {
             addVerticalSpace(10),
             Text(
               'Change Location',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.montserrat(
                 color: const Color(0xFF09041B),
                 fontSize: 20,
                 // height: 1.5,
@@ -184,7 +184,7 @@ class _DropdownDemoState extends State<DropdownDemo> {
                   child: Text(
                     '$location',
                     // maxLines: 2,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.montserrat(
                       fontSize: 14,
                     ),
                   ),

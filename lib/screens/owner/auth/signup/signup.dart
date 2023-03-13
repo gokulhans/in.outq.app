@@ -26,7 +26,7 @@ TextEditingController nameController = TextEditingController(text: '');
 TextEditingController emailController = TextEditingController(text: '');
 TextEditingController pswdController = TextEditingController(text: '');
 
-OwnerSignUpModel owners = OwnerSignUpModel('', '', '', '');
+OwnerSignUpModel owners = OwnerSignUpModel('', '', '', '', '');
 
 class _OwnerSignUpPageState extends State<OwnerSignUpPage> {
   Future save() async {
@@ -42,6 +42,7 @@ class _OwnerSignUpPageState extends State<OwnerSignUpPage> {
           'name': owners.name,
           'email': owners.email,
           'pswd': owners.pswd,
+          'owners': owners.phone,
           'deviceid': owners.deviceid
         });
 
@@ -91,8 +92,10 @@ class _OwnerSignUpPageState extends State<OwnerSignUpPage> {
   }
 
   bool isLoading = false;
+  bool passwordVisible = false;
+  String repswd = "";
 
-    @override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -194,20 +197,99 @@ class _OwnerSignUpPageState extends State<OwnerSignUpPage> {
                       ),
                       const SizedBox(height: 10.0),
                       TextField(
-                        //controller: pswdController,
+                        // //controller: emailController,
+                        onChanged: (val) {
+                          owners.phone = val;
+                        },
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                            labelText: 'Phone Number',
+                            labelStyle: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
+                            // hintText: 'EMAIL',
+                            // hintStyle: ,
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.green))),
+                      ),
+                      addVerticalSpace(10),
+                      TextFormField(
+                        // //controller: pswdController,
                         onChanged: (val) {
                           owners.pswd = val;
                         },
-                        decoration: const InputDecoration(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) {
+                          String pattern =
+                              r'^(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+                          if (value != owners.pswd ||
+                              !RegExp(pattern).hasMatch(value!)) {
+                            return 'Minimum 8 characters, At least one number and \none special character';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
                             labelText: 'Password',
+                            suffixIcon: IconButton(
+                              icon: passwordVisible
+                                  ? const Icon(Icons.visibility_off)
+                                  : const Icon(Icons.visibility),
+                              onPressed: () {
+                                setState(
+                                  () {
+                                    passwordVisible = !passwordVisible;
+                                  },
+                                );
+                              },
+                            ),
+                            labelStyle: const TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
+                            focusedBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.green))),
+                        obscureText: passwordVisible,
+                      ),
+                      const SizedBox(height: 10.0),
+                      TextFormField(
+                        // //controller: pswdController,
+                        onChanged: (val) {
+                          repswd = val;
+                        },
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) {
+                          if (value != owners.pswd) {
+                            return 'Password mismatch';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                            labelText: 'ReEnter Password',
                             labelStyle: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey),
                             focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.green))),
-                        //obscureText: true,
+                        obscureText: true,
                       ),
+
+                      // TextField(
+                      //   //controller: pswdController,
+                      //   onChanged: (val) {
+                      //     owners.pswd = val;
+                      //   },
+                      //   decoration: const InputDecoration(
+                      //       labelText: 'Password',
+                      //       labelStyle: TextStyle(
+                      //           fontFamily: 'Montserrat',
+                      //           fontWeight: FontWeight.bold,
+                      //           color: Colors.grey),
+                      //       focusedBorder: UnderlineInputBorder(
+                      //           borderSide: BorderSide(color: Colors.green))),
+                      //   //obscureText: true,
+                      // ),
 
                       // const Padding(
                       //   padding: EdgeInsets.only(top: 24.0),
@@ -255,6 +337,8 @@ class _OwnerSignUpPageState extends State<OwnerSignUpPage> {
                                     isLoading = false;
                                   });
                                 } else if (owners.name.isEmpty ||
+                                    owners.email.isEmpty ||
+                                    owners.phone.isEmpty ||
                                     owners.pswd.isEmpty) {
                                   Get.snackbar(
                                     "Fill Every Field",
@@ -275,7 +359,43 @@ class _OwnerSignUpPageState extends State<OwnerSignUpPage> {
                                   setState(() {
                                     isLoading = false;
                                   });
-                                } else {
+                                } else if (owners.pswd != repswd) {
+                                  Get.snackbar(
+                                    "Password Didn't Match",
+                                    "Password and Re entered Password Are Different",
+                                    icon: const Icon(Icons.person,
+                                        color: Colors.white),
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.red,
+                                    borderRadius: 12,
+                                    margin: const EdgeInsets.all(15),
+                                    colorText: Colors.white,
+                                    duration: const Duration(seconds: 3),
+                                    isDismissible: true,
+                                    dismissDirection:
+                                        DismissDirection.horizontal,
+                                    forwardAnimationCurve: Curves.bounceIn,
+                                  );
+                                } else if (!RegExp(
+                                        r'^(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+                                    .hasMatch(owners.pswd)) {
+                                  Get.snackbar(
+                                    "Password Not Secure",
+                                    "Minimum 8 characters, one number and one spacial character",
+                                    icon: const Icon(Icons.person,
+                                        color: Colors.white),
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.red,
+                                    borderRadius: 12,
+                                    margin: const EdgeInsets.all(15),
+                                    colorText: Colors.white,
+                                    duration: const Duration(seconds: 3),
+                                    isDismissible: true,
+                                    dismissDirection:
+                                        DismissDirection.horizontal,
+                                    forwardAnimationCurve: Curves.bounceIn,
+                                  );
+                                }else {
                                   save();
                                 }
                               },

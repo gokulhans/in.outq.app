@@ -261,7 +261,7 @@ class _UserViewSingleStorePageState extends State<UserViewSingleStorePage> {
                                               child: Text(
                                             "Book",
                                             textAlign: TextAlign.left,
-                                            style: GoogleFonts.poppins(
+                                            style: GoogleFonts.montserrat(
                                               color: Colors.white,
                                               fontSize: 10,
                                               letterSpacing: 0.5,

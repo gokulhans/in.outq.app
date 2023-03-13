@@ -151,17 +151,21 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
             future: getOwnerStore(),
             builder: (context, AsyncSnapshot snapshot) {
               if (snapshot.data == null) {
-                return ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const CreateStorePage()),
-                    );
-                  },
-                  // onPressed: () {},
-                  child: const Text("Create Your Store To Continue"),
+                return SpinKitCircle(
+                  color: Colors.blue,
+                  size: 50.0,
                 );
+                // ElevatedButton(
+                //   onPressed: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //           builder: (context) => const CreateStorePage()),
+                //     );
+                //   },
+                //   // onPressed: () {},
+                //   child: const Text("Create Your Store To Continue"),
+                // );
               } else {
                 if (snapshot.data.length == 0) {
                   return const Center(
@@ -325,7 +329,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                                         child: Text(
                                           snapshot.data[i].start,
                                           textAlign: TextAlign.left,
-                                          style: GoogleFonts.poppins(
+                                          style: GoogleFonts.montserrat(
                                             color: Colors.white,
                                             fontSize: 10,
                                             letterSpacing: 0.5,

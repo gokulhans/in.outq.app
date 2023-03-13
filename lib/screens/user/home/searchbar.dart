@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:outq/components/placeholders/placeholder.dart';
 import 'package:outq/screens/user/components/appbar/user_appbar.dart';
 import 'package:outq/screens/user/store/view_store/user_view_store.dart';
 import 'package:outq/utils/constants.dart';
@@ -216,7 +217,7 @@ class SearchStorePage extends StatelessWidget {
                                       child: Text(
                                         "View",
                                         textAlign: TextAlign.left,
-                                        style: GoogleFonts.poppins(
+                                        style: GoogleFonts.montserrat(
                                           color: Colors.white,
                                           fontSize: 10,
                                           letterSpacing: 0.5,
@@ -236,10 +237,7 @@ class SearchStorePage extends StatelessWidget {
                   } else if (snapshot.hasData) {
                     return Text('Error: ${snapshot.error}');
                   } else {
-                    return const SizedBox(
-                        height: 200,
-                        width: 200,
-                        child: Center(child: CircularProgressIndicator()));
+                    return Center(child: PlaceholderLong());
                   }
                 },
               ),

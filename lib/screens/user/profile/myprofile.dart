@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:outq/screens/shared/drawer_pages/feedback_screen.dart';
+import 'package:outq/screens/shared/drawer_pages/help_screen.dart';
+import 'package:outq/screens/shared/drawer_pages/invite_friend_screen.dart';
 import 'package:outq/screens/shared/exit_pop/exit_pop_up.dart';
 import 'package:outq/screens/user/components/appbar/user_appbar.dart';
 import 'package:outq/utils/widget_functions.dart';
@@ -69,7 +72,7 @@ class _UserMyProfilePageState extends State<UserMyProfilePage> {
             //     ),
             //   ],
             // ),
-            addVerticalSpace(20),
+            // addVerticalSpace(20),
             Expanded(
               child: ListView(
                 physics: const BouncingScrollPhysics(),
@@ -85,6 +88,31 @@ class _UserMyProfilePageState extends State<UserMyProfilePage> {
                       Navigator.of(context).pop();
                     },
                   ),
+                  ListTile(
+                    leading: const Icon(Icons.support_agent_rounded),
+                    title: const Text('Help'),
+                    onTap: () => {Get.to(() => const HelpScreen())},
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.help),
+                    title: const Text('Feedback'),
+                    onTap: () => {Get.to(() => const FeedbackScreen())},
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.people),
+                    title: const Text('Invite Friend'),
+                    onTap: () => {Get.to(() => const InviteFriend())},
+                  ),
+                  // ListTile(
+                  //   leading: const Icon(Icons.info),
+                  //   title: const Text('Logout'),
+                  //   onTap: () async {
+                  //     SharedPreferences pref =
+                  //         await SharedPreferences.getInstance();
+                  //     pref.remove("userid");
+                  //     Get.offAll(() => const Exithome());
+                  //   },
+                  // ),
                   ListTile(
                     leading: FaIcon(
                       FontAwesomeIcons.rightFromBracket,

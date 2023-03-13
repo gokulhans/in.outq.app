@@ -176,7 +176,7 @@ class SearchListView extends StatelessWidget {
                     child: Text(
                       'Book',
                       textAlign: TextAlign.left,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.montserrat(
                         color: Colors.white,
                         fontSize: 12,
                         letterSpacing: 0.5,

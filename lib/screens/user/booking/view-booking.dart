@@ -79,102 +79,125 @@ class _UserViewBookingsPageState extends State<UserViewBookingsPage> {
                                 snapshot.data[i].servicename,
                                 snapshot.data[i].storename,
                               ]),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 2,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 12.0,
-                                  ),
-                                  child: SizedBox(
-                                    height: 60,
-                                    child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                        child: Image(
-                                            image: NetworkImage(
-                                                snapshot.data[i].img))),
-                                  ),
+                          child: Container(
+                            // margin: EdgeInsets.symmetric(horizontal: 3),
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 0),
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 1,
+                                  blurRadius: 3,
+                                  offset: const Offset(
+                                      0, 3), // changes position of shadow
                                 ),
-                              ),
-                              Expanded(
-                                flex: 4,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          snapshot.data[i].servicename,
-                                          textAlign: TextAlign.left,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1,
-                                        ),
-                                        Text(
-                                          snapshot.data[i].storename,
-                                          textAlign: TextAlign.left,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle2,
-                                        ),
-                                        Text(
-                                          snapshot.data[i].date,
-                                          textAlign: TextAlign.left,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle2,
-                                        ),
-                                        // Text('₹7',
-                                        //     textAlign: TextAlign.left,
-                                        //     style: Theme.of(context)
-                                        //         .textTheme
-                                        //         .headline5),
-                                      ]),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Container(
-                                      width: 100,
-                                      height: 25,
-                                      color: Colors.blue[700],
-                                      child: Center(
-                                          child: TextButton(
-                                        onPressed: () {
-                                          // Get.to(() => const ShopBookingPage(),
-                                          //     arguments: [
-                                          //       snapshot.data[i].id,
-                                          //       snapshot.data[i].storeid,
-                                          //       // snapshot.data[i].price,
-                                          //       snapshot.data[i].name,
-                                          //     ]);
-                                        },
-                                        child: Text(
-                                          snapshot.data[i].start,
-                                          textAlign: TextAlign.left,
-                                          style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontSize: 10,
-                                            letterSpacing: 0.5,
-                                            fontWeight: FontWeight.w600,
-                                            height: 1,
-                                          ),
-                                        ),
-                                      )),
+                              ],
+                              borderRadius: BorderRadius.circular(10),
+                              // border: Border.all(
+                              //   color: Colors.black,
+                              //   width: 0.1,
+                              // ),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 12.0,
+                                    ),
+                                    child: SizedBox(
+                                      height: 60,
+                                      child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                          child: Image(
+                                              image: NetworkImage(
+                                                  snapshot.data[i].img))),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                Expanded(
+                                  flex: 4,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            snapshot.data[i].servicename,
+                                            textAlign: TextAlign.left,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle1,
+                                          ),
+                                          Text(
+                                            snapshot.data[i].storename,
+                                            textAlign: TextAlign.left,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle2,
+                                          ),
+                                          Text(
+                                            snapshot.data[i].date,
+                                            textAlign: TextAlign.left,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle2,
+                                          ),
+                                          // Text('₹7',
+                                          //     textAlign: TextAlign.left,
+                                          //     style: Theme.of(context)
+                                          //         .textTheme
+                                          //         .headline5),
+                                        ]),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Container(
+                                        width: 100,
+                                        height: 25,
+                                        color: Colors.blue[700],
+                                        child: Center(
+                                            child: TextButton(
+                                          onPressed: () {
+                                            // Get.to(() => const ShopBookingPage(),
+                                            //     arguments: [
+                                            //       snapshot.data[i].id,
+                                            //       snapshot.data[i].storeid,
+                                            //       // snapshot.data[i].price,
+                                            //       snapshot.data[i].name,
+                                            //     ]);
+                                          },
+                                          child: Text(
+                                            snapshot.data[i].start,
+                                            textAlign: TextAlign.left,
+                                            style: GoogleFonts.montserrat(
+                                              color: Colors.white,
+                                              fontSize: 10,
+                                              letterSpacing: 0.5,
+                                              fontWeight: FontWeight.w600,
+                                              height: 1,
+                                            ),
+                                          ),
+                                        )),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },

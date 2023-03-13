@@ -156,6 +156,8 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
   // }
 
   bool isLoading = false;
+  bool passwordVisible = true;
+  String repswd = "";
 
   @override
   void initState() {
@@ -320,20 +322,65 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                       //           borderSide: BorderSide(color: Colors.green))),
                       // ),
                       const SizedBox(height: 10.0),
-                      TextField(
+                      TextFormField(
                         // //controller: pswdController,
                         onChanged: (val) {
                           users.pswd = val;
                         },
-                        decoration: const InputDecoration(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) {
+                          String pattern =
+                              r'^(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+                          if (value != users.pswd ||
+                              !RegExp(pattern).hasMatch(value!)) {
+                            return 'Minimum 8 characters, At least one number and \none special character';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
                             labelText: 'Password',
+                            suffixIcon: IconButton(
+                              icon: passwordVisible
+                                  ? const Icon(Icons.visibility_off)
+                                  : const Icon(Icons.visibility),
+                              onPressed: () {
+                                setState(
+                                  () {
+                                    passwordVisible = !passwordVisible;
+                                  },
+                                );
+                              },
+                            ),
+                            labelStyle: const TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
+                            focusedBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.green))),
+                        obscureText: passwordVisible,
+                      ),
+                      const SizedBox(height: 10.0),
+                      TextFormField(
+                        // //controller: pswdController,
+                        onChanged: (val) {
+                          repswd = val;
+                        },
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) {
+                          if (value != users.pswd) {
+                            return 'Password mismatch';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                            labelText: 'ReEnter Password',
                             labelStyle: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey),
                             focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.green))),
-                        // //obscureText: true,
+                        obscureText: true,
                       ),
                       // const Padding(
                       //   padding: EdgeInsets.only(top:24.0),
@@ -401,6 +448,42 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                                   setState(() {
                                     isLoading = false;
                                   });
+                                } else if (users.pswd != repswd) {
+                                  Get.snackbar(
+                                    "Password Didn't Match",
+                                    "Password and Re entered Password Are Different",
+                                    icon: const Icon(Icons.person,
+                                        color: Colors.white),
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.red,
+                                    borderRadius: 12,
+                                    margin: const EdgeInsets.all(15),
+                                    colorText: Colors.white,
+                                    duration: const Duration(seconds: 3),
+                                    isDismissible: true,
+                                    dismissDirection:
+                                        DismissDirection.horizontal,
+                                    forwardAnimationCurve: Curves.bounceIn,
+                                  );
+                                } else if (!RegExp(
+                                        r'^(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+                                    .hasMatch(users.pswd)) {
+                                  Get.snackbar(
+                                    "Password Not Secure",
+                                    "Minimum 8 characters, one number and one spacial character",
+                                    icon: const Icon(Icons.person,
+                                        color: Colors.white),
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.red,
+                                    borderRadius: 12,
+                                    margin: const EdgeInsets.all(15),
+                                    colorText: Colors.white,
+                                    duration: const Duration(seconds: 3),
+                                    isDismissible: true,
+                                    dismissDirection:
+                                        DismissDirection.horizontal,
+                                    forwardAnimationCurve: Curves.bounceIn,
+                                  );
                                 } else {
                                   signup_save(context);
                                 }

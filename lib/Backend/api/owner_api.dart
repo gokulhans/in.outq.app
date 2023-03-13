@@ -27,8 +27,7 @@ Future getOwnerStore() async {
         u["start"],
         u["end"],
         u["employees"],
-        u["gender"]
-        );
+        u["gender"]);
     stores.add(store);
   }
   // print(stores);
@@ -95,6 +94,7 @@ Future getSingleServiceDetails(var serviceid) async {
   var response =
       await http.get(Uri.parse('${apidomain}service/getservice/$serviceid'));
   var jsonData = jsonDecode(response.body);
+  print(jsonData);
   List<GetServiceModel> services = [];
 
   for (var u in jsonData) {
@@ -115,7 +115,7 @@ Future getSingleServiceDetails(var serviceid) async {
     );
     services.add(service);
   }
-  // print(services);
+  print(services);
   return services;
 }
 

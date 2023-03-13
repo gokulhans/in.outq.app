@@ -227,7 +227,7 @@ class _CreateStorePageState extends State<CreateStorePage> {
                             child: Text(
                               "Click Button to fetch Your Location. We use Location to List Your Services To Near Users",
                               textAlign: TextAlign.center,
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.montserrat(
                                   fontWeight: FontWeight.w600),
                             ),
                           ),
@@ -587,7 +587,7 @@ class _CreateStoreFormState extends State<CreateStoreForm> {
                       value: value,
                       child: Text(
                         value,
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.montserrat(
                             fontSize: 16, fontWeight: FontWeight.w400),
                       ),
                     );

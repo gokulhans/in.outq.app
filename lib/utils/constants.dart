@@ -2,6 +2,6 @@
 // const String apidomain = "https://outq-z6osk.ondigitalocean.app/";
 // const String apidomain = "https://octopus-app-2-he4n8.ondigitalocean.app/";
 // demo
-const String apidomain = "https://3d7a-103-176-184-232.in.ngrok.io/";
+// const String apidomain = "https://00b0-103-154-36-70.in.ngrok.io/";
 
-// const String apidomain = "https://outq-crashed-xdj6p.ondigitalocean.app/";
+const String apidomain = "https://outq-crashed-xdj6p.ondigitalocean.app/";

@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:outq/firebase_options.dart';
 import 'package:outq/screens/shared/splash/splash_screen.dart';
 import 'package:outq/screens/shared/update_check/update_home.dart';
+// import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -69,11 +70,33 @@ Future<void> main() async {
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   this.initDynamicLinks(context);
+  // }
+  // initDynamicLinks(BuildContext context) async {
+  //   await Future.delayed(Duration(seconds: 3));
+  //   var data = await FirebaseDynamicLinks.instance.getInitialLink();
+  //   var deepLink = data.link;
+  //   final queryParams = deepLink.queryParameters;
+  //   if (queryParams.length > 0) {
+  //     var userName = queryParams['userId'];
+  //   }
+  //   FirebaseDynamicLinks.instance.onLink(onSuccess: (dynamicLink) async {
+  //     var deepLink = dynamicLink.link;
+  //     debugPrint('DynamicLinks onLink $deepLink');
+  //   }, onError: (e) async {
+  //     debugPrint('DynamicLinks onError $e');
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -81,7 +104,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
           primarySwatch: Colors.blue,
           textTheme: TextTheme(
-            headline1: GoogleFonts.poppins(
+            headline1: GoogleFonts.montserrat(
               color: Colors.black87,
               fontSize: 30.0,
               fontWeight: FontWeight.w700,
@@ -91,32 +114,32 @@ class _MyAppState extends State<MyApp> {
               fontSize: 30,
               fontWeight: FontWeight.w700,
             ),
-            headline3: GoogleFonts.poppins(
+            headline3: GoogleFonts.montserrat(
               color: Colors.black87,
               fontSize: 32,
               fontWeight: FontWeight.w700,
             ),
-            headline4: GoogleFonts.poppins(
+            headline4: GoogleFonts.montserrat(
               color: Colors.black87,
               fontSize: 20,
               fontWeight: FontWeight.w700,
             ),
-            headline5: GoogleFonts.poppins(
+            headline5: GoogleFonts.montserrat(
               color: Colors.blue,
               fontSize: 14,
               fontWeight: FontWeight.w600,
             ),
-            headline6: GoogleFonts.poppins(
+            headline6: GoogleFonts.montserrat(
               color: Colors.white,
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
-            subtitle1: GoogleFonts.poppins(
+            subtitle1: GoogleFonts.montserrat(
               color: Colors.black87,
               fontSize: 14,
               fontWeight: FontWeight.w600,
             ),
-            subtitle2: GoogleFonts.poppins(
+            subtitle2: GoogleFonts.montserrat(
               color: Colors.black54,
               fontSize: 12,
             ),

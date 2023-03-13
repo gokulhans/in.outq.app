@@ -58,7 +58,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                     children: [
                                       Text(
                                         'My Shop Details',
-                                        style: GoogleFonts.poppins(
+                                        style: GoogleFonts.montserrat(
                                           color: const Color(0xFF09041B),
                                           fontSize: 18,
                                           // height: 1.5,
@@ -84,7 +84,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                           //     },
                                           //     child: Text(
                                           //       'Edit',
-                                          //       style: GoogleFonts.poppins(
+                                          //       style: GoogleFonts.montserrat(
                                           //         color:
                                           //             const Color(0xFFFF7B32),
                                           //         fontSize: 16,
@@ -121,8 +121,8 @@ class OwnerViewStorePage extends StatelessWidget {
                                                     addHorizontalSpace(5),
                                                     Text(
                                                       'Edit',
-                                                      style:
-                                                          GoogleFonts.poppins(
+                                                      style: GoogleFonts
+                                                          .montserrat(
                                                         color: Colors.white,
                                                         // const Color(
                                                         //     0xFFFF7B32),
@@ -167,7 +167,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                       children: [
                                         Text(
                                           'Name',
-                                          style: GoogleFonts.poppins(
+                                          style: GoogleFonts.montserrat(
                                             color: const Color(0xFF09041B),
                                             fontSize: 15,
                                             // height: 1.5,
@@ -212,7 +212,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                       children: [
                                         Text(
                                           'Image',
-                                          style: GoogleFonts.poppins(
+                                          style: GoogleFonts.montserrat(
                                             color: const Color(0xFF09041B),
                                             fontSize: 15,
                                             // height: 1.5,
@@ -271,7 +271,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                           children: [
                                             Text(
                                               'Description',
-                                              style: GoogleFonts.poppins(
+                                              style: GoogleFonts.montserrat(
                                                 color: const Color(0xFF09041B),
                                                 fontSize: 15,
                                                 // height: 1.5,
@@ -282,7 +282,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                             //     onPressed: () {},
                                             //     child: Text(
                                             //       'Edit',
-                                            //       style: GoogleFonts.poppins(
+                                            //       style: GoogleFonts.montserrat(
                                             //         color: const Color(0xFFFF7B32),
                                             //         fontSize: 12,
                                             //         // height: 1.5,
@@ -333,7 +333,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                           children: [
                                             Text(
                                               'Location',
-                                              style: GoogleFonts.poppins(
+                                              style: GoogleFonts.montserrat(
                                                 color: const Color(0xFF09041B),
                                                 fontSize: 15,
                                                 // height: 1.5,
@@ -344,7 +344,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                             //     onPressed: () {},
                                             //     child: Text(
                                             //       'Edit',
-                                            //       style: GoogleFonts.poppins(
+                                            //       style: GoogleFonts.montserrat(
                                             //         color: const Color(0xFFFF7B32),
                                             //         fontSize: 12,
                                             //         // height: 1.5,
@@ -395,7 +395,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                           children: [
                                             Text(
                                               'Opening Time',
-                                              style: GoogleFonts.poppins(
+                                              style: GoogleFonts.montserrat(
                                                 color: const Color(0xFF09041B),
                                                 fontSize: 15,
                                                 // height: 1.5,
@@ -406,7 +406,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                             //     onPressed: () {},
                                             //     child: Text(
                                             //       'Edit',
-                                            //       style: GoogleFonts.poppins(
+                                            //       style: GoogleFonts.montserrat(
                                             //         color: const Color(0xFFFF7B32),
                                             //         fontSize: 12,
                                             //         // height: 1.5,
@@ -457,7 +457,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                           children: [
                                             Text(
                                               'Closing Time',
-                                              style: GoogleFonts.poppins(
+                                              style: GoogleFonts.montserrat(
                                                 color: const Color(0xFF09041B),
                                                 fontSize: 15,
                                                 // height: 1.5,
@@ -468,7 +468,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                             //     onPressed: () {},
                                             //     child: Text(
                                             //       'Edit',
-                                            //       style: GoogleFonts.poppins(
+                                            //       style: GoogleFonts.montserrat(
                                             //         color: const Color(0xFFFF7B32),
                                             //         fontSize: 12,
                                             //         // height: 1.5,
@@ -519,7 +519,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                           children: [
                                             Text(
                                               'Employees',
-                                              style: GoogleFonts.poppins(
+                                              style: GoogleFonts.montserrat(
                                                 color: const Color(0xFF09041B),
                                                 fontSize: 15,
                                                 // height: 1.5,
@@ -530,7 +530,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                             //     onPressed: () {},
                                             //     child: Text(
                                             //       'Edit',
-                                            //       style: GoogleFonts.poppins(
+                                            //       style: GoogleFonts.montserrat(
                                             //         color: const Color(0xFFFF7B32),
                                             //         fontSize: 12,
                                             //         // height: 1.5,
@@ -590,7 +590,7 @@ class ServiceListTile extends StatelessWidget {
         //   onPressed: () {},
         //   child: Text(
         //     'Edit',
-        //     style: GoogleFonts.poppins(
+        //     style: GoogleFonts.montserrat(
         //       color: const Color(0xFFFF7B32),
         //       fontSize: 12,
         //       // height: 1.5,
