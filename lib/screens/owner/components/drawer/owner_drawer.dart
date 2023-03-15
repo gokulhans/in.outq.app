@@ -5,6 +5,7 @@ import 'package:outq/screens/shared/drawer_pages/feedback_screen.dart';
 import 'package:outq/screens/shared/drawer_pages/help_screen.dart';
 import 'package:outq/screens/shared/drawer_pages/invite_friend_screen.dart';
 import 'package:outq/screens/shared/exit_pop/exit_pop_up.dart';
+import 'package:outq/utils/color_constants.dart';
 import 'package:outq/utils/image_strings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,6 +16,7 @@ class OwnerDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Drawer(
+        backgroundColor: ColorConstants.appbgclr2,
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
@@ -32,52 +34,62 @@ class OwnerDrawer extends StatelessWidget {
               ),
             ),
             ListTile(
-              leading: const FaIcon(
+              leading: FaIcon(
                 FontAwesomeIcons.house,
-                size: 20,
+                color: ColorConstants.textclr,
+                size: 18,
               ),
-              title: const Text('Home'),
+              title: Text(
+                'Home',
+                style: TextStyle(color: ColorConstants.textclr),
+              ),
               onTap: () {
                 Navigator.of(context).pop();
               },
             ),
             ListTile(
-              leading: const FaIcon(
-                FontAwesomeIcons.headset,
-                size: 20,
+              leading: Icon(Icons.support_agent_rounded,
+                  color: ColorConstants.textclr),
+              title: Text(
+                'Help',
+                style: TextStyle(color: ColorConstants.textclr),
               ),
-              title: const Text('Help'),
               onTap: () => {Get.to(() => const HelpScreen())},
             ),
             ListTile(
-              leading: const Icon(Icons.help),
-              title: const Text('Feedback'),
+              leading: Icon(Icons.help, color: ColorConstants.textclr),
+              title: Text(
+                'Feedback',
+                style: TextStyle(color: ColorConstants.textclr),
+              ),
               onTap: () => {Get.to(() => const FeedbackScreen())},
             ),
             ListTile(
-              leading: const FaIcon(
-                FontAwesomeIcons.userGroup,
-                size: 20,
+              leading: Icon(Icons.people, color: ColorConstants.textclr),
+              title: Text(
+                'Invite Friend',
+                style: TextStyle(color: ColorConstants.textclr),
               ),
-              title: const Text('Invite Friend'),
               onTap: () => {Get.to(() => const InviteFriend())},
             ),
-            // const ListTile(
-            //   leading: Icon(Icons.share),
-            //   title: Text('Rate the app'),
-            //   // onTap: () => {Get.to(()=> InviteFriend())},
+            // ListTile(
+            //   leading: const Icon(Icons.info),
+            //   title: const Text('Logout'),
+            //   onTap: () async {
+            //     SharedPreferences pref =
+            //         await SharedPreferences.getInstance();
+            //     pref.remove("userid");
+            //     Get.offAll(() => const Exithome());
+            //   },
             // ),
-            // const ListTile(
-            //   leading: Icon(Icons.info),
-            //   title: Text('About Us'),
-            //   // onTap: () => {Get.to(()=> InviteFriend())},
-            // ),
+
             ListTile(
-              leading: const FaIcon(
+              leading:  FaIcon(
                 FontAwesomeIcons.rightFromBracket,
                 size: 20,
+                color:ColorConstants.textclr,
               ),
-              title: const Text('Logout'),
+              title: Text('Logout',style:TextStyle(color:ColorConstants.textclr)),
               onTap: () async {
                 SharedPreferences pref = await SharedPreferences.getInstance();
                 pref.remove("ownerid");

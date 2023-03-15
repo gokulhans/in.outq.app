@@ -183,6 +183,7 @@ class _CreateStorePageState extends State<CreateStorePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    addVerticalSpace(20),
                     Text(
                       'Fill Your Shop Details',
                       textAlign: TextAlign.left,
@@ -202,6 +203,8 @@ class _CreateStorePageState extends State<CreateStorePage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          addVerticalSpace(20),
+
                           // Text('LAT: ${_currentPosition?.latitude ?? ""}'),
                           // Text('LNG: ${_currentPosition?.longitude ?? ""}'),
                           // Text('ADDRESS: ${_currentAddress ?? ""}'),

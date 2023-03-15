@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:outq/screens/shared/exit_pop/exit_pop_up.dart';
@@ -38,18 +39,19 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: PreferredSize(
-      //   preferredSize: const Size.fromHeight(0),
-      //   child: AppBar(
-      //     elevation: 0,
-      //     // systemOverlayStyle: SystemUiOverlayStyle(
-      //     //     systemNavigationBarColor: hexToColor("#0F3EE9"), // navigation bar color
-      //     //     systemNavigationBarIconBrightness: Brightness.dark,
-      //     //     // statusBarColor: Colors.black,
-      //     //     statusBarIconBrightness: Brightness.light,
-      //     //     statusBarBrightness: Brightness.dark),
-      //   ),
-      // ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(0),
+        child: AppBar(
+          elevation: 0,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            systemNavigationBarColor: Colors.white, // navigation bar color
+            systemNavigationBarIconBrightness: Brightness.dark,
+            statusBarColor: hexToColor("#00BFFF"),
+            statusBarIconBrightness: Brightness.light,
+            // statusBarBrightness: Brightness.light
+          ),
+        ),
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

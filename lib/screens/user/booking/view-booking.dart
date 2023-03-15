@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:outq/Backend/api/user_api.dart';
 import 'package:outq/screens/user/booking/user_view_booking.dart';
+import 'package:outq/utils/color_constants.dart';
 import 'package:outq/utils/sizes.dart';
 
 class UserViewBookingsPage extends StatefulWidget {
@@ -17,7 +18,7 @@ class _UserViewBookingsPageState extends State<UserViewBookingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      color: Colors.white,
+      color: ColorConstants.appbgclr,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,7 +33,11 @@ class _UserViewBookingsPageState extends State<UserViewBookingsPage> {
                 Text(
                   'Appoinments',
                   textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.headline3,
+                  style: GoogleFonts.montserrat(
+                    color: ColorConstants.textclr,
+                    fontSize: 32,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ],
             ),
@@ -52,11 +57,13 @@ class _UserViewBookingsPageState extends State<UserViewBookingsPage> {
                 ));
               } else {
                 if (snapshot.data.length == 0) {
-                  return const Center(
+                  return Center(
                       child: Text(
                     'No Booking is available right now.',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
+                    style: GoogleFonts.montserrat(
+                      color: ColorConstants.textclr,
+                      // fontSize: 32,
+                      fontWeight: FontWeight.w700,
                     ),
                   ));
                 } else {

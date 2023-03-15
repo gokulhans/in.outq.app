@@ -86,7 +86,7 @@ class ServiceCardBig extends StatelessWidget {
                       Text(
                         data['name'],
                         style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w600),
+                            fontSize: 16, fontWeight: FontWeight.w600),
                       ),
                       addVerticalSpace(5),
                       Row(
@@ -112,6 +112,15 @@ class ServiceCardBig extends StatelessWidget {
                         ],
                       ),
                       addVerticalSpace(5),
+                      Text(
+                        "${calculatePercentageDifference(double.parse(data['price'].replaceAll(",", "")), double.parse(data['ogprice'].replaceAll(",", ""))).toStringAsFixed(2)} % OFF",
+                        // data['location'],
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.yellow[900]),
+                      ),
+                      addVerticalSpace(5),
                       Row(
                         children: [
                           const Icon(
@@ -123,7 +132,7 @@ class ServiceCardBig extends StatelessWidget {
                             "${data['duration']} minutes",
                             textAlign: TextAlign.left,
                             style: GoogleFonts.montserrat(
-                              color: Colors.yellow[900],
+                              // color: ,
                               fontSize: 12,
                             ),
                           ),
@@ -132,7 +141,7 @@ class ServiceCardBig extends StatelessWidget {
                       addVerticalSpace(5),
                       Text(
                         "${data['description']}",
-                        maxLines: 2,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.montserrat(
                             color: Colors.grey[600],

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:outq/Backend/api/owner_api.dart';
 import 'package:outq/screens/owner/store/edit/edit_store.dart';
+import 'package:outq/utils/color_constants.dart';
 import 'package:outq/utils/sizes.dart';
 import 'package:outq/utils/widget_functions.dart';
 
@@ -14,7 +15,7 @@ class OwnerViewStorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: ColorConstants.appbgclr,
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: tDefaultSize),
         child: Column(
@@ -59,7 +60,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                       Text(
                                         'My Shop Details',
                                         style: GoogleFonts.montserrat(
-                                          color: const Color(0xFF09041B),
+                                          color: ColorConstants.textclr,
                                           fontSize: 18,
                                           // height: 1.5,
                                           fontWeight: FontWeight.w600,
@@ -145,16 +146,16 @@ class OwnerViewStorePage extends StatelessWidget {
                                     margin: EdgeInsets.only(left: 2, right: 2),
                                     width: double.infinity,
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 1,
-                                          blurRadius: 3,
-                                          offset: Offset(0,
-                                              3), // changes position of shadow
-                                        ),
-                                      ],
+                                      color: ColorConstants.appbgclr2,
+                                      // boxShadow: [
+                                      //   BoxShadow(
+                                      //     color: Colors.grey.withOpacity(0.5),
+                                      //     spreadRadius: 1,
+                                      //     blurRadius: 3,
+                                      //     offset: Offset(0,
+                                      //         3), // changes position of shadow
+                                      //   ),
+                                      // ],
                                       borderRadius: BorderRadius.circular(10),
                                       // border: Border.all(
                                       //   color: Colors.black,
@@ -168,7 +169,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                         Text(
                                           'Name',
                                           style: GoogleFonts.montserrat(
-                                            color: const Color(0xFF09041B),
+                                            color: ColorConstants.textclr,
                                             fontSize: 15,
                                             // height: 1.5,
                                             fontWeight: FontWeight.w500,
@@ -179,7 +180,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                           snapshot.data[i].name,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle2,
+                                              .subtitle2!.copyWith(color: ColorConstants.textclr),
                                         ),
                                       ],
                                     ),
@@ -190,16 +191,16 @@ class OwnerViewStorePage extends StatelessWidget {
                                     margin: EdgeInsets.only(left: 2, right: 2),
                                     width: double.infinity,
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 1,
-                                          blurRadius: 3,
-                                          offset: Offset(0,
-                                              3), // changes position of shadow
-                                        ),
-                                      ],
+                                      color: ColorConstants.appbgclr2,
+                                      // boxShadow: [
+                                      //   BoxShadow(
+                                      //     color: Colors.grey.withOpacity(0.5),
+                                      //     spreadRadius: 1,
+                                      //     blurRadius: 3,
+                                      //     offset: Offset(0,
+                                      //         3), // changes position of shadow
+                                      //   ),
+                                      // ],
                                       borderRadius: BorderRadius.circular(10),
                                       // border: Border.all(
                                       //   color: Colors.black,
@@ -213,7 +214,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                         Text(
                                           'Image',
                                           style: GoogleFonts.montserrat(
-                                            color: const Color(0xFF09041B),
+                                            color: ColorConstants.textclr,
                                             fontSize: 15,
                                             // height: 1.5,
                                             fontWeight: FontWeight.w500,
@@ -245,16 +246,16 @@ class OwnerViewStorePage extends StatelessWidget {
                                     margin: EdgeInsets.only(left: 2, right: 2),
                                     width: double.infinity,
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 1,
-                                          blurRadius: 3,
-                                          offset: Offset(0,
-                                              3), // changes position of shadow
-                                        ),
-                                      ],
+                                      color: ColorConstants.appbgclr2,
+                                      // boxShadow: [
+                                      //   BoxShadow(
+                                      //     color: Colors.grey.withOpacity(0.5),
+                                      //     spreadRadius: 1,
+                                      //     blurRadius: 3,
+                                      //     offset: Offset(0,
+                                      //         3), // changes position of shadow
+                                      //   ),
+                                      // ],
                                       borderRadius: BorderRadius.circular(10),
                                       // border: Border.all(
                                       //   color: Colors.black,
@@ -272,7 +273,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                             Text(
                                               'Description',
                                               style: GoogleFonts.montserrat(
-                                                color: const Color(0xFF09041B),
+                                                color: ColorConstants.textclr,
                                                 fontSize: 15,
                                                 // height: 1.5,
                                                 fontWeight: FontWeight.w500,
@@ -296,7 +297,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                           snapshot.data[i].description,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle2,
+                                              .subtitle2!.copyWith(color: ColorConstants.textclr),
                                         ),
                                       ],
                                     ),
@@ -307,16 +308,16 @@ class OwnerViewStorePage extends StatelessWidget {
                                     margin: EdgeInsets.only(left: 2, right: 2),
                                     width: double.infinity,
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 1,
-                                          blurRadius: 3,
-                                          offset: Offset(0,
-                                              3), // changes position of shadow
-                                        ),
-                                      ],
+                                      color: ColorConstants.appbgclr2,
+                                      // boxShadow: [
+                                      //   BoxShadow(
+                                      //     color: Colors.grey.withOpacity(0.5),
+                                      //     spreadRadius: 1,
+                                      //     blurRadius: 3,
+                                      //     offset: Offset(0,
+                                      //         3), // changes position of shadow
+                                      //   ),
+                                      // ],
                                       borderRadius: BorderRadius.circular(10),
                                       // border: Border.all(
                                       //   color: Colors.black,
@@ -334,7 +335,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                             Text(
                                               'Location',
                                               style: GoogleFonts.montserrat(
-                                                color: const Color(0xFF09041B),
+                                                color: ColorConstants.textclr,
                                                 fontSize: 15,
                                                 // height: 1.5,
                                                 fontWeight: FontWeight.w500,
@@ -358,7 +359,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                           snapshot.data[i].location,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle2,
+                                              .subtitle2!.copyWith(color: ColorConstants.textclr),
                                         ),
                                       ],
                                     ),
@@ -369,16 +370,16 @@ class OwnerViewStorePage extends StatelessWidget {
                                     margin: EdgeInsets.only(left: 2, right: 2),
                                     width: double.infinity,
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 1,
-                                          blurRadius: 3,
-                                          offset: Offset(0,
-                                              3), // changes position of shadow
-                                        ),
-                                      ],
+                                      color: ColorConstants.appbgclr2,
+                                      // boxShadow: [
+                                      //   BoxShadow(
+                                      //     color: Colors.grey.withOpacity(0.5),
+                                      //     spreadRadius: 1,
+                                      //     blurRadius: 3,
+                                      //     offset: Offset(0,
+                                      //         3), // changes position of shadow
+                                      //   ),
+                                      // ],
                                       borderRadius: BorderRadius.circular(10),
                                       // border: Border.all(
                                       //   color: Colors.black,
@@ -396,7 +397,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                             Text(
                                               'Opening Time',
                                               style: GoogleFonts.montserrat(
-                                                color: const Color(0xFF09041B),
+                                                color: ColorConstants.textclr,
                                                 fontSize: 15,
                                                 // height: 1.5,
                                                 fontWeight: FontWeight.w500,
@@ -420,7 +421,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                           snapshot.data[i].start,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle2,
+                                              .subtitle2!.copyWith(color: ColorConstants.textclr),
                                         ),
                                       ],
                                     ),
@@ -431,16 +432,16 @@ class OwnerViewStorePage extends StatelessWidget {
                                     margin: EdgeInsets.only(left: 2, right: 2),
                                     width: double.infinity,
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 1,
-                                          blurRadius: 3,
-                                          offset: Offset(0,
-                                              3), // changes position of shadow
-                                        ),
-                                      ],
+                                      color: ColorConstants.appbgclr2,
+                                      // boxShadow: [
+                                      //   BoxShadow(
+                                      //     color: Colors.grey.withOpacity(0.5),
+                                      //     spreadRadius: 1,
+                                      //     blurRadius: 3,
+                                      //     offset: Offset(0,
+                                      //         3), // changes position of shadow
+                                      //   ),
+                                      // ],
                                       borderRadius: BorderRadius.circular(10),
                                       // border: Border.all(
                                       //   color: Colors.black,
@@ -458,7 +459,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                             Text(
                                               'Closing Time',
                                               style: GoogleFonts.montserrat(
-                                                color: const Color(0xFF09041B),
+                                                color: ColorConstants.textclr,
                                                 fontSize: 15,
                                                 // height: 1.5,
                                                 fontWeight: FontWeight.w500,
@@ -482,7 +483,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                           snapshot.data[i].end,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle2,
+                                              .subtitle2!.copyWith(color: ColorConstants.textclr),
                                         ),
                                       ],
                                     ),
@@ -493,16 +494,16 @@ class OwnerViewStorePage extends StatelessWidget {
                                     margin: EdgeInsets.only(left: 2, right: 2),
                                     width: double.infinity,
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 1,
-                                          blurRadius: 3,
-                                          offset: Offset(0,
-                                              3), // changes position of shadow
-                                        ),
-                                      ],
+                                      color: ColorConstants.appbgclr2,
+                                      // boxShadow: [
+                                      //   BoxShadow(
+                                      //     color: Colors.grey.withOpacity(0.5),
+                                      //     spreadRadius: 1,
+                                      //     blurRadius: 3,
+                                      //     offset: Offset(0,
+                                      //         3), // changes position of shadow
+                                      //   ),
+                                      // ],
                                       borderRadius: BorderRadius.circular(10),
                                       // border: Border.all(
                                       //   color: Colors.black,
@@ -520,7 +521,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                             Text(
                                               'Employees',
                                               style: GoogleFonts.montserrat(
-                                                color: const Color(0xFF09041B),
+                                                color: ColorConstants.textclr,
                                                 fontSize: 15,
                                                 // height: 1.5,
                                                 fontWeight: FontWeight.w500,
@@ -544,7 +545,7 @@ class OwnerViewStorePage extends StatelessWidget {
                                           snapshot.data[i].employees,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle2,
+                                              .subtitle2!.copyWith(color: ColorConstants.textclr),
                                         ),
                                       ],
                                     ),

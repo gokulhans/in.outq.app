@@ -6,6 +6,9 @@ import 'package:outq/screens/shared/drawer_pages/help_screen.dart';
 import 'package:outq/screens/shared/drawer_pages/invite_friend_screen.dart';
 import 'package:outq/screens/shared/exit_pop/exit_pop_up.dart';
 import 'package:outq/screens/user/components/appbar/user_appbar.dart';
+import 'package:outq/screens/user/rating/ratingmode.dart';
+import 'package:outq/screens/user/rating/user_add_review_and_rating.dart';
+import 'package:outq/utils/color_constants.dart';
 import 'package:outq/utils/widget_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,7 +30,7 @@ class _UserMyProfilePageState extends State<UserMyProfilePage> {
         ),
       ),
       body: Container(
-        color: Colors.white,
+        color: ColorConstants.appbgclr,
         child: Column(
           children: [
             // Column(
@@ -79,28 +82,29 @@ class _UserMyProfilePageState extends State<UserMyProfilePage> {
                 padding: EdgeInsets.zero,
                 children: <Widget>[
                   ListTile(
-                    leading: const FaIcon(
+                    leading: FaIcon(
                       FontAwesomeIcons.house,
+                      color: ColorConstants.textclr,
                       size: 18,
                     ),
-                    title: const Text('Home'),
+                    title: Text('Home',style: TextStyle(color: ColorConstants.textclr),),
                     onTap: () {
                       Navigator.of(context).pop();
                     },
                   ),
                   ListTile(
-                    leading: const Icon(Icons.support_agent_rounded),
-                    title: const Text('Help'),
+                    leading:  Icon(Icons.support_agent_rounded,color: ColorConstants.textclr),
+                    title: Text('Help',style: TextStyle(color: ColorConstants.textclr),),
                     onTap: () => {Get.to(() => const HelpScreen())},
                   ),
                   ListTile(
-                    leading: const Icon(Icons.help),
-                    title: const Text('Feedback'),
+                    leading: Icon(Icons.help,color: ColorConstants.textclr),
+                    title: Text('Feedback',style: TextStyle(color: ColorConstants.textclr),),
                     onTap: () => {Get.to(() => const FeedbackScreen())},
                   ),
                   ListTile(
-                    leading: const Icon(Icons.people),
-                    title: const Text('Invite Friend'),
+                    leading: Icon(Icons.people,color: ColorConstants.textclr),
+                    title: Text('Invite Friend',style: TextStyle(color: ColorConstants.textclr),),
                     onTap: () => {Get.to(() => const InviteFriend())},
                   ),
                   // ListTile(
@@ -117,8 +121,9 @@ class _UserMyProfilePageState extends State<UserMyProfilePage> {
                     leading: FaIcon(
                       FontAwesomeIcons.rightFromBracket,
                       size: 20,
+                      color: ColorConstants.textclr
                     ),
-                    title: const Text('Logout'),
+                    title: Text('Logout',style: TextStyle(color: ColorConstants.textclr),),
                     onTap: () async {
                       SharedPreferences pref =
                           await SharedPreferences.getInstance();

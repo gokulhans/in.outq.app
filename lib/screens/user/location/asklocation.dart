@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:outq/screens/owner/service/edit/edit_service.dart';
 import 'package:outq/screens/user/components/appbar/user_appbar.dart';
 import 'package:outq/screens/user/home/user_home.dart';
+import 'package:outq/utils/color_constants.dart';
 import 'package:outq/utils/constants.dart';
 import 'package:outq/utils/sizes.dart';
 import 'package:outq/utils/widget_functions.dart';
@@ -95,7 +96,7 @@ class _DropdownDemoState extends State<DropdownDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: ColorConstants.appbgclr,
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: UserAppBarWithBack(
@@ -113,7 +114,7 @@ class _DropdownDemoState extends State<DropdownDemo> {
             Text(
               'Change Location',
               style: GoogleFonts.montserrat(
-                color: const Color(0xFF09041B),
+                color: ColorConstants.textclrw,
                 fontSize: 20,
                 // height: 1.5,
                 fontWeight: FontWeight.w600,
@@ -123,24 +124,25 @@ class _DropdownDemoState extends State<DropdownDemo> {
             // Step 2.
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 1,
-                    blurRadius: 3,
-                    offset: Offset(0, 3), // changes position of shadow
-                  ),
-                ],
+                color: ColorConstants.appbgclr2,
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: Colors.grey.withOpacity(0.5),
+                //     spreadRadius: 1,
+                //     blurRadius: 3,
+                //     offset: Offset(0, 3), // changes position of shadow
+                //   ),
+                // ],
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: Colors.black,
+                  color: Colors.white,
                   width: 0.1,
                 ),
               ),
               padding: EdgeInsets.all(10),
               width: double.infinity,
               child: DropdownButton<String>(
+                dropdownColor: ColorConstants.appbgclr2,
                 // Step 3.
                 value: dropdownValue,
                 // Step 4.
@@ -159,7 +161,8 @@ class _DropdownDemoState extends State<DropdownDemo> {
                     value: value,
                     child: Text(
                       value,
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(
+                          fontSize: 18, color: ColorConstants.textclrw),
                     ),
                   );
                 }).toList(),
@@ -177,7 +180,10 @@ class _DropdownDemoState extends State<DropdownDemo> {
             ),
             Row(
               children: [
-                const Icon(Icons.location_on),
+                Icon(
+                  Icons.location_on,
+                  color: ColorConstants.iconclr,
+                ),
                 addHorizontalSpace(10),
                 Container(
                   width: 250,
@@ -186,6 +192,7 @@ class _DropdownDemoState extends State<DropdownDemo> {
                     // maxLines: 2,
                     style: GoogleFonts.montserrat(
                       fontSize: 14,
+                      color: ColorConstants.textclrw,
                     ),
                   ),
                 )

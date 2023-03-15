@@ -102,6 +102,7 @@ class _CreateServicePageState extends State<CreateServicePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    addVerticalSpace(20),
                     Text(
                       'Fill Your Service Details',
                       textAlign: TextAlign.left,

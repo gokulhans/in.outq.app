@@ -243,6 +243,27 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
       ));
     }
 
+    // Future createTimeslots(var serviceid, var date) async {
+    //   SharedPreferences pref = await SharedPreferences.getInstance();
+    //   var userid = pref.getString("userid");
+
+    //   var response = await http
+    //       .get(Uri.parse('${apidomain}booking/timeslots/$serviceid/$date'));
+    //   var jsonData = jsonDecode(response.body);
+    //   print({"test time ", jsonData[0]});
+
+    //   final chunkSize = 6;
+    //   for (var i = 0; i < jsonData.length; i += chunkSize) {
+    //     chunks.add(jsonData.sublist(i,
+    //         i + chunkSize > jsonData.length ? jsonData.length : i + chunkSize));
+    //   }
+    //   setState(() {
+    //     chunks = chunks;
+    //   });
+
+    //   print({"chunks", chunks[0]});
+    // }
+
     // int start = 12 - int.parse(argumentData[6]);
     // int end = int.parse(argumentData[7]);
     // int hours = start + end + 1;
@@ -260,7 +281,7 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: tDefaultSize),
-          color: Colors.white,
+          color: ColorConstants.appbgclr,
           child: CustomScrollView(
               physics: const BouncingScrollPhysics(),
               slivers: <Widget>[
@@ -268,22 +289,23 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      addVerticalSpace(30),
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: 5),
                         // margin: const EdgeInsets.symmetric(
                         //     vertical: 10, horizontal: 20),
                         // padding: const EdgeInsets.symmetric(horizontal: 5),
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 1,
-                              blurRadius: 3,
-                              offset: const Offset(
-                                  0, 3), // changes position of shadow
-                            ),
-                          ],
+                          color: Color.fromARGB(235, 238, 238, 238),
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: Colors.grey.withOpacity(01),
+                          //     spreadRadius: 1,
+                          //     blurRadius: 3,
+                          //     offset: const Offset(
+                          //         0, 3), // changes position of shadow
+                          //   ),
+                          // ],
                           borderRadius: BorderRadius.circular(10),
                           // border: Border.all(
                           //   color: Colors.black,
@@ -322,7 +344,7 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                                         padding: const EdgeInsets.all(4.0),
                                         child: Column(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                                MainAxisAlignment.spaceEvenly,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
@@ -333,6 +355,7 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                                                     .textTheme
                                                     .subtitle1,
                                               ),
+                                              addVerticalSpace(5),
                                               Row(
                                                 children: [
                                                   const Icon(
@@ -349,6 +372,7 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                                                   ),
                                                 ],
                                               ),
+                                              addVerticalSpace(5),
                                               Row(
                                                 children: [
                                                   // Text(
@@ -391,7 +415,7 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                       ),
                       // Text(argumentData[2]),
                       addVerticalSpace(20),
-                      const Padding(
+                      Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: Text(
@@ -399,15 +423,16 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
+                            color: ColorConstants.textclr,
                           ),
                         ),
                       ),
                       addVerticalSpace(30),
                       HorizontalCalendar(
                         date: DateTime.now(),
-                        textColor: Colors.black45,
-                        backgroundColor: Colors.white,
-                        selectedColor: Colors.blue,
+                        textColor: ColorConstants.textclr,
+                        backgroundColor: ColorConstants.appbgclr,
+                        selectedColor: ColorConstants.blue,
                         showMonth: true,
                         onDateSelected: (date) {
                           // // print(argumentData);
@@ -437,7 +462,7 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                       //     child: const Text('Choose Time'),
                       //   ),
                       // ),
-                      const Padding(
+                      Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: Text(
@@ -445,6 +470,7 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
+                            color: ColorConstants.textclr,
                           ),
                         ),
                       ),
@@ -455,6 +481,18 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                             AsyncSnapshot<http.Response> snapshot) {
                           if (snapshot.hasData) {
                             var data = jsonDecode(snapshot.data!.body);
+                            final chunkSize = 12;
+
+                            var chunks = <List<dynamic>>[];
+
+                            for (var i = 0; i < data.length; i += chunkSize) {
+                              chunks.add(data.sublist(
+                                  i,
+                                  i + chunkSize > data.length
+                                      ? data.length
+                                      : i + chunkSize));
+                            }
+                            print(chunks);
                             // return Expanded(
                             //   child: ListView.builder(
                             //     itemCount: data.length,
@@ -465,73 +503,94 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                             //     },
                             //   ),
                             // );
-                            return GridView.builder(
-                                // physics:
-                                //     const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
+                            return ListView.builder(
                                 shrinkWrap: true,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 4, childAspectRatio: 2),
-                                itemCount: data.length,
-                                physics: BouncingScrollPhysics(),
-                                itemBuilder: (BuildContext context, int index) {
-                                  final rowNumber = (index / 3).floor() + 1;
-
-                                  if (rowNumber % 2 == 0 && index % 6 == 0) {
-                                    // Add a SizedBox after each 6th widget in even rows
-                                    return Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 20.0,
-                                        ),
-                                        // _buildGridItem(index),
-                                      ],
-                                    );
-                                  } else {
-                                    return InkWell(
-                                      splashColor: Colors.transparent,
-                                      onTap: () {
-                                        print(data[index]["time"]);
-                                        setState(() {
-                                          _currentIndex = index;
-                                          booking.start = data[index]["time"];
-                                        });
-                                      },
-                                      child: Container(
-                                        height: 50,
-                                        margin: const EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: _currentIndex == index
-                                                ? Colors.white
-                                                : (data[index]["status"] == "n")
-                                                    ? Colors.black
-                                                    : Colors.white,
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: chunks
+                                    .length, // The number of items in the list
+                                itemBuilder: (BuildContext context, int i) {
+                                  // This function is called for each item in the list
+                                  return Column(
+                                    children: [
+                                      Container(
+                                        height: 60,
+                                        child: Center(
+                                          child: Text(
+                                            "${chunks[i][0]["time"].contains("AM") || chunks[i][0]["time"].contains("PM") ? chunks[i][0]["time"] : chunks[i][0]["time"] + " AM"}",
+                                            style: GoogleFonts.montserrat(
+                                                color: Colors.white70,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 24),
                                           ),
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          color: _currentIndex == index
-                                              ? Colors.blue
-                                              : (data[index]["status"] == "n")
-                                                  ? Colors.white
-                                                  : Colors.red,
-                                        ),
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          data[index]['time'],
-                                          style: TextStyle(
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.bold,
-                                              color: _currentIndex == index
-                                                  ? Colors.white
-                                                  : (data[index]["status"] ==
-                                                          "n")
-                                                      ? Colors.black
-                                                      : Colors.white),
                                         ),
                                       ),
-                                    );
-                                  }
+                                      GridView.builder(
+                                        // physics:
+                                        //     const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
+                                        shrinkWrap: true,
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount: 4,
+                                                childAspectRatio: 2),
+                                        itemCount: chunks[i].length,
+                                        physics: BouncingScrollPhysics(),
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return InkWell(
+                                            splashColor: Colors.transparent,
+                                            onTap: () {
+                                              print(chunks[i][index]["time"]);
+                                              setState(() {
+                                                _currentIndex = i * 100 + index;
+                                                booking.start =
+                                                    chunks[i][index]["time"];
+                                              });
+                                            },
+                                            child: Container(
+                                              height: 50,
+                                              margin: const EdgeInsets.all(5),
+                                              decoration: BoxDecoration(
+                                                // border: Border.all(
+                                                //   color: _currentIndex == index
+                                                //       ? Colors.white
+                                                //       : (data[index]["status"] == "n")
+                                                //           ? Colors.black
+                                                //           : Colors.white,
+                                                // ),
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                color: _currentIndex ==
+                                                        i * 100 + index
+                                                    ? Colors.blue
+                                                    : (chunks[i][index]
+                                                                ["status"] ==
+                                                            "n")
+                                                        ? Colors.white70
+                                                        : Colors.red,
+                                              ),
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                chunks[i][index]['time'],
+                                                style: TextStyle(
+                                                    fontSize: 11,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: _currentIndex ==
+                                                            i * 100 + index
+                                                        ? Colors.white
+                                                        : (chunks[i][index][
+                                                                    "status"] ==
+                                                                "n")
+                                                            ? const Color
+                                                                    .fromARGB(
+                                                                255, 18, 48, 97)
+                                                            : Colors.white),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  );
                                 });
                           } else if (snapshot.hasData) {
                             return Text('Error: ${snapshot.error}');
@@ -729,12 +788,13 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                               child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
+                                  children: [
                                     Text(
                                       'Store',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
+                                        color: ColorConstants.textclr,
                                       ),
                                     ),
                                   ]),
@@ -750,7 +810,7 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                                   argumentData[5],
                                   textAlign: TextAlign.right,
                                   style: GoogleFonts.montserrat(
-                                    color: Colors.blue,
+                                    color: Colors.blue[100],
                                     fontSize: 15,
                                     letterSpacing: 0.5,
                                     fontWeight: FontWeight.w700,
@@ -771,12 +831,13 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                               child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
+                                  children: [
                                     Text(
                                       'Service',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
+                                        color: ColorConstants.textclr,
                                       ),
                                     ),
                                   ]),
@@ -792,7 +853,7 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                                   argumentData[3],
                                   textAlign: TextAlign.right,
                                   style: GoogleFonts.montserrat(
-                                    color: Colors.blue,
+                                    color: Colors.blue[100],
                                     fontSize: 15,
                                     letterSpacing: 0.5,
                                     fontWeight: FontWeight.w700,
@@ -813,12 +874,13 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                               child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
+                                  children: [
                                     Text(
                                       "Price",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
+                                        color: ColorConstants.textclr,
                                       ),
                                     ),
                                   ]),
@@ -834,7 +896,7 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                                   argumentData[4],
                                   textAlign: TextAlign.right,
                                   style: GoogleFonts.montserrat(
-                                    color: Colors.blue,
+                                    color: Colors.blue[100],
                                     fontSize: 15,
                                     letterSpacing: 0.5,
                                     fontWeight: FontWeight.w700,
@@ -856,12 +918,13 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                               child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
+                                  children: [
                                     Text(
                                       "Duration",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
+                                        color: ColorConstants.textclr,
                                       ),
                                     ),
                                   ]),
@@ -877,7 +940,7 @@ class _ShopBookingPageState extends State<ShopBookingPage> {
                                   argumentData[9],
                                   textAlign: TextAlign.right,
                                   style: GoogleFonts.montserrat(
-                                    color: Colors.blue,
+                                    color: Colors.blue[100],
                                     fontSize: 15,
                                     letterSpacing: 0.5,
                                     fontWeight: FontWeight.w700,

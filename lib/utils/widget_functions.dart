@@ -11,3 +11,9 @@ Widget addHorizontalSpace(double width){
       width:width
   );
 }
+
+double calculatePercentageDifference(double oldValue, double newValue) {
+  double difference = newValue - oldValue;
+  double percentageDifference = (difference / newValue) * 100;
+  return percentageDifference;
+}

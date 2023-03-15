@@ -19,6 +19,7 @@ import 'package:outq/screens/user/booking/booking.dart';
 import 'package:outq/screens/user/booking/view-booking.dart';
 import 'package:outq/screens/user/components/appbar/user_bar_main.dart';
 import 'package:outq/screens/user/components/drawer/user_drawer.dart';
+import 'package:outq/screens/user/location/asklocation.dart';
 import 'package:outq/screens/user/search/gender_search.dart';
 import 'package:outq/screens/user/search/user_search.dart';
 import 'package:outq/screens/user/store/view_store/user_view_store.dart';
@@ -192,7 +193,7 @@ class _UserHomePageState extends State<UserHomePage> {
         ),
       ),
       // appBar: AppBar(),
-      drawer: const UserDrawer(),
+      // drawer: const UserDrawer(),
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: currentIndex,
           onTap: (index) => setState(() => currentIndex = index),
@@ -213,7 +214,7 @@ class _UserHomePageState extends State<UserHomePage> {
           showUnselectedLabels: true,
           iconSize: 20,
           fixedColor: Colors.white,
-          backgroundColor: ColorConstants.appbgclr,
+          backgroundColor: ColorConstants.appbgclr2,
           type: BottomNavigationBarType.fixed,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -257,6 +258,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   Future<http.Response>? _followfuture;
   Future<http.Response>? _combofuture;
   var userid;
+  String location = "Select Location...";
   void onload() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     userid = pref.getString("userid");
@@ -266,6 +268,26 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
       _followfuture =
           http.get(Uri.parse('${apidomain}auth/user/saved/$userid'));
     });
+    userid = pref.getString("userid");
+    final response =
+        await http.get(Uri.parse('${apidomain}auth/user/location/$userid'));
+    var jsonData = jsonDecode(response.body);
+    print({"fdgdf", jsonData, response});
+    print(location);
+    setState(() {
+      location = jsonData[0]["location"];
+    });
+    if (response.statusCode == 201) {
+      var jsonData = jsonDecode(response.body);
+      // print(jsonData);
+      // print(jsonData["success"]);
+      if (jsonData["status"] == "201") {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (BuildContext context) => const UserHomePage()),
+            (Route<dynamic> route) => false);
+      }
+    }
   }
 
   @override
@@ -326,7 +348,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                               BorderRadius.circular(8.0),
                                           image: const DecorationImage(
                                             image: NetworkImage(
-                                                "https://outq.vercel.app/image2.jpg"),
+                                                "https://outq.vercel.app/image1.jpg"),
                                             fit: BoxFit.cover,
                                           ),
                                         ),
@@ -599,7 +621,37 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           //     },
                           //   ),
                           // ),
-                          addVerticalSpace(10),
+                          addVerticalSpace(20),
+                          InkWell(
+                            onTap: () {
+                              Get.to(() => const UserAskLocationPage());
+                            },
+                            child: Container(
+                              child: Row(
+                                children: [
+                                  addHorizontalSpace(10),
+                                  Icon(Icons.location_on,
+                                      color: ColorConstants.iconclr),
+                                  addHorizontalSpace(10),
+                                  Container(
+                                    width: 280,
+                                    child: Text(
+                                      location,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: GoogleFonts.montserrat(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                        color: ColorConstants.textclrw,
+                                        
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          addVerticalSpace(30),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -727,7 +779,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                 Text(
                                   'Services Types',
                                   style: GoogleFonts.montserrat(
-                                    color: Colors.white,
+                                    color: ColorConstants.textclr,
                                     fontSize: 20,
                                     // height: 1.5,
                                     fontWeight: FontWeight.w600,
@@ -1095,7 +1147,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                 Text(
                                   'Combo Offers',
                                   style: GoogleFonts.montserrat(
-                                    color: Colors.white,
+                                    color: ColorConstants.textclr,
                                     fontSize: 20,
                                     // height: 1.5,
                                     fontWeight: FontWeight.w600,
@@ -1125,8 +1177,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                   child: Text(
                                     "No Combo Offers Available Right Now",
                                     style: GoogleFonts.montserrat(
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white),
+                                      fontWeight: FontWeight.w600,
+                                      color: ColorConstants.textclr,
+                                    ),
                                   ),
                                 );
                               } else if (snapshot.hasData) {
@@ -1160,7 +1213,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                 Text(
                                   'Near By Offers',
                                   style: GoogleFonts.montserrat(
-                                    color: Colors.white,
+                                    color: ColorConstants.textclr,
                                     fontSize: 20,
                                     // height: 1.5,
                                     fontWeight: FontWeight.w600,
@@ -1217,7 +1270,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                 Text(
                                   'Followed Stores',
                                   style: GoogleFonts.montserrat(
-                                    color: Colors.white,
+                                    color: ColorConstants.textclr,
                                     fontSize: 20,
                                     // height: 1.5,
                                     fontWeight: FontWeight.w600,
@@ -1247,8 +1300,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                   child: Text(
                                     "You Are Not Following Any Stores",
                                     style: GoogleFonts.montserrat(
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white),
+                                      fontWeight: FontWeight.w600,
+                                      color: ColorConstants.textclr,
+                                    ),
                                   ),
                                 );
                               } else if (snapshot.hasData) {
@@ -1459,7 +1513,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                 Text(
                                   'Near By Stores',
                                   style: GoogleFonts.montserrat(
-                                    color: Colors.white,
+                                    color: ColorConstants.textclr,
                                     fontSize: 20,
                                     // height: 1.5,
                                     fontWeight: FontWeight.w600,

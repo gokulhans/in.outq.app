@@ -13,20 +13,21 @@ class OwnerAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      systemOverlayStyle: const SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.white, // navigation bar color
-          systemNavigationBarIconBrightness: Brightness.dark,
-          statusBarColor: Colors.white,
-          statusBarIconBrightness: Brightness.dark,
-          statusBarBrightness: Brightness.light),
+      systemOverlayStyle: SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.white, // navigation bar color
+        systemNavigationBarIconBrightness: Brightness.dark,
+        statusBarColor: ColorConstants.appbgclr2,
+        statusBarIconBrightness: Brightness.light,
+        // statusBarBrightness: Brightness.light
+      ),
       title: Text(title),
       elevation: 0,
-      backgroundColor: ColorConstants.white,
-      foregroundColor: Colors.black,
+      backgroundColor: ColorConstants.appbgclr2,
+      foregroundColor: ColorConstants.iconclr,
       centerTitle: true,
       actions: [
         IconButton(
-            icon: const Badge(
+            icon: Badge(
               badgeContent: Text(
                 '1',
                 style: TextStyle(color: Colors.white, fontSize: 10),
@@ -34,6 +35,7 @@ class OwnerAppBar extends StatelessWidget {
               child: Icon(
                 Icons.notifications,
                 size: 30,
+                color: ColorConstants.iconclr,
               ),
             ),
             onPressed: () {

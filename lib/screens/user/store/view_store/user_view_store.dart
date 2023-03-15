@@ -12,6 +12,7 @@ import 'package:outq/components/placeholders/placeholder.dart';
 import 'package:outq/screens/user/booking/booking.dart';
 import 'package:outq/screens/user/components/appbar/user_appbar.dart';
 import 'package:outq/screens/user/search/user_search.dart';
+import 'package:outq/utils/color_constants.dart';
 import 'package:outq/utils/constants.dart';
 import 'package:outq/utils/sizes.dart';
 import 'package:outq/utils/widget_functions.dart';
@@ -61,7 +62,8 @@ class _UserViewStorePageState extends State<UserViewStorePage> {
           ),
         ),
         body: Container(
-          color: Colors.white,
+          color: ColorConstants.appbgclr,
+          height: double.infinity,
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Column(
@@ -225,7 +227,8 @@ class _UserViewStorePageState extends State<UserViewStorePage> {
                                                     textAlign: TextAlign.left,
                                                     style:
                                                         GoogleFonts.montserrat(
-                                                      color: Colors.black87,
+                                                      color: ColorConstants
+                                                          .textclr,
                                                       fontSize: 22,
                                                       fontWeight:
                                                           FontWeight.w700,
@@ -235,16 +238,22 @@ class _UserViewStorePageState extends State<UserViewStorePage> {
                                                   Text(
                                                     data[i]["location"],
                                                     textAlign: TextAlign.left,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .subtitle2,
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                      color: ColorConstants
+                                                          .textclr,
+                                                      fontSize: 12,
+                                                    ),
                                                   ),
                                                   Text(
                                                     "${data[i]["followerslist"].length} Followers",
                                                     textAlign: TextAlign.left,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .subtitle2,
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                      color: ColorConstants
+                                                          .textclr,
+                                                      fontSize: 12,
+                                                    ),
                                                   ),
                                                   // Text('₹7',
                                                   //     textAlign: TextAlign.left,

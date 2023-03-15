@@ -6,6 +6,7 @@ import 'package:outq/Backend/api/owner_api.dart';
 import 'package:outq/components/Services/service_card_edit.dart';
 import 'package:outq/screens/owner/service/create/create_service.dart';
 import 'package:outq/screens/owner/service/view/owner_single_service.dart';
+import 'package:outq/utils/color_constants.dart';
 import 'package:outq/utils/sizes.dart';
 import 'package:outq/utils/widget_functions.dart';
 
@@ -16,17 +17,18 @@ class OwnerViewServicePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.white,
+        color: ColorConstants.appbgclr,
         padding: const EdgeInsets.symmetric(horizontal: tDefaultSize),
         child: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                addVerticalSpace(10),
                 Text(
                   'All Services',
                   style: GoogleFonts.montserrat(
-                    color: const Color(0xFF09041B),
+                    color: ColorConstants.textclr,
                     fontSize: 18,
                     // height: 1.5,
                     fontWeight: FontWeight.w600,
@@ -61,11 +63,12 @@ class OwnerViewServicePage extends StatelessWidget {
                     return Column(
                       children: [
                         addVerticalSpace(30),
-                        const Center(
+                        Center(
                             child: Text(
                           'Add Your First Service..',
                           style: TextStyle(
                             fontWeight: FontWeight.w800,
+                            color: ColorConstants.textclr,
                           ),
                         )),
                       ],

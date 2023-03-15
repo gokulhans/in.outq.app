@@ -10,16 +10,17 @@ class UserAppBarWithBack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      systemOverlayStyle: const SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.white, // navigation bar color
-          systemNavigationBarIconBrightness: Brightness.dark,
-          statusBarColor: Colors.white,
-          statusBarIconBrightness: Brightness.dark,
-          statusBarBrightness: Brightness.light),
+      systemOverlayStyle: SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.white, // navigation bar color
+        systemNavigationBarIconBrightness: Brightness.dark,
+        statusBarColor: ColorConstants.appbgclr2,
+        statusBarIconBrightness: Brightness.light,
+        // statusBarBrightness: Brightness.light
+      ),
       title: Text(title),
       elevation: 0,
-      backgroundColor: ColorConstants.white,
-      foregroundColor: Colors.black,
+      backgroundColor: ColorConstants.appbgclr2,
+      foregroundColor: ColorConstants.textclr,
       // centerTitle: true,
       leading: IconButton(
           icon: const FaIcon(

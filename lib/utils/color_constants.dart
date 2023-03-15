@@ -25,6 +25,7 @@ class ColorConstants {
   static Color greengradient2 = const Color(0xFF14BE77);
   static Color appbgclr = const Color.fromARGB(255, 3, 25, 58);
   static Color appbgclr2 = const Color.fromARGB(255, 5, 47, 110);
-  static Color textclr = Colors.white;
-  static Color iconclr = Colors.white;
+  static Color textclr = Colors.white70;
+  static Color textclrw = Colors.white;
+  static Color iconclr = Colors.white70;
 }

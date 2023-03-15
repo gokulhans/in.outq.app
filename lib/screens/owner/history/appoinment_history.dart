@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:outq/Backend/api/owner_api.dart';
 import 'package:outq/screens/user/booking/user_view_booking.dart';
+import 'package:outq/utils/color_constants.dart';
 import 'package:outq/utils/sizes.dart';
 import 'package:outq/utils/widget_functions.dart';
 
@@ -21,7 +22,7 @@ class _OwnerAppoinmentHistoryPageState
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      color: Colors.white,
+      color: ColorConstants.appbgclr,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,7 +37,10 @@ class _OwnerAppoinmentHistoryPageState
                 Text(
                   'History',
                   textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.headline3,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline3!
+                      .copyWith(color: ColorConstants.textclr),
                 ),
               ],
             ),
@@ -59,11 +63,12 @@ class _OwnerAppoinmentHistoryPageState
                   return Column(
                     children: [
                       addVerticalSpace(50),
-                      const Center(
+                      Center(
                           child: Text(
                         'No Appoinment is Done.',
                         style: TextStyle(
                           fontWeight: FontWeight.w800,
+                          color: ColorConstants.textclr,
                         ),
                       )),
                     ],
@@ -122,14 +127,14 @@ class _OwnerAppoinmentHistoryPageState
                                           textAlign: TextAlign.left,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle1,
+                                              .subtitle1!.copyWith(color:ColorConstants.textclr),
                                         ),
                                         Text(
                                           snapshot.data[i].date,
                                           textAlign: TextAlign.left,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle2,
+                                              .subtitle2!.copyWith(color: ColorConstants.textclr),
                                         ),
                                         // Text('₹7',
                                         //     textAlign: TextAlign.left,

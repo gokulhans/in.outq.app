@@ -12,6 +12,7 @@ import 'package:outq/screens/owner/service/view/owner_view_service.dart';
 import 'package:get/get.dart';
 import 'package:outq/screens/owner/store/create/create_store.dart';
 import 'package:outq/screens/owner/store/view/owner_view_store.dart';
+import 'package:outq/utils/color_constants.dart';
 import 'package:outq/utils/sizes.dart';
 
 class OwnerHomePage extends StatefulWidget {
@@ -44,12 +45,13 @@ class _OwnerHomePageState extends State<OwnerHomePage> {
           currentIndex: widget.currentIndex,
           onTap: (index) => setState(() => widget.currentIndex = index),
           unselectedLabelStyle: TextStyle(
-            color: Colors.blueGrey[50],
+            color: ColorConstants.textclr,
           ),
-          selectedIconTheme: const IconThemeData(
+          unselectedItemColor: ColorConstants.textclr,
+          selectedIconTheme: IconThemeData(
             color: Colors.blue,
           ),
-          selectedLabelStyle: const TextStyle(
+          selectedLabelStyle: const TextStyle( 
             color: Colors.blue,
           ),
           unselectedIconTheme: IconThemeData(
@@ -58,7 +60,7 @@ class _OwnerHomePageState extends State<OwnerHomePage> {
           showSelectedLabels: true,
           showUnselectedLabels: true,
           iconSize: 25,
-          backgroundColor: Colors.white,
+          backgroundColor: ColorConstants.appbgclr2,
           type: BottomNavigationBarType.fixed,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -116,7 +118,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: tDefaultSize),
-      color: Colors.white,
+      color: ColorConstants.appbgclr,
       height: double.infinity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -168,11 +170,12 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                 // );
               } else {
                 if (snapshot.data.length == 0) {
-                  return const Center(
+                  return Center(
                       child: Text(
                     'No Content is available right now.',
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
+                      color:ColorConstants.textclr,
                     ),
                   ));
                 } else {
@@ -193,13 +196,13 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                                     snapshot.data[i].name,
                                     textAlign: TextAlign.left,
                                     style:
-                                        Theme.of(context).textTheme.headline3,
+                                        Theme.of(context).textTheme.headline3!.copyWith(color:ColorConstants.textclr),
                                   ),
                                   Text(
                                     snapshot.data[i].description,
                                     textAlign: TextAlign.left,
                                     style:
-                                        Theme.of(context).textTheme.subtitle2,
+                                        Theme.of(context).textTheme.subtitle2!.copyWith(color: ColorConstants.textclr),
                                   ),
                                 ],
                               ),
@@ -224,13 +227,14 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                 ));
               } else {
                 if (snapshot.data.length == 0) {
-                  return const Expanded(
+                  return Expanded(
                     flex: 6,
                     child: Center(
                         child: Text(
                       'No Booking is available right now.',
                       style: TextStyle(
                         fontWeight: FontWeight.w800,
+                        color: ColorConstants.textclr,
                       ),
                     )),
                   );
@@ -288,14 +292,14 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                                           textAlign: TextAlign.left,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle1,
+                                              .subtitle1!.copyWith(color: ColorConstants.textclr),
                                         ),
                                         Text(
                                           snapshot.data[i].username,
                                           textAlign: TextAlign.left,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle2,
+                                              .subtitle2!.copyWith(color:ColorConstants.textclr),
                                         ),
                                         // Text('₹7',
                                         //     textAlign: TextAlign.left,
