@@ -28,4 +28,5 @@ class ColorConstants {
   static Color textclr = Colors.white70;
   static Color textclrw = Colors.white;
   static Color iconclr = Colors.white70;
+  static Color green = Colors.green;
 }

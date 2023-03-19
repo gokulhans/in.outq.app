@@ -42,7 +42,7 @@ class _OwnerSignUpPageState extends State<OwnerSignUpPage> {
           'name': owners.name,
           'email': owners.email,
           'pswd': owners.pswd,
-          'owners': owners.phone,
+          'phone': owners.phone,
           'deviceid': owners.deviceid
         });
 
@@ -395,7 +395,7 @@ class _OwnerSignUpPageState extends State<OwnerSignUpPage> {
                                         DismissDirection.horizontal,
                                     forwardAnimationCurve: Curves.bounceIn,
                                   );
-                                }else {
+                                } else {
                                   save();
                                 }
                               },

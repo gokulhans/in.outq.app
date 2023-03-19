@@ -127,14 +127,20 @@ class _OwnerAppoinmentHistoryPageState
                                           textAlign: TextAlign.left,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle1!.copyWith(color:ColorConstants.textclr),
+                                              .subtitle1!
+                                              .copyWith(
+                                                  color:
+                                                      ColorConstants.textclr),
                                         ),
                                         Text(
                                           snapshot.data[i].date,
                                           textAlign: TextAlign.left,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle2!.copyWith(color: ColorConstants.textclr),
+                                              .subtitle2!
+                                              .copyWith(
+                                                  color:
+                                                      ColorConstants.textclr),
                                         ),
                                         // Text('₹7',
                                         //     textAlign: TextAlign.left,

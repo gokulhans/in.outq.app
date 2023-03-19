@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +12,8 @@ import 'package:outq/components/Services/service_card_long.dart';
 import 'package:outq/components/placeholders/placeholder.dart';
 import 'package:outq/screens/user/booking/booking.dart';
 import 'package:outq/screens/user/components/appbar/user_appbar.dart';
+import 'package:outq/screens/user/rating/allreviews.dart';
+import 'package:outq/screens/user/rating/ratingmode.dart';
 import 'package:outq/screens/user/search/user_search.dart';
 import 'package:outq/utils/color_constants.dart';
 import 'package:outq/utils/constants.dart';
@@ -19,6 +22,16 @@ import 'package:outq/utils/widget_functions.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+Future<void> _launchInBrowser(url) async {
+  if (!await launchUrl(
+    url,
+    mode: LaunchMode.externalApplication,
+  )) {
+    throw Exception('Could not launch $url');
+  }
+}
 
 class UserViewStorePage extends StatefulWidget {
   const UserViewStorePage({super.key});
@@ -91,7 +104,7 @@ class _UserViewStorePageState extends State<UserViewStorePage> {
                       return ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: data.length,
+                        itemCount: 1,
                         itemBuilder: (context, i) {
                           return Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -105,7 +118,7 @@ class _UserViewStorePageState extends State<UserViewStorePage> {
                                       Radius.circular(4)),
                                   child: Image(
                                     fit: BoxFit.cover,
-                                    image: NetworkImage(data[i]["img"]),
+                                    image: NetworkImage(data["img"]),
                                   ),
                                 ),
                               ),
@@ -223,7 +236,7 @@ class _UserViewStorePageState extends State<UserViewStorePage> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    data[i]["name"],
+                                                    data["name"],
                                                     textAlign: TextAlign.left,
                                                     style:
                                                         GoogleFonts.montserrat(
@@ -235,8 +248,88 @@ class _UserViewStorePageState extends State<UserViewStorePage> {
                                                     ),
                                                   ),
                                                   addVerticalSpace(10),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          RatingBarIndicator(
+                                                            unratedColor:
+                                                                Colors.white,
+                                                            direction:
+                                                                Axis.horizontal,
+                                                            itemCount: 5,
+                                                            rating: double
+                                                                .parse(data[
+                                                                    "reviews"]),
+                                                            itemSize: 15,
+                                                            itemBuilder:
+                                                                (context, _) =>
+                                                                    Icon(
+                                                              Icons.star,
+                                                              color:
+                                                                  Colors.amber,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            " (${data["reviews"]})",
+                                                            style: GoogleFonts
+                                                                .montserrat(
+                                                                    color: Colors
+                                                                        .amber,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      TextButton(
+                                                          onPressed: () {
+                                                            Get.to(
+                                                                () =>
+                                                                    const AllShopReviews(),
+                                                                arguments:
+                                                                    data);
+                                                          },
+                                                          style: TextButton
+                                                              .styleFrom(
+                                                            padding: EdgeInsets
+                                                                .zero, // Removes padding
+                                                          ),
+                                                          child: Row(
+                                                            children: [
+                                                              Text(
+                                                                "View All Reviews",
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                style: GoogleFonts.montserrat(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    color: Colors
+                                                                        .amber),
+                                                              ),
+                                                              Text(
+                                                                " (${data["reviewcount"]})",
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                style: GoogleFonts.montserrat(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    color: Colors
+                                                                        .amber),
+                                                              ),
+                                                            ],
+                                                          )),
+                                                    ],
+                                                  ),
                                                   Text(
-                                                    data[i]["location"],
+                                                    data["location"],
                                                     textAlign: TextAlign.left,
                                                     style:
                                                         GoogleFonts.montserrat(
@@ -246,7 +339,7 @@ class _UserViewStorePageState extends State<UserViewStorePage> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    "${data[i]["followerslist"].length} Followers",
+                                                    "${data["followerslist"].length} Followers",
                                                     textAlign: TextAlign.left,
                                                     style:
                                                         GoogleFonts.montserrat(
@@ -265,38 +358,105 @@ class _UserViewStorePageState extends State<UserViewStorePage> {
                                         ),
                                         Expanded(
                                           flex: 2,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            child: Container(
-                                              width: 100,
-                                              height: 40,
-                                              color: isFollowed
-                                                  ? Colors.grey
-                                                  : Colors.blue,
-                                              child: TextButton(
-                                                onPressed: () async {
-                                                  setState(() {
-                                                    isFollowed = !isFollowed;
-                                                  });
-                                                  await http.get(Uri.parse(
-                                                      '${apidomain}follow/follow/${data[i]["_id"]}/$userid'));
-                                                },
-                                                child: isFollowed
-                                                    ? const Text(
-                                                        "Unfollow",
-                                                        style: TextStyle(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  color: Colors.yellow[900],
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                ),
+                                                width: 100,
+                                                height: 30,
+                                                child: TextButton(
+                                                  child: Text(
+                                                    'Rate Store',
+                                                    style:
+                                                        GoogleFonts.montserrat(
                                                             color:
-                                                                Colors.white),
-                                                      )
-                                                    : const Text(
-                                                        "Follow",
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
+                                                                ColorConstants
+                                                                    .textclrw,
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                  ),
+                                                  onPressed: () {
+                                                    Get.to(
+                                                        () =>
+                                                            const ShopRatingPage(),
+                                                        arguments: data);
+                                                  },
+                                                ),
                                               ),
-                                            ),
+                                              addVerticalSpace(10),
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                                child: Container(
+                                                  width: 100,
+                                                  height: 30,
+                                                  color: isFollowed
+                                                      ? Colors.grey
+                                                      : Colors.blue,
+                                                  child: TextButton(
+                                                    onPressed: () async {
+                                                      setState(() {
+                                                        isFollowed =
+                                                            !isFollowed;
+                                                      });
+                                                      await http.get(Uri.parse(
+                                                          '${apidomain}follow/follow/${data["_id"]}/$userid'));
+                                                    },
+                                                    child: isFollowed
+                                                        ? const Text(
+                                                            "Unfollow",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          )
+                                                        : const Text(
+                                                            "Follow",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                  ),
+                                                ),
+                                              ),
+                                              addVerticalSpace(10),
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  color: Colors.blue[900],
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                ),
+                                                width: 100,
+                                                height: 30,
+                                                child: TextButton(
+                                                  child: Text(
+                                                    'Get Direction',
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                            color:
+                                                                ColorConstants
+                                                                    .textclrw,
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                  ),
+                                                  onPressed: () {
+                                                    String url =
+                                                        'https://www.google.com/maps/dir/?api=1&destination=${data["latitude"]},${data["longitude"]}';
+                                                    Uri uri = Uri.parse(url);
+                                                    _launchInBrowser(uri);
+                                                  },
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],

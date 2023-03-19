@@ -10,6 +10,8 @@ import 'package:outq/firebase_options.dart';
 import 'package:outq/screens/shared/splash/splash_screen.dart';
 import 'package:outq/screens/shared/update_check/update_home.dart';
 import 'package:outq/screens/shared/welcome_screen/welcome_screen.dart';
+import 'package:outq/screens/user/auth/login/login.dart';
+import 'package:outq/screens/user/store/view_store/user_view_single_store.dart';
 import 'package:outq/screens/user/store/view_store/user_view_store.dart';
 // import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
@@ -102,8 +104,13 @@ class _MyAppState extends State<MyApp> {
       print(dynamicLink);
       var deepLink = dynamicLink.link.path;
       debugPrint('DynamicLinks onLink $deepLink');
-      // print(object)
-      Get.toNamed(deepLink);
+      deepLink = deepLink.replaceAll('/', '');
+      deepLink = deepLink.replaceAll('store', '');
+      print(deepLink);
+      // Get.toNamed(deepLink);
+      Get.to(() => UserViewSingleStorePage(
+            title: deepLink,
+          ));
     }, onError: (e) async {
       debugPrint('DynamicLinks onError $e');
     });

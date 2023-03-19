@@ -20,8 +20,10 @@ import 'package:outq/screens/user/booking/view-booking.dart';
 import 'package:outq/screens/user/components/appbar/user_bar_main.dart';
 import 'package:outq/screens/user/components/drawer/user_drawer.dart';
 import 'package:outq/screens/user/location/asklocation.dart';
+import 'package:outq/screens/user/location/osm/osm_location_show.dart';
 import 'package:outq/screens/user/search/gender_search.dart';
 import 'package:outq/screens/user/search/user_search.dart';
+import 'package:outq/screens/user/store/view_store/user_view_single_store.dart';
 import 'package:outq/screens/user/store/view_store/user_view_store.dart';
 import 'package:outq/utils/color_constants.dart';
 import 'package:outq/utils/constants.dart';
@@ -30,48 +32,48 @@ import 'package:outq/utils/widget_functions.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-String? userlocation;
-String? userlongitude;
-String? userlatitude;
-String? userpincode;
+// String? userlocation;
+// String? userlongitude;
+// String? userlatitude;
+// String? userpincode;
 bool isVisible = true;
 
-Future updateuser(BuildContext context) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String userid = prefs.getString("userid") ?? "null";
-  // String deviceid = "";
+// Future updateuser(BuildContext context) async {
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   String userid = prefs.getString("userid") ?? "null";
+//   // String deviceid = "";
 
-  // FirebaseMessaging messaging = FirebaseMessaging.instance;
-  // messaging.getToken().then((token) {
-  //   deviceid = token!;
-  // });
+//   // FirebaseMessaging messaging = FirebaseMessaging.instance;
+//   // messaging.getToken().then((token) {
+//   //   deviceid = token!;
+//   // });
 
-  http.post(
-      Uri.parse(
-        "${apidomain}auth/user/update/$userid",
-      ),
-      headers: <String, String>{
-        'Context-Type': 'application/json; charset=UTF-8',
-      },
-      body: <String, String>{
-        'location': userlocation ?? "",
-        'pincode': userpincode ?? "",
-        'longitude': userlongitude ?? "",
-        'latitude': userlatitude ?? "",
-        // 'deviceid': deviceid
-      });
+//   http.post(
+//       Uri.parse(
+//         "${apidomain}auth/user/update/$userid",
+//       ),
+//       headers: <String, String>{
+//         'Context-Type': 'application/json; charset=UTF-8',
+//       },
+//       body: <String, String>{
+//         'location': userlocation ?? "",
+//         'pincode': userpincode ?? "",
+//         'longitude': userlongitude ?? "",
+//         'latitude': userlatitude ?? "",
+//         // 'deviceid': deviceid
+//       });
 
-  // if (response.statusCode == 201) {
-  //   var jsonData = jsonDecode(response.body);
-  //   // print(jsonData);
-  //   // print(jsonData["success"]);
-  //   if (jsonData["success"]) {
-  //     Navigator.of(context).pushAndRemoveUntil(
-  //         MaterialPageRoute(builder: (BuildContext context) => OwnerExithome()),
-  //         (Route<dynamic> route) => false);
-  //   }
-  // }
-}
+//   // if (response.statusCode == 201) {
+//   //   var jsonData = jsonDecode(response.body);
+//   //   // print(jsonData);
+//   //   // print(jsonData["success"]);
+//   //   if (jsonData["success"]) {
+//   //     Navigator.of(context).pushAndRemoveUntil(
+//   //         MaterialPageRoute(builder: (BuildContext context) => OwnerExithome()),
+//   //         (Route<dynamic> route) => false);
+//   //   }
+//   // }
+// }
 
 class UserHomePage extends StatefulWidget {
   const UserHomePage({super.key});
@@ -81,98 +83,98 @@ class UserHomePage extends StatefulWidget {
 }
 
 class _UserHomePageState extends State<UserHomePage> {
-  String _currentAddress = "";
-  Position? _currentPosition;
+  // String _currentAddress = "";
+  // Position? _currentPosition;
 
-  Future<bool> _handleLocationPermission() async {
-    bool serviceEnabled;
-    LocationPermission permission;
+  // Future<bool> _handleLocationPermission() async {
+  //   bool serviceEnabled;
+  //   LocationPermission permission;
 
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location services are disabled. Please enable the services')));
-      return false;
-    }
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content:
-                Text('Location permissions are denied. Enable to Continue')));
-        return false;
-      }
-    }
-    if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location permissions are permanently denied, we cannot request permissions.')));
-      return false;
-    }
-    return true;
-  }
+  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //   if (!serviceEnabled) {
+  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //         content: Text(
+  //             'Location services are disabled. Please enable the services')));
+  //     return false;
+  //   }
+  //   permission = await Geolocator.checkPermission();
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission == LocationPermission.denied) {
+  //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //           content:
+  //               Text('Location permissions are denied. Enable to Continue')));
+  //       return false;
+  //     }
+  //   }
+  //   if (permission == LocationPermission.deniedForever) {
+  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //         content: Text(
+  //             'Location permissions are permanently denied, we cannot request permissions.')));
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
-  Future<void> _getCurrentPosition() async {
-    final hasPermission = await _handleLocationPermission();
+  // Future<void> _getCurrentPosition() async {
+  //   final hasPermission = await _handleLocationPermission();
 
-    if (!hasPermission) {
-      Geolocator.openLocationSettings();
-    }
-    // return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
-      setState(() => _currentPosition = position);
-      _getAddressFromLatLng(_currentPosition!);
-    }).catchError((e) {
-      debugPrint(e);
-    });
-  }
+  //   if (!hasPermission) {
+  //     Geolocator.openLocationSettings();
+  //   }
+  //   // return;
+  //   await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+  //       .then((Position position) {
+  //     setState(() => _currentPosition = position);
+  //     _getAddressFromLatLng(_currentPosition!);
+  //   }).catchError((e) {
+  //     debugPrint(e);
+  //   });
+  // }
 
-  Future<void> _getAddressFromLatLng(Position position) async {
-    await placemarkFromCoordinates(
-            _currentPosition!.latitude, _currentPosition!.longitude)
-        .then((List<Placemark> placemarks) {
-      Placemark place = placemarks[0];
-      // print(place.country);
-      setState(() {
-        _currentAddress =
-            '${place.administrativeArea}, ${place.locality}, ${place.thoroughfare}, ${place.postalCode}';
-      });
-      // print({_currentAddress, _currentPosition});
-      userlocation = _currentAddress;
-      userlongitude = _currentPosition!.longitude.toString();
-      userlatitude = _currentPosition!.latitude.toString();
-      userpincode = place.postalCode.toString();
-      updateuser(context);
-      isVisible = true;
-      setState(() {});
-      // print("object");
-      // print(isVisible);
-    }).catchError((e) {
-      debugPrint(e);
-    });
-  }
+  // Future<void> _getAddressFromLatLng(Position position) async {
+  //   await placemarkFromCoordinates(
+  //           _currentPosition!.latitude, _currentPosition!.longitude)
+  //       .then((List<Placemark> placemarks) {
+  //     Placemark place = placemarks[0];
+  //     // print(place.country);
+  //     setState(() {
+  //       _currentAddress =
+  //           '${place.administrativeArea}, ${place.locality}, ${place.thoroughfare}, ${place.postalCode}';
+  //     });
+  //     // print({_currentAddress, _currentPosition});
+  //     userlocation = _currentAddress;
+  //     userlongitude = _currentPosition!.longitude.toString();
+  //     userlatitude = _currentPosition!.latitude.toString();
+  //     userpincode = place.postalCode.toString();
+  //     updateuser(context);
+  //     isVisible = true;
+  //     setState(() {});
+  //     // print("object");
+  //     // print(isVisible);
+  //   }).catchError((e) {
+  //     debugPrint(e);
+  //   });
+  // }
 
-  void checklocationisSaved() async {
-    var locuserid;
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    locuserid = pref.getString("userid");
-    final response =
-        await http.get(Uri.parse('${apidomain}auth/user/location/$locuserid'));
-    var jsonData = jsonDecode(response.body);
-    if (jsonData[0]["location"] == null) {
-      _getCurrentPosition();
-    }
-  }
+  // void checklocationisSaved() async {
+  //   var locuserid;
+  //   SharedPreferences pref = await SharedPreferences.getInstance();
+  //   locuserid = pref.getString("userid");
+  //   final response =
+  //       await http.get(Uri.parse('${apidomain}auth/user/location/$locuserid'));
+  //   var jsonData = jsonDecode(response.body);
+  //   if (jsonData[0]["location"] == null) {
+  //     _getCurrentPosition();
+  //   }
+  // }
 
-  @override
-  void initState() {
-    // checklocationisSaved();
-    _getCurrentPosition();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   // checklocationisSaved();
+  //   _getCurrentPosition();
+  //   super.initState();
+  // }
 
   int currentIndex = 0;
   List tabScreens = [
@@ -258,7 +260,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   Future<http.Response>? _followfuture;
   Future<http.Response>? _combofuture;
   var userid;
-  String location = "Select Location...";
+  String location = "Choose Your Location...";
+  double latitude = 0.0;
+  double longitude = 0.0;
   void onload() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     userid = pref.getString("userid");
@@ -277,6 +281,13 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     setState(() {
       location = jsonData[0]["location"];
     });
+    print({jsonData["lattitude"], jsonData["logitude"]});
+    if (jsonData["latitude"] != null && jsonData[0]["longitude"] != null) {
+      setState(() {
+        latitude = jsonData[0]["latitude"];
+        longitude = jsonData[0]["longitude"];
+      });
+    }
     if (response.statusCode == 201) {
       var jsonData = jsonDecode(response.body);
       // print(jsonData);
@@ -328,17 +339,21 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                     //1st Image of Slider
                                     InkWell(
                                       onTap: () {
-                                        Get.to(() => const UserViewStorePage(),
-                                            arguments: [
-                                              // "6409b179b4eee0572655fef8",
-                                              // "nsah",
-                                              // "9:00 AM",
-                                              // "5:00 PM",
-                                              //  "data[index]['type']",
-                                              //         // data[index]['name'],
-                                              //         // data[index]['start'],
-                                              //         // data[index]['end']
-                                            ]);
+                                        // Get.to(
+                                        //     () => UserViewSingleStorePage(
+                                        //           title:
+                                        //               "6409743be18d2f772bf43804",
+                                        //         ),
+                                        //     arguments: [
+                                        //       // "6409b179b4eee0572655fef8",
+                                        //       // "nsah",
+                                        //       // "9:00 AM",
+                                        //       // "5:00 PM",
+                                        //       //  "data[index]['type']",
+                                        //       //         // data[index]['name'],
+                                        //       //         // data[index]['start'],
+                                        //       //         // data[index]['end']
+                                        //     ]);
                                       },
                                       child: Container(
                                         height: 180,
@@ -355,18 +370,51 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                       ),
                                     ),
                                     InkWell(
-                                      // onTap: () {
-                                      //   Get.to(() => const UserViewStorePage(),
-                                      //       arguments: [
-                                      //         "data[index]['type']",
-                                      //         "data[index]['type']",
-                                      //         "data[index]['type']",
-                                      //         "data[index]['type']",
-                                      //         // data[index]['name'],
-                                      //         // data[index]['start'],
-                                      //         // data[index]['end']
-                                      //       ]);
-                                      // },
+                                      onTap: () {
+                                        // Get.to(
+                                        //     () => UserViewSingleStorePage(
+                                        //           title:
+                                        //               "6409743be18d2f772bf43804",
+                                        //         ),
+                                        //     arguments: [
+                                        //       // "6409b179b4eee0572655fef8",
+                                        //       // "nsah",
+                                        //       // "9:00 AM",
+                                        //       // "5:00 PM",
+                                        //       //  "data[index]['type']",
+                                        //       //         // data[index]['name'],
+                                        //       //         // data[index]['start'],
+                                        //       //         // data[index]['end']
+                                        //     ]);
+                                      },
+                                      child: Container(
+                                        height: 180,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          image: const DecorationImage(
+                                            image: NetworkImage(
+                                                "https://outq.vercel.app/image2.jpg"),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        // Get.to(() => UserViewSingleStorePage(
+                                        //       title: "64082ee0cd603a2fb02cdbc6",
+                                        //     ));
+                                        // // arguments: [
+                                        // //   "data[index]['type']",
+                                        // //   "data[index]['type']",
+                                        // //   "data[index]['type']",
+                                        // //   // data[index]['name'],
+                                        // //   // data[index]['start'],
+                                        // //   // data[index]['end']
+                                        // // ]);
+                                      },
                                       child: Container(
                                         height: 180,
                                         decoration: BoxDecoration(
@@ -374,7 +422,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                               BorderRadius.circular(8.0),
                                           image: const DecorationImage(
                                             image: NetworkImage(
-                                                "https://outq.vercel.app/image2.jpg"),
+                                                "https://outq.vercel.app/image3.jpg"),
                                             fit: BoxFit.cover,
                                           ),
                                         ),
@@ -444,6 +492,13 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                   hintText: 'Search',
                                   hintStyle: TextStyle(color: Colors.grey),
                                 ),
+                                onSubmitted: (value) => {
+                                  Get.to(
+                                      () => UserSearchServicesPage(
+                                            title: "Search Results for $query",
+                                          ),
+                                      arguments: [query])
+                                },
                               ),
                             ),
                             IconButton(
@@ -624,7 +679,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           addVerticalSpace(20),
                           InkWell(
                             onTap: () {
-                              Get.to(() => const UserAskLocationPage());
+                              Get.to(() => ShowLocationMap(
+                                    lat: latitude,
+                                    long: longitude,
+                                  ));
                             },
                             child: Container(
                               child: Row(
@@ -643,7 +701,6 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                         fontSize: 12,
                                         fontWeight: FontWeight.w600,
                                         color: ColorConstants.textclrw,
-                                        
                                       ),
                                     ),
                                   )

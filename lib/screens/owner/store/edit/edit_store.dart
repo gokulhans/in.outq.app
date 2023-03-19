@@ -111,7 +111,10 @@ class _EditStorePageState extends State<EditStorePage> {
                     Text(
                       'Edit Your Shop Details',
                       textAlign: TextAlign.left,
-                      style: Theme.of(context).textTheme.headline3!.copyWith(color:ColorConstants.textclr),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline3!
+                          .copyWith(color: ColorConstants.textclr),
                     ),
                     // Text(
                     //   'This data will be displayed in your account profile.',
@@ -138,7 +141,7 @@ class EditStoreForm extends StatefulWidget {
   State<EditStoreForm> createState() => _EditStoreFormState();
 }
 
-Store shop = Store('', '', '', '', '', '', '', '', '', '','');
+Store shop = Store('', '', '', '', '', '', '', '', '', '', '', '');
 
 class _EditStoreFormState extends State<EditStoreForm> {
   File? _imageFile;
@@ -189,8 +192,8 @@ class _EditStoreFormState extends State<EditStoreForm> {
   }
 
   void _selectImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery,imageQuality: 30);
+    final pickedFile = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, imageQuality: 30);
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
@@ -250,7 +253,7 @@ class _EditStoreFormState extends State<EditStoreForm> {
                   borderRadius: BorderRadius.circular(22),
                 ),
                 child: TextFormField(
-                  style:TextStyle(color:ColorConstants.textclr),
+                  style: TextStyle(color: ColorConstants.textclr),
                   initialValue: widget.argumentData.name,
                   onChanged: (val) {
                     shop.name = val;
@@ -274,7 +277,7 @@ class _EditStoreFormState extends State<EditStoreForm> {
                   borderRadius: BorderRadius.circular(22),
                 ),
                 child: TextFormField(
-                  style:TextStyle(color:ColorConstants.textclr),
+                  style: TextStyle(color: ColorConstants.textclr),
                   initialValue: widget.argumentData.location,
                   onChanged: (val) {
                     shop.location = val;
@@ -298,7 +301,7 @@ class _EditStoreFormState extends State<EditStoreForm> {
                   borderRadius: BorderRadius.circular(22),
                 ),
                 child: TextFormField(
-                  style:TextStyle(color:ColorConstants.textclr),
+                  style: TextStyle(color: ColorConstants.textclr),
                   initialValue: widget.argumentData.description,
                   onChanged: (val) {
                     shop.description = val;
@@ -341,7 +344,7 @@ class _EditStoreFormState extends State<EditStoreForm> {
               //     borderRadius: BorderRadius.circular(22),
               //   ),
               //   child: TextFormField(
-                // style:TextStyle(color:ColorConstants.textclr),
+              // style:TextStyle(color:ColorConstants.textclr),
               //     initialValue: widget.argumentData.img,
               //     onChanged: (val) {
               //       shop.img = val;
@@ -384,7 +387,10 @@ class _EditStoreFormState extends State<EditStoreForm> {
                     ),
                     Text(
                       shop.start,
-                      style: Theme.of(context).textTheme.subtitle1!.copyWith(color:ColorConstants.textclr),
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1!
+                          .copyWith(color: ColorConstants.textclr),
                     )
                   ],
                 ),
@@ -415,7 +421,10 @@ class _EditStoreFormState extends State<EditStoreForm> {
                     ),
                     Text(
                       shop.end,
-                      style: Theme.of(context).textTheme.subtitle1!.copyWith(color:ColorConstants.textclr),
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1!
+                          .copyWith(color: ColorConstants.textclr),
                     )
                   ],
                 ),
@@ -428,7 +437,7 @@ class _EditStoreFormState extends State<EditStoreForm> {
               //     borderRadius: BorderRadius.circular(22),
               //   ),
               //   child: TextFormField(
-                // style:TextStyle(color:ColorConstants.textclr),
+              // style:TextStyle(color:ColorConstants.textclr),
               //     initialValue: widget.argumentData.start,
               //     // controller: descriptionController,
               //     onChanged: (val) {
@@ -455,7 +464,7 @@ class _EditStoreFormState extends State<EditStoreForm> {
               //     borderRadius: BorderRadius.circular(22),
               //   ),
               //   child: TextFormField(
-                // style:TextStyle(color:ColorConstants.textclr),
+              // style:TextStyle(color:ColorConstants.textclr),
               //     initialValue: widget.argumentData.end,
               //     // controller: descriptionController,
               //     onChanged: (val) {
@@ -482,7 +491,7 @@ class _EditStoreFormState extends State<EditStoreForm> {
                   borderRadius: BorderRadius.circular(22),
                 ),
                 child: TextFormField(
-                  style:TextStyle(color:ColorConstants.textclr),
+                  style: TextStyle(color: ColorConstants.textclr),
                   initialValue: widget.argumentData.employees,
                   // controller: descriptionController,
                   onChanged: (val) {

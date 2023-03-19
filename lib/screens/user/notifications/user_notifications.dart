@@ -10,6 +10,7 @@ import 'package:outq/screens/user/components/appbar/user_appbar.dart';
 import 'package:outq/utils/color_constants.dart';
 import 'package:outq/utils/constants.dart';
 import 'package:outq/utils/sizes.dart';
+import 'package:outq/utils/widget_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserNotifications extends StatefulWidget {
@@ -40,7 +41,7 @@ class _UserNotificationsState extends State<UserNotifications> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:const  PreferredSize(
+      appBar: const PreferredSize(
         preferredSize: Size.fromHeight(55),
         child: UserAppBarWithBack(
           title: "Notifications",
@@ -52,7 +53,8 @@ class _UserNotificationsState extends State<UserNotifications> {
         color: ColorConstants.appbgclr,
         child: FutureBuilder<http.Response>(
           future: _future,
-          builder: (BuildContext context, AsyncSnapshot<http.Response> snapshot) {
+          builder:
+              (BuildContext context, AsyncSnapshot<http.Response> snapshot) {
             if (snapshot.hasData) {
               var data = jsonDecode(snapshot.data!.body);
               print(data);
@@ -62,6 +64,7 @@ class _UserNotificationsState extends State<UserNotifications> {
                 itemCount: data.length,
                 itemBuilder: (BuildContext context, int i) {
                   return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 8),
                     decoration: BoxDecoration(
                       boxShadow: const [
                         BoxShadow(
@@ -70,7 +73,7 @@ class _UserNotificationsState extends State<UserNotifications> {
                           offset: Offset(0.0, 1.0),
                         ),
                       ],
-                      color: Colors.white,
+                      color: ColorConstants.appbgclr2,
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: Row(
@@ -81,10 +84,10 @@ class _UserNotificationsState extends State<UserNotifications> {
                               horizontal: 12.0, vertical: 16),
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(12.0),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.notifications,
                                 size: 30,
-                                color: Colors.blue,
+                                color: ColorConstants.iconclr,
                               )),
                         ),
                         Expanded(
@@ -111,16 +114,21 @@ class _UserNotificationsState extends State<UserNotifications> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      data[i]["title"],
-                                      textAlign: TextAlign.left,
-                                      style:
-                                          Theme.of(context).textTheme.subtitle1,
-                                    ),
-                                    Text(
                                       data[i]["message"],
                                       textAlign: TextAlign.left,
                                       style:
-                                          Theme.of(context).textTheme.subtitle2,
+                                          Theme.of(context).textTheme.subtitle1!.copyWith(
+                                            color: ColorConstants.textclrw,fontSize: 14,fontWeight: FontWeight.w500
+                                          ),
+                                    ),
+                                    addVerticalSpace(10),
+                                    Text(
+                                      data[i]["title"],
+                                      textAlign: TextAlign.left,
+                                      style:
+                                          Theme.of(context).textTheme.subtitle2!.copyWith(
+                                            color: ColorConstants.textclr
+                                          ),
                                     ),
                                   ]),
                             ),

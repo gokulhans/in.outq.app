@@ -22,8 +22,8 @@ Future getAllStores() async {
         u["start"],
         u["end"],
         u["employees"],
-        u["gender"]
-        );
+        u["gender"],
+        u["working"]);
     stores.add(store);
   }
   // // print(stores);
@@ -49,8 +49,8 @@ Future getSingleStore(var storeid) async {
         u["start"],
         u["end"],
         u["employees"],
-        u["gender"]
-        );
+        u["gender"],
+        u["working"]);
     stores.add(store);
   }
   // print(stores);

@@ -21,6 +21,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:intl/intl.dart';
 
 bool isVisible = false;
 bool isLoading = false;
@@ -56,6 +57,7 @@ Future save(BuildContext context) async {
         'latitude': shop.latitude,
         'pincode': shop.pincode,
         'gender': shop.gender,
+        'working': "on",
       });
 
   if (response.statusCode == 201) {
@@ -154,8 +156,8 @@ class _CreateStorePageState extends State<CreateStorePage> {
   @override
   void initState() {
     super.initState();
-    shop.start = "9:00 AM";
-    shop.end = "5:00 PM";
+    shop.start = "09:00 AM";
+    shop.end = "05:00 PM";
     _handleLocationPermission();
   }
 
@@ -265,7 +267,7 @@ class CreateStoreForm extends StatefulWidget {
 // TextEditingController descriptionController = TextEditingController(text: '');
 // TextEditingController locationController = TextEditingController(text: '');
 
-StoreModel shop = StoreModel('', '', '', '', '', '', '', ' ', '', '', '', '');
+StoreModel shop = StoreModel('', '', '', '', '', '', '', ' ', '', '', '', '','');
 
 class _CreateStoreFormState extends State<CreateStoreForm> {
   TimeOfDay selectedTime = TimeOfDay.now();
@@ -279,7 +281,15 @@ class _CreateStoreFormState extends State<CreateStoreForm> {
       setState(() {
         selectedTime = pickedS;
         final localizations = MaterialLocalizations.of(context);
-        final formattedTimeOfDay = localizations.formatTimeOfDay(selectedTime);
+        DateTime dateTime = DateTime(
+          DateTime.now().year,
+          DateTime.now().month,
+          DateTime.now().day,
+          selectedTime.hour,
+          selectedTime.minute,
+        );
+        final formattedTimeOfDay = DateFormat('hh:mm a').format(dateTime);
+        // localizations.formatTimeOfDay(selectedTime);
         var start = formattedTimeOfDay;
         var end = formattedTimeOfDay;
         shop.start = start;
@@ -297,7 +307,16 @@ class _CreateStoreFormState extends State<CreateStoreForm> {
       setState(() {
         selectedTime = pickedS;
         final localizations = MaterialLocalizations.of(context);
-        final formattedTimeOfDay = localizations.formatTimeOfDay(selectedTime);
+        DateTime dateTime = DateTime(
+          DateTime.now().year,
+          DateTime.now().month,
+          DateTime.now().day,
+          selectedTime.hour,
+          selectedTime.minute,
+        );
+        final formattedTimeOfDay = DateFormat('hh:mm a').format(dateTime);
+        // final localizations = MaterialLocalizations.of(context);
+        // final formattedTimeOfDay = localizations.formatTimeOfDay(selectedTime);
         var start = formattedTimeOfDay;
         var end = formattedTimeOfDay;
         shop.end = end;

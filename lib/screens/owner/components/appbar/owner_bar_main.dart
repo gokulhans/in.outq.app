@@ -20,7 +20,15 @@ class OwnerAppBar extends StatelessWidget {
         statusBarIconBrightness: Brightness.light,
         // statusBarBrightness: Brightness.light
       ),
-      title: Text(title),
+      title: const Center(
+        child: Image(
+          image: AssetImage("assets/app_icon/logohead.png"),
+          height: 40,
+          width: 100,
+          // alignment: Alignment.centerLeft,
+          fit: BoxFit.contain,
+        ),
+      ),
       elevation: 0,
       backgroundColor: ColorConstants.appbgclr2,
       foregroundColor: ColorConstants.iconclr,
@@ -40,7 +48,8 @@ class OwnerAppBar extends StatelessWidget {
             ),
             onPressed: () {
               Get.to(() => const OwnerNotifications());
-            }),addHorizontalSpace(10)
+            }),
+        addHorizontalSpace(10)
       ],
     );
   }

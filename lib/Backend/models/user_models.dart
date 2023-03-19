@@ -74,3 +74,9 @@ class TimeSlots {
   String start, end, date;
   TimeSlots(this.start, this.end, this.date);
 }
+
+class Review {
+  int rating;
+  String comment, storeid;
+  Review(this.rating, this.comment, this.storeid);
+}

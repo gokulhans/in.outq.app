@@ -63,11 +63,12 @@ class WelcomeScreen extends StatelessWidget {
                 ))
               ],
             ),
-            TextButton(
-                onPressed: () => Get.to(() => const OwnerSignUpPage()),
-                child: const Center(
-                  child: Text(tOwnerQuestion),
-                ))
+            addVerticalSpace(10)
+            // TextButton(
+            //     onPressed: () => Get.to(() => const OwnerSignUpPage()),
+            //     child: const Center(
+            //       child: Text(tOwnerQuestion),
+            //     ))
           ],
         ),
       ),

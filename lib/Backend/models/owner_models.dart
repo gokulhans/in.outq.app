@@ -20,7 +20,8 @@ class StoreModel {
       longitude,
       latitude,
       pincode,
-      gender;
+      gender,
+      working;
   StoreModel(
       this.name,
       this.location,
@@ -33,7 +34,8 @@ class StoreModel {
       this.longitude,
       this.latitude,
       this.pincode,
-      this.gender);
+      this.gender,
+      this.working);
 }
 
 class Store {
@@ -47,9 +49,10 @@ class Store {
       start,
       end,
       employees,
-      gender;
+      gender,
+      working;
   Store(this._id, this.name, this.location, this.id, this.description,
-      this.type, this.img, this.start, this.end, this.employees, this.gender);
+      this.type, this.img, this.start, this.end, this.employees, this.gender,this.working);
 }
 
 class ServiceModel {

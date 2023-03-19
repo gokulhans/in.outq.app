@@ -88,7 +88,7 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
     pref.setString("userid", str);
     // Get.offAll(() => {UserExithome()});
     Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (BuildContext context) => const UserExithome()));
+        builder: (BuildContext context) => const UserSignUpExithome()));
   }
 
   // String _currentAddress = "";
@@ -381,6 +381,17 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                             focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.green))),
                         obscureText: true,
+                      ),
+                      addVerticalSpace(10),
+                      const TextField(
+                        decoration: InputDecoration(
+                            labelText: 'Coupen Code ',
+                            labelStyle: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.green))),
                       ),
                       // const Padding(
                       //   padding: EdgeInsets.only(top:24.0),
