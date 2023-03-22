@@ -17,7 +17,6 @@ String? userid;
 Future getUserId(BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   userid = prefs.getString("userid")!;
-  // print(userid);
 }
 
 class UserSearchServicesPage extends StatefulWidget {
@@ -35,10 +34,15 @@ class _UserSearchServicesPageState extends State<UserSearchServicesPage> {
   // void initState() async {
   //   super.initState();
   // }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserId(context);
+  }
 
   @override
   Widget build(BuildContext context) {
-    getUserId(context);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),

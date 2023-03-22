@@ -54,7 +54,7 @@ Future updateuser(BuildContext context) async {
 }
 
 class ShowLocationMap extends StatefulWidget {
-  var lat = 0.0, long = 0.0;
+  var lat, long;
   ShowLocationMap({super.key, required this.lat, required this.long});
 
   @override
@@ -63,6 +63,13 @@ class ShowLocationMap extends StatefulWidget {
 
 class _ShowLocationMapState extends State<ShowLocationMap> {
   final mapController = MapController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(widget.lat);
+    print(widget.long);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +78,7 @@ class _ShowLocationMapState extends State<ShowLocationMap> {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: OpenStreetMapSearchAndPick(
-            center: LatLong(11.30691175941021, 75.93945134166538),
+            center: LatLong(widget.lat, widget.long),
             buttonColor: Colors.blue,
             buttonText: 'Set Current Location',
             onPicked: (pickedData) {

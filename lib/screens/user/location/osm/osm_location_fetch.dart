@@ -17,8 +17,8 @@ import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart' as latLng;
 
 String userlocation = "loading...";
-String? userlongitude;
-String? userlatitude;
+String userlongitude = "0.0";
+String userlatitude = "0.0";
 String? userpincode;
 double userlat = 0.0;
 double userlong = 0.0;
@@ -99,6 +99,7 @@ class _GetLocationPageState extends State<GetLocationPage> {
               'Location permissions are permanently denied, we cannot request permissions.')));
       return false;
     }
+    _getCurrentPosition();
     return true;
   }
 
@@ -111,7 +112,11 @@ class _GetLocationPageState extends State<GetLocationPage> {
     // return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
-      setState(() => _currentPosition = position);
+      setState(() {
+        _currentPosition = position;
+        userlat = position.latitude;
+        userlong = position.longitude;
+      });
       _getAddressFromLatLng(_currentPosition!);
     }).catchError((e) {
       debugPrint(e);
@@ -141,7 +146,7 @@ class _GetLocationPageState extends State<GetLocationPage> {
         userlong = _currentPosition!.longitude;
         isVisible = true;
       });
-      // print("object");
+      print({userlat, userlong});
       // print(isVisible);
     }).catchError((e) {
       debugPrint(e);
@@ -163,6 +168,7 @@ class _GetLocationPageState extends State<GetLocationPage> {
   @override
   void initState() {
     // checklocationisSaved();
+    _handleLocationPermission();
     _getCurrentPosition();
     super.initState();
   }
@@ -258,8 +264,8 @@ class _GetLocationPageState extends State<GetLocationPage> {
                             ? () {
                                 Get.to(
                                   () => ShowLocationMap(
-                                    lat: userlat,
-                                    long: userlat,
+                                    lat: double.parse(userlatitude),
+                                    long: double.parse(userlongitude),
                                   ),
                                 );
                               }

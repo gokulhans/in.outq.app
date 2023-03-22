@@ -39,7 +39,7 @@ class StoreCardBig extends StatelessWidget {
           //   color: Colors.black,
           //   width: 0.1,
           // ),
-        ),
+        ), 
         child: SizedBox(
           width: 240,
           height: 200,

@@ -20,6 +20,7 @@ import 'package:outq/screens/user/booking/view-booking.dart';
 import 'package:outq/screens/user/components/appbar/user_bar_main.dart';
 import 'package:outq/screens/user/components/drawer/user_drawer.dart';
 import 'package:outq/screens/user/location/asklocation.dart';
+import 'package:outq/screens/user/location/osm/osm_location_fetch.dart';
 import 'package:outq/screens/user/location/osm/osm_location_show.dart';
 import 'package:outq/screens/user/search/gender_search.dart';
 import 'package:outq/screens/user/search/user_search.dart';
@@ -259,6 +260,8 @@ class UserHomeScreen extends StatefulWidget {
 class _UserHomeScreenState extends State<UserHomeScreen> {
   Future<http.Response>? _followfuture;
   Future<http.Response>? _combofuture;
+  Future<http.Response>? _storefuture;
+  Future<http.Response>? _offersfuture;
   var userid;
   String location = "Choose Your Location...";
   double latitude = 0.0;
@@ -269,19 +272,22 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     setState(() {
       _combofuture =
           http.get(Uri.parse('${apidomain}service/search/combo/$userid'));
+      _offersfuture = http.get(Uri.parse('${apidomain}service/getall/$userid'));
       _followfuture =
           http.get(Uri.parse('${apidomain}auth/user/saved/$userid'));
+      _storefuture =
+          http.get(Uri.parse('${apidomain}store/store/get/user/$userid'));
     });
     userid = pref.getString("userid");
     final response =
         await http.get(Uri.parse('${apidomain}auth/user/location/$userid'));
     var jsonData = jsonDecode(response.body);
-    print({"fdgdf", jsonData, response});
-    print(location);
+    // print({"fdgdf", jsonData, response});
+    // print(location);
     setState(() {
       location = jsonData[0]["location"];
     });
-    print({jsonData["lattitude"], jsonData["logitude"]});
+    // print({jsonData["lattitude"], jsonData["logitude"]});
     if (jsonData["latitude"] != null && jsonData[0]["longitude"] != null) {
       setState(() {
         latitude = jsonData[0]["latitude"];
@@ -679,10 +685,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           addVerticalSpace(20),
                           InkWell(
                             onTap: () {
-                              Get.to(() => ShowLocationMap(
-                                    lat: latitude,
-                                    long: longitude,
-                                  ));
+                              Get.to(() => const GetLocationPage());
                             },
                             child: Container(
                               child: Row(
@@ -1292,8 +1295,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           ),
                           addVerticalSpace(20),
                           FutureBuilder(
-                            future: http
-                                .get(Uri.parse('${apidomain}service/getall')),
+                            future: _offersfuture,
                             builder: (BuildContext context,
                                 AsyncSnapshot<http.Response> snapshot) {
                               if (snapshot.hasData) {
@@ -1592,8 +1594,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           ),
                           addVerticalSpace(20),
                           FutureBuilder(
-                            future: http
-                                .get(Uri.parse('${apidomain}store/store/get')),
+                            future: _storefuture,
                             builder: (BuildContext context,
                                 AsyncSnapshot<http.Response> snapshot) {
                               if (snapshot.hasData) {

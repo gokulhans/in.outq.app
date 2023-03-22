@@ -113,8 +113,7 @@ class _AllShopReviewsState extends State<AllShopReviews> {
                                                 unratedColor: Colors.white,
                                                 direction: Axis.horizontal,
                                                 itemCount: 5,
-                                                rating: data[i]['rating']
-                                                    .toDouble(),
+                                                rating: data[i]['rating'].toDouble(),
                                                 itemSize: 15,
                                                 itemBuilder: (context, _) =>
                                                     const Icon(

@@ -35,8 +35,14 @@ class _GenderFilterPageState extends State<GenderFilterPage> {
   // }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     getUserId(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
@@ -53,8 +59,8 @@ class _GenderFilterPageState extends State<GenderFilterPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             FutureBuilder(
-              future: http
-                  .get(Uri.parse('${apidomain}store/type/${argumentData[0]}')),
+              future: http.get(Uri.parse(
+                  '${apidomain}store/type/${argumentData[0]}/$userid')),
               builder: (BuildContext context,
                   AsyncSnapshot<http.Response> snapshot) {
                 if (snapshot.hasData) {
